@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GymRats</string>
+    <string name="welcome_title">Welcome to <b>GymRats</b></string>
 </resources>
