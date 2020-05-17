@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:width="250dp"
         android:height="48dp"
+        android:backgroundTint="@color/colorWhite"
         android:text="@string/log_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"

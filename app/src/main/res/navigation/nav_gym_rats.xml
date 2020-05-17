@@ -24,5 +24,20 @@
         android:id="@+id/welcome_fragment"
         android:name="com.hasz.gymrats.app.fragment.WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
+
+        <action
+            android:id="@+id/welcome_to_login"
+            app:destination="@id/login_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.hasz.gymrats.app.fragment.LoginFragment"
+        android:label="@string/log_in"
+        tools:layout="@layout/fragment_log_in">
     </fragment>
 </navigation>
