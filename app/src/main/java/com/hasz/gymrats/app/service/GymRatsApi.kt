@@ -24,6 +24,12 @@ object GymRatsApi {
       .responseObject(handleObject<Account>(handler))
   }
 
+  fun createAccount(email: String, password: String, fullName: String, handler: (Result<Account>) -> Unit) {
+    Fuel.post("/accounts", listOf("email" to email, "password" to password, "full_name" to fullName))
+      .validate { true }
+      .responseObject(handleObject<Account>(handler))
+  }
+
   private fun <T> handleObject(handler: (Result<T>) -> Unit): ResponseResultHandler<ServiceResponse<T>> {
     return { _, _, result ->
       val result: Result<T> = when(result) {
