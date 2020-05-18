@@ -4,4 +4,9 @@
     <string name="get_started">Get started</string>
     <string name="log_in">Log in</string>
     <string name="start_content_description">3 rats standing on a podium</string>
+    <string name="log_in_subtitle">Welcome back.</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="log_in_button">Log in</string>
+    <string name="reset_password">Reset password</string>
 </resources>

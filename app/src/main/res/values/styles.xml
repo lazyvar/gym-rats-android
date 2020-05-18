@@ -3,10 +3,10 @@
     <style name="Base.Theme.GymRats" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorBrand</item>
         <item name="colorOnPrimary">@color/colorWhite</item>
-<!--        <item name="colorPrimaryDark">@color/sunflower_green_700</item>-->
-<!--        <item name="colorOnSurface">@color/sunflower_black</item>-->
-<!--        <item name="colorAccent">@color/sunflower_green_700</item>-->
-<!--        <item name="colorSurface">@color/sunflower_gray_50</item>-->
+        <item name="colorPrimaryDark">@color/colorBrand</item>
+        <item name="colorOnSurface">@color/colorBrand</item>
+        <item name="colorAccent">@color/colorBrand</item>
+        <item name="colorSurface">@color/colorBrand</item>
         <item name="colorSecondary">@color/colorWhite</item>
         <item name="android:colorBackground">@color/colorOffWhite</item>
     </style>
