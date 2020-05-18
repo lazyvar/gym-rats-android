@@ -1,6 +1,7 @@
 package com.hasz.gymrats.app.fragment
 
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,8 @@ class SignUpFragment: Fragment() {
       toolbar.setNavigationOnClickListener {
         findNavController().popBackStack()
       }
+
+      footerText.movementMethod = LinkMovementMethod.getInstance()
 
       createAccountButton.setOnClickListener {
         val email = email.editText?.text?.toString() ?: ""
