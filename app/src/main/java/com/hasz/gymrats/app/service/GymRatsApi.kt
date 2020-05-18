@@ -24,7 +24,6 @@ object GymRatsApi {
       .responseObject(handleObject<Account>(handler))
   }
 
-  @SuppressLint("RestrictedApi")
   private fun <T> handleObject(handler: (Result<T>) -> Unit): ResponseResultHandler<ServiceResponse<T>> {
     return { _, _, result ->
       val result: Result<T> = when(result) {
