@@ -26,8 +26,16 @@
         tools:layout="@layout/fragment_welcome">
 
         <action
-            android:id="@+id/welcome_to_login"
+            android:id="@+id/login"
             app:destination="@id/login_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/sign_up"
+            app:destination="@id/sign_up_fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -39,5 +47,12 @@
         android:name="com.hasz.gymrats.app.fragment.LoginFragment"
         android:label="@string/log_in"
         tools:layout="@layout/fragment_log_in">
+    </fragment>
+
+    <fragment
+        android:id="@+id/sign_up_fragment"
+        android:name="com.hasz.gymrats.app.fragment.SignUpFragment"
+        android:label="Sign Up"
+        tools:layout="@layout/fragment_sign_up">
     </fragment>
 </navigation>

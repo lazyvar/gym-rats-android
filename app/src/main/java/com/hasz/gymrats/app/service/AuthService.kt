@@ -10,7 +10,7 @@ object AuthService {
   private const val key = "current_account"
   private val sharedPreferences: SharedPreferences = GymRatsApplication.context!!.getSharedPreferences("com.hasz.app.gymrats", Context.MODE_PRIVATE)!!
 
-  fun retreiveAccount(): Account? {
+  fun retrieveAccount(): Account? {
     val json = sharedPreferences.getString(key, null)
 
     return json?.let {
@@ -20,7 +20,7 @@ object AuthService {
 
   fun storeAccount(account: Account) {
     val json = Gson().toJson(account)
-    val editor =  sharedPreferences.edit()
+    val editor = sharedPreferences.edit()
 
     editor.putString(key, json)
     editor.apply()

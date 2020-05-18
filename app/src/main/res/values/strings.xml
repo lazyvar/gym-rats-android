@@ -9,4 +9,10 @@
     <string name="password_hint">Password</string>
     <string name="log_in_button">Log in</string>
     <string name="reset_password">Reset password</string>
+    <string name="get_started_title">Get started</string>
+    <string name="get_started_subtitle">GymRats needs some information before getting started.</string>
+    <string name="name_hint">Name</string>
+    <string name="confirm_password_hint">Confirm password</string>
+    <string name="create_account_button_title">Create account</string>
+    <string name="create_account_footer_text">By signing up you are agreeing to the Terms of Service and Privacy Policy.</string>
 </resources>

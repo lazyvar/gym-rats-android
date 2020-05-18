@@ -20,7 +20,13 @@ class WelcomeFragment : Fragment() {
     ).apply {
       loginButton.setOnClickListener {
         findNavController().navigate(
-          WelcomeFragmentDirections.welcomeToLogin()
+          WelcomeFragmentDirections.login()
+        )
+      }
+
+      getStartedButton.setOnClickListener {
+        findNavController().navigate(
+          WelcomeFragmentDirections.signUp()
         )
       }
     }.root

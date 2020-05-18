@@ -10,14 +10,13 @@ import com.hasz.gymrats.app.databinding.ActivityGymRatsRootBinding
 import com.hasz.gymrats.app.service.AuthService
 
 class GymRatsRootActivity: AppCompatActivity() {
-  @SuppressLint("RestrictedApi")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    AuthService.retreiveAccount()?.let {
-      Logger.LogcatLogger.get().info("Mack", it.toString())
+    AuthService.retrieveAccount()?.let {
+
     } ?: run {
-      Logger.LogcatLogger.get().info("Mack", "Nope.")
+
     }
 
     setContentView<ActivityGymRatsRootBinding>(this, R.layout.activity_gym_rats_root)
