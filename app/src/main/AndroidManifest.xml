@@ -14,12 +14,14 @@
         android:windowSoftInputMode="adjustResize"
         android:name=".application.GymRatsApplication"
         android:theme="@style/Theme.GymRats">
-        <activity android:name=".activity.GymRatsRootActivity" android:theme="@style/Theme.GymRats.NoActionBar">
+
+        <activity android:name=".activity.GymRatsRootActivity" android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <activity android:name=".activity.WelcomeActivity" android:noHistory="true" android:theme="@style/Theme.GymRats.NoActionBar" />
+    </application>
 </manifest>
