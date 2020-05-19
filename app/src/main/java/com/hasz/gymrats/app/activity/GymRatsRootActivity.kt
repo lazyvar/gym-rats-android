@@ -10,7 +10,7 @@ class GymRatsRootActivity: AppCompatActivity() {
     super.onCreate(savedInstanceState)
 
     var firstActivity = AuthService.retrieveAccount()?.let {
-      WelcomeActivity()
+      MainActivity()
     } ?: run {
       WelcomeActivity()
     }

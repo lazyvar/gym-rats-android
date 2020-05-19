@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.databinding.FragmentWelcomeBinding
 
-class WelcomeFragment : Fragment() {
+class WelcomeFragment: Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
