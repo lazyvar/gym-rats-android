@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.databinding.FragmentHomeBinding
+import kotlinx.android.synthetic.main.app_bar_main.*
 
 class HomeFragment : Fragment() {
   override fun onCreateView(
@@ -18,6 +19,8 @@ class HomeFragment : Fragment() {
     return DataBindingUtil.inflate<FragmentHomeBinding>(
       inflater, R.layout.fragment_home, container, false
     ).apply {
+      fab.visibility = View.GONE
+
 
     }.root
   }
