@@ -9,14 +9,15 @@ class GymRatsRootActivity: AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    var firstActivity = AuthService.retrieveAccount()?.let {
+    val firstActivity = AuthService.retrieveAccount()?.let {
       MainActivity()
     } ?: run {
       WelcomeActivity()
     }
 
-    val intent = Intent()
-    intent.setClass(applicationContext, firstActivity::class.java)
+    val intent = Intent().apply {
+      setClass(applicationContext, firstActivity::class.java)
+    }
 
     startActivity(intent)
   }

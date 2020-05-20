@@ -11,16 +11,18 @@
         <item name="android:colorBackground">@color/colorOffWhite</item>
     </style>
 
-    <style name="Theme.GymRats" parent="Base.Theme.GymRats"/>
+    <style name="Theme.GymRats" parent="Base.Theme.GymRats" />
 
     <style name="Theme.GymRats.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.GymRats.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
+    <style name="Theme.GymRats.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="TextAppearance.GymRats.Toolbar.Text" parent="TextAppearance.MaterialComponents.Headline5" >
-<!--        <item name="android:textColor">?attr/colorOnSurface</item>-->
+    <style name="TextAppearance.GymRats.Toolbar.Text" parent="TextAppearance.MaterialComponents.Headline5">
+        <!--        <item name="android:textColor">?attr/colorOnSurface</item>-->
     </style>
+
+    <style name="Theme.GymRats.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
