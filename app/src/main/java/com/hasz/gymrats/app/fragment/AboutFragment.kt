@@ -1,6 +1,7 @@
 package com.hasz.gymrats.app.fragment
 
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,7 @@ class AboutFragment : Fragment() {
     return DataBindingUtil.inflate<FragmentAboutBinding>(
       inflater, R.layout.fragment_about, container, false
     ).apply {
-
+      textView.movementMethod = LinkMovementMethod.getInstance()
     }.root
   }
 }

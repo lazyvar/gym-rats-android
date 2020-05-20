@@ -26,4 +26,21 @@
     <string name="menu_home">Home</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_about">About</string>
+
+    <string name="about_this_app">
+        What\'s up rats!\n\n
+        This app\'s goal is to act as a social motivator for fitness and health. Whether for a personal or group challenge, it is important to track workouts and hold yourself accountable.
+        I hope you\'re finding it useful!
+        \n\n
+        The app\'s source code is open and freely available to <a href="https://gitlab.com/gym-rats">view</a> and do with what you like. New features are added roughly on a monthly basis.
+        You can view the progress of ongoing work by taking a look at active <a href="https://gitlab.com/groups/gym-rats/-/milestones">milestones</a>, the list of open <a href="https://gitlab.com/groups/gym-rats/-/issues">issues</a>, or the <a href="https://gitlab.com/groups/gym-rats/-/boards">kanban board.</a>
+        \n\n
+        If you have any ideas or suggestions on how to improve the app, please feel free to <a href="mailto:suggestion@gymrats.app">email</a> me. I also love app store reviews, both positive and negative, so any feedback you have goes a long way.
+        \n\n
+        Happy ratting,
+        \n\n
+        Mack Hasz
+        \n
+        CPO (Chief Protein Officer)
+    </string>
 </resources>
