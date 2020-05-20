@@ -22,7 +22,10 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
+    <string name="no_challenges_tile">No active or upcoming challenges</string>
+    <string name="yoga_rat_desc">Rat doing yoga</string>
+    <string name="start">Start</string>
+    <string name="join">Join</string>
     <string name="menu_home">Home</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_about">About</string>
