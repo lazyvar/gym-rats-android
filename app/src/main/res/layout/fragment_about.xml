@@ -14,6 +14,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:fontFamily="@font/nunito"
             android:text="@string/about_this_app"
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"

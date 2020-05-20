@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.hasz.gymrats.app.fragment.HomeFragment"
-        android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
     </fragment>
 
@@ -23,4 +22,15 @@
         android:name="com.hasz.gymrats.app.fragment.AboutFragment"
         android:label="@string/menu_about"
         tools:layout="@layout/fragment_about" />
+
+    <fragment
+        android:id="@+id/nav_no_challenges"
+        android:name="com.hasz.gymrats.app.fragment.NoActiveChallengesFragment"
+        tools:layout="@layout/fragment_no_active_challenges">
+    </fragment>
+
+    <action
+        android:id="@+id/noChallenges"
+        app:destination="@id/nav_no_challenges"
+        app:enterAnim="@anim/fragment_fade_enter"/>
 </navigation>

@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.work.Logger
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentHomeBinding
-import kotlinx.android.synthetic.main.app_bar_main.*
+import com.hasz.gymrats.app.extension.active
+import com.hasz.gymrats.app.service.GymRatsApi
 
 class HomeFragment : Fragment() {
   override fun onCreateView(
@@ -19,9 +22,26 @@ class HomeFragment : Fragment() {
     return DataBindingUtil.inflate<FragmentHomeBinding>(
       inflater, R.layout.fragment_home, container, false
     ).apply {
-      fab.visibility = View.GONE
+      GymRatsApi.allChallenges { result ->
+        result.fold(
+          onSuccess = { challenges ->
+              val activeChallenges = challenges.active()
 
+              if (activeChallenges.isEmpty()) {
+                val main = (context as MainActivity)
+                val tx = main.supportFragmentManager.beginTransaction()
 
+                tx.replace(R.id.fragment_home, NoActiveChallengesFragment())
+                tx.commit()
+              } else {
+
+              }
+          },
+          onFailure = { error ->
+            Logger.LogcatLogger.get().info("mack", error.toString())
+          }
+        )
+      }
     }.root
   }
 }

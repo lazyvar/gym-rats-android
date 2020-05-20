@@ -8,6 +8,7 @@ import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.ResponseResultHandler
 import com.github.kittinunf.fuel.gson.responseObject
 import com.hasz.gymrats.app.model.Account
+import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.model.ServiceResponse
 import com.hasz.gymrats.app.model.ServiceResponseError
 
@@ -16,6 +17,7 @@ object GymRatsApi {
 
   init {
     FuelManager.instance.basePath = baseUrl
+    FuelManager.instance.baseHeaders = headers()
   }
 
   fun login(email: String, password: String, handler: (Result<Account>) -> Unit) {
@@ -28,6 +30,16 @@ object GymRatsApi {
     Fuel.post("/accounts", listOf("email" to email, "password" to password, "full_name" to fullName))
       .validate { true }
       .responseObject(handleObject<Account>(handler))
+  }
+
+  fun allChallenges(handler: (Result<List<Challenge>>) -> Unit) {
+    Fuel.get("/challenges")
+      .validate { true }
+      .responseObject(handleObject<List<Challenge>>(handler))
+  }
+
+  private fun headers(): Map<String, String> {
+    return mapOf("Authorization" to (AuthService.currentAccount.token ?: ""))
   }
 
   private fun <T> handleObject(handler: (Result<T>) -> Unit): ResponseResultHandler<ServiceResponse<T>> {
