@@ -2,10 +2,25 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/no_active_challenges_fragment">
+    android:id="@+id/main_navigation"
+    app:startDestination="@+id/nav_home">
 
     <fragment
-        android:id="@+id/no_active_challenges_fragment"
-        android:name="com.hasz.gymrats.app.fragment.NoActiveChallengesFragment"
-        tools:layout="@layout/fragment_no_active_challenges" />
+        android:id="@+id/nav_home"
+        android:name="com.hasz.gymrats.app.fragment.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home">
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.hasz.gymrats.app.fragment.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.hasz.gymrats.app.fragment.AboutFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/fragment_about" />
 </navigation>

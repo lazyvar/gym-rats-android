@@ -2,6 +2,7 @@ package com.hasz.gymrats.app.activity
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -32,15 +33,15 @@ class MainActivity : AppCompatActivity() {
 
     setSupportActionBar(toolbar)
 
-    fab.setOnClickListener { view ->
+    fab.setOnClickListener { _ ->
       // TODO: fabulous
     }
 
     appBarConfiguration = AppBarConfiguration(
       setOf(
         R.id.nav_home,
-        R.id.nav_gallery,
-        R.id.nav_slideshow
+        R.id.nav_settings,
+        R.id.nav_about
       ), drawerLayout
     )
 
