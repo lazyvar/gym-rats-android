@@ -7,15 +7,20 @@ import com.hasz.gymrats.app.application.GymRatsApplication
 import com.hasz.gymrats.app.model.Account
 
 object AuthService {
+  lateinit var currentAccount: Account
+
   private const val key = "current_account"
   private val sharedPreferences: SharedPreferences = GymRatsApplication.context!!.getSharedPreferences("com.hasz.app.gymrats", Context.MODE_PRIVATE)!!
 
   fun retrieveAccount(): Account? {
     val json = sharedPreferences.getString(key, null)
-
-    return json?.let {
+    val account = json?.let {
       Gson().fromJson(it, Account::class.java)
     }
+
+    account?.let { currentAccount = it }
+
+    return account
   }
 
   fun storeAccount(account: Account) {

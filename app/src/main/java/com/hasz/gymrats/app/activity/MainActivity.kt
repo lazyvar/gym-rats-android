@@ -1,10 +1,12 @@
 package com.hasz.gymrats.app.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
-import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,12 +16,15 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.work.Logger
+import com.bumptech.glide.Glide
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.service.AuthService
 
 class MainActivity : AppCompatActivity() {
-
   private lateinit var appBarConfiguration: AppBarConfiguration
 
+  @SuppressLint("RestrictedApi")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -35,6 +40,25 @@ class MainActivity : AppCompatActivity() {
 
     fab.setOnClickListener { _ ->
       // TODO: fabulous
+    }
+
+    navView.apply {
+      val header = LayoutInflater.from(context).inflate(R.layout.nav_header_main, null)
+      val name = header.findViewById<TextView>(R.id.name)
+      val email = header.findViewById<TextView>(R.id.email)
+      val imageView = header.findViewById<ImageView>(R.id.imageView)
+
+      name.text = AuthService.currentAccount.full_name
+      email.text = AuthService.currentAccount.email
+
+      AuthService.currentAccount.profile_picture_url?.let {
+        Glide.with(this)
+          .load(it)
+          .circleCrop()
+          .into(imageView)
+      }
+
+      addHeaderView(header)
     }
 
     appBarConfiguration = AppBarConfiguration(
