@@ -17,7 +17,7 @@ object GymRatsApi {
 
   init {
     FuelManager.instance.basePath = baseUrl
-    FuelManager.instance.baseHeaders = headers()
+    setBaseHeaders()
   }
 
   fun login(email: String, password: String, handler: (Result<Account>) -> Unit) {
@@ -38,8 +38,12 @@ object GymRatsApi {
       .responseObject(handleObject<List<Challenge>>(handler))
   }
 
+  fun setBaseHeaders() {
+    FuelManager.instance.baseHeaders = headers()
+  }
+
   private fun headers(): Map<String, String> {
-    return mapOf("Authorization" to (AuthService.currentAccount.token ?: ""))
+    return mapOf("Authorization" to (AuthService.currentAccount?.token ?: ""))
   }
 
   private fun <T> handleObject(handler: (Result<T>) -> Unit): ResponseResultHandler<ServiceResponse<T>> {

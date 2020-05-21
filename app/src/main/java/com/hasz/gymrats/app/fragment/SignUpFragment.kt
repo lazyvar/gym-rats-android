@@ -1,5 +1,6 @@
 package com.hasz.gymrats.app.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentSignUpBinding
 import com.hasz.gymrats.app.service.AuthService
 import com.hasz.gymrats.app.service.GymRatsApi
@@ -54,6 +56,12 @@ class SignUpFragment: Fragment() {
           result.fold(
             onSuccess = { account ->
               AuthService.storeAccount(account = account)
+              val intent = Intent().apply {
+                context?.let { it -> setClass(it, MainActivity::class.java) }
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+              }
+
+              startActivity(intent)
             },
             onFailure = { error ->
               Snackbar.make(it, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()

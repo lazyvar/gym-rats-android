@@ -7,7 +7,7 @@ import com.hasz.gymrats.app.application.GymRatsApplication
 import com.hasz.gymrats.app.model.Account
 
 object AuthService {
-  lateinit var currentAccount: Account
+  var currentAccount: Account? = null
 
   private const val key = "current_account"
   private val sharedPreferences: SharedPreferences = GymRatsApplication.context!!.getSharedPreferences("com.hasz.app.gymrats", Context.MODE_PRIVATE)!!
@@ -29,5 +29,8 @@ object AuthService {
 
     editor.putString(key, json)
     editor.apply()
+
+    currentAccount = account
+    GymRatsApi.setBaseHeaders()
   }
 }

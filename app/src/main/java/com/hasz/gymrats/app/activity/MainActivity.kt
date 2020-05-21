@@ -49,10 +49,10 @@ class MainActivity : AppCompatActivity() {
       val email = header.findViewById<TextView>(R.id.email)
       val imageView = header.findViewById<ImageView>(R.id.imageView)
 
-      name.text = AuthService.currentAccount.full_name
-      email.text = AuthService.currentAccount.email
+      name.text = AuthService.currentAccount!!.full_name
+      email.text = AuthService.currentAccount!!.email
 
-      AuthService.currentAccount.profile_picture_url?.let {
+      AuthService.currentAccount!!.profile_picture_url?.let {
         Glide.with(this)
           .load(it)
           .circleCrop()
