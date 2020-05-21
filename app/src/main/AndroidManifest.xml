@@ -14,7 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GymRats"
         android:windowSoftInputMode="adjustResize">
-        <activity android:name=".activity.JoinChallengeActivity" android:theme="@style/Theme.GymRats.NoActionBar" />
+        <activity android:name=".activity.CreateChallengeActivity" android:theme="@style/Theme.GymRats.NoActionBar" />
+        <activity
+            android:name=".activity.JoinChallengeActivity"
+            android:theme="@style/Theme.GymRats.NoActionBar" />
         <activity
             android:name=".activity.GymRatsRootActivity"
             android:noHistory="true">

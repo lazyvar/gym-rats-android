@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.activity.CreateChallengeActivity
 import com.hasz.gymrats.app.activity.JoinChallengeActivity
 import com.hasz.gymrats.app.databinding.FragmentNoActiveChallengesBinding
 
@@ -22,6 +23,14 @@ class NoActiveChallengesFragment: Fragment() {
       joinButton.setOnClickListener {
         val intent = Intent().apply {
           context?.let { setClass(it, JoinChallengeActivity::class.java) }
+        }
+
+        startActivity(intent)
+      }
+
+      startButton.setOnClickListener {
+        val intent = Intent().apply {
+          context?.let { setClass(it, CreateChallengeActivity::class.java) }
         }
 
         startActivity(intent)
