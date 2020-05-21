@@ -1,6 +1,5 @@
 package com.hasz.gymrats.app.service
 
-import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import com.github.kittinunf.fuel.Fuel
@@ -11,6 +10,9 @@ import com.hasz.gymrats.app.model.Account
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.model.ServiceResponse
 import com.hasz.gymrats.app.model.ServiceResponseError
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 object GymRatsApi {
   private const val baseUrl = "https://gym-rats-api-pre-production.gigalixirapp.com"
@@ -44,8 +46,35 @@ object GymRatsApi {
       .responseObject(handleObject(handler))
   }
 
+  fun createChallenge(startDate: Date, endDate: Date, name: String, description: String?, scoreBy: String, handler: (Result<Challenge>) -> Unit) {
+    val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ")
+    val start = dateFormatter.format(atStartOfDay(startDate))
+    val end = dateFormatter.format(atStartOfDay(endDate))
+    var body = listOf("start_date" to start, "end_date" to end, "score_by" to scoreBy, "time_zone" to "AND", "name" to name)
+
+    description?.let {
+      body = ArrayList(body).apply { add("description" to it) }
+    }
+
+    Fuel.post("/challenges", body)
+      .validate { true }
+      .responseObject(handleObject(handler))
+  }
+
   fun setBaseHeaders() {
     FuelManager.instance.baseHeaders = headers()
+  }
+
+  private fun atStartOfDay(date: Date): Date {
+    val calendar = Calendar.getInstance()
+    calendar.time = date
+    calendar[Calendar.HOUR_OF_DAY] = 0
+    calendar[Calendar.MINUTE] = 0
+    calendar[Calendar.SECOND] = 0
+    calendar[Calendar.MILLISECOND] = 0
+    calendar.timeZone = TimeZone.getTimeZone("UTC")
+
+    return calendar.time
   }
 
   private fun headers(): Map<String, String> {

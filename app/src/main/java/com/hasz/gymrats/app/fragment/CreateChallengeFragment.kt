@@ -2,6 +2,7 @@ package com.hasz.gymrats.app.fragment
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
@@ -9,8 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentCreateChallengeBinding
+import com.hasz.gymrats.app.service.AuthService
+import com.hasz.gymrats.app.service.GymRatsApi
 import kotlinx.android.synthetic.main.fragment_create_challenge.*
 import kotlinx.android.synthetic.main.fragment_no_active_challenges.*
 import java.text.SimpleDateFormat
@@ -74,8 +79,30 @@ class CreateChallengeFragment : Fragment() {
       startDate.editText?.setText(simpleDateFormat.format(startDateTime))
       endDate.editText?.setText(simpleDateFormat.format(endDateTime))
 
-      startButton.setOnClickListener {
-        
+      createChallengeButton.setOnClickListener {
+        val name = name.editText?.text?.toString() ?: ""
+
+        if (name.isEmpty()) {
+          return@setOnClickListener
+        }
+
+        createChallengeButton.isEnabled = false
+        progressBar.visibility = View.VISIBLE
+
+        GymRatsApi.createChallenge(startDateTime, endDateTime, name, description.editText?.text.toString(), "workouts") { result ->
+          createChallengeButton.isEnabled = true
+          progressBar.visibility = View.INVISIBLE
+
+          result.fold(
+            onSuccess = { challenge ->
+              // TODO: handle challenges state change
+              print(challenge.toString())
+            },
+            onFailure = { error ->
+              Snackbar.make(it, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+            }
+          )
+        }
       }
     }.root
   }
