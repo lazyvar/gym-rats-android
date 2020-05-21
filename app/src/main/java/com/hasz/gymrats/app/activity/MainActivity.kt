@@ -101,6 +101,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         false
       }
+      R.id.nav_create_challenge -> {
+        val intent = Intent().apply {
+          applicationContext?.let { setClass(it, CreateChallengeActivity::class.java) }
+        }
+
+        startActivity(intent)
+
+        false
+      }
       else -> {
         NavigationUI.onNavDestinationSelected(item, navController)
         drawer.closeDrawer(Gravity.START)
