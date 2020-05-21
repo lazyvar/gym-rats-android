@@ -16,10 +16,8 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.work.Logger
 import com.bumptech.glide.Glide
 import com.hasz.gymrats.app.R
-import com.hasz.gymrats.app.fragment.NoActiveChallengesFragment
 import com.hasz.gymrats.app.service.AuthService
 
 class MainActivity : AppCompatActivity() {
