@@ -23,19 +23,25 @@ object GymRatsApi {
   fun login(email: String, password: String, handler: (Result<Account>) -> Unit) {
     Fuel.post("/tokens", listOf("email" to email, "password" to password))
       .validate { true }
-      .responseObject(handleObject<Account>(handler))
+      .responseObject(handleObject(handler))
   }
 
   fun createAccount(email: String, password: String, fullName: String, handler: (Result<Account>) -> Unit) {
     Fuel.post("/accounts", listOf("email" to email, "password" to password, "full_name" to fullName))
       .validate { true }
-      .responseObject(handleObject<Account>(handler))
+      .responseObject(handleObject(handler))
+  }
+
+  fun joinChallenge(code: String, handler: (Result<Challenge>) -> Unit) {
+    Fuel.post("/memberships", listOf("code" to code))
+      .validate { true }
+      .responseObject(handleObject(handler))
   }
 
   fun allChallenges(handler: (Result<List<Challenge>>) -> Unit) {
     Fuel.get("/challenges")
       .validate { true }
-      .responseObject(handleObject<List<Challenge>>(handler))
+      .responseObject(handleObject(handler))
   }
 
   fun setBaseHeaders() {
@@ -48,18 +54,16 @@ object GymRatsApi {
 
   private fun <T> handleObject(handler: (Result<T>) -> Unit): ResponseResultHandler<ServiceResponse<T>> {
     return { _, _, result ->
-      val result: Result<T> = when(result) {
-        is com.github.kittinunf.result.Result.Failure -> Result.failure(result.error)
-        is com.github.kittinunf.result.Result.Success -> {
-          when (result.value.status) {
-            "success" -> Result.success(result.value.data!!)
-            else -> Result.failure(ServiceResponseError(message = result.value.error ?: "Something unpredictable happened."))
-          }
-        }
-      }
-
       Handler(Looper.getMainLooper()).post {
-        handler(result)
+        handler(when(result) {
+          is com.github.kittinunf.result.Result.Failure -> Result.failure(result.error)
+          is com.github.kittinunf.result.Result.Success -> {
+            when (result.value.status) {
+              "success" -> Result.success(result.value.data!!)
+              else -> Result.failure(ServiceResponseError(message = result.value.error ?: "Something unpredictable happened."))
+            }
+          }
+        })
       }
     }
   }
