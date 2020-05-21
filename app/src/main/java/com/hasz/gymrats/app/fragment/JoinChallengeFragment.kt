@@ -1,5 +1,6 @@
 package com.hasz.gymrats.app.fragment
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,7 +26,7 @@ class JoinChallengeFragment: Fragment() {
       inflater, R.layout.fragment_join_challenge, container, false
     ).apply {
       toolbar.setNavigationOnClickListener {
-        findNavController().popBackStack()
+        (context as Activity).finish()
       }
 
       joinButton.setOnClickListener {

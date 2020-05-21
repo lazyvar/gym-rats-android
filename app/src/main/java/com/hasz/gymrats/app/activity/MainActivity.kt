@@ -1,29 +1,32 @@
 package com.hasz.gymrats.app.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.*
 import com.bumptech.glide.Glide
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.service.AuthService
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
   private lateinit var appBarConfiguration: AppBarConfiguration
+  private lateinit var navController: NavController
+  private lateinit var drawer: DrawerLayout
 
-  @SuppressLint("RestrictedApi")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -31,9 +34,10 @@ class MainActivity : AppCompatActivity() {
 
     val toolbar: Toolbar = findViewById(R.id.toolbar)
     val fab: FloatingActionButton = findViewById(R.id.fab)
-    val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
     val navView: NavigationView = findViewById(R.id.nav_view)
-    val navController = findNavController(R.id.nav_host_fragment)
+
+    drawer = findViewById(R.id.drawer_layout)
+    navController = findNavController(R.id.nav_host_fragment)
 
     setSupportActionBar(toolbar)
 
@@ -65,11 +69,13 @@ class MainActivity : AppCompatActivity() {
         R.id.nav_home,
         R.id.nav_settings,
         R.id.nav_about
-      ), drawerLayout
+      ), drawer
     )
+
 
     setupActionBarWithNavController(navController, appBarConfiguration)
     navView.setupWithNavController(navController)
+    navView.setNavigationItemSelectedListener(this)
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -83,4 +89,26 @@ class MainActivity : AppCompatActivity() {
 
     return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
   }
+
+  override fun onNavigationItemSelected(item: MenuItem): Boolean {
+    return when(item.itemId) {
+      R.id.nav_join_challenge -> {
+        val intent = Intent().apply {
+          applicationContext?.let { setClass(it, JoinChallengeActivity::class.java) }
+        }
+
+        startActivity(intent)
+
+        false
+      }
+      else -> {
+        NavigationUI.onNavDestinationSelected(item, navController)
+        drawer.closeDrawer(Gravity.START)
+
+        true
+      }
+    }
+  }
 }
+
+
