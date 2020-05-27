@@ -14,7 +14,6 @@ import com.hasz.gymrats.app.adapter.CompletedChallengesAdapter
 import com.hasz.gymrats.app.databinding.FragmentCompletedChallengesBinding
 import com.hasz.gymrats.app.extension.completed
 import com.hasz.gymrats.app.service.GymRatsApi
-import kotlinx.android.synthetic.main.fragment_completed_challenges.*
 
 class CompletedChallengesFragment: Fragment() {
   private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -26,7 +25,7 @@ class CompletedChallengesFragment: Fragment() {
     savedInstanceState: Bundle?
   ): View? {
     viewManager = LinearLayoutManager(context)
-    viewAdapter = CompletedChallengesAdapter(arrayOf("Hi!"))
+    viewAdapter = CompletedChallengesAdapter(arrayListOf())
 
     return DataBindingUtil.inflate<FragmentCompletedChallengesBinding>(
       inflater, R.layout.fragment_completed_challenges, container, false
@@ -41,22 +40,21 @@ class CompletedChallengesFragment: Fragment() {
         recyclerView.visibility = View.VISIBLE
         progressBar.visibility = View.GONE
 
-        GymRatsApi.allChallenges { result ->
-          result.fold(
-            onSuccess = { challenges ->
-              val completedChallenges = challenges.completed()
+        result.fold(
+          onSuccess = { challenges ->
+            val completedChallenges = challenges.completed()
 
-              if (completedChallenges.isEmpty()) {
-                // TODO
-              } else {
-
-              }
-            },
-            onFailure = { error ->
-              Snackbar.make(root, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+            if (completedChallenges.isEmpty()) {
+              // TODO
+            } else {
+              viewAdapter = CompletedChallengesAdapter(completedChallenges)
+              recyclerView.adapter = viewAdapter
             }
-          )
-        }
+          },
+          onFailure = { error ->
+            Snackbar.make(root, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+          }
+        )
       }
     }.root
   }
