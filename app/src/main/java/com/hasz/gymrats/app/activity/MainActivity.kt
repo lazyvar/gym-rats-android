@@ -67,22 +67,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     appBarConfiguration = AppBarConfiguration(
       setOf(
         R.id.nav_home,
+        R.id.nav_completed_challenges,
         R.id.nav_settings,
         R.id.nav_about
       ), drawer
     )
-
 
     setupActionBarWithNavController(navController, appBarConfiguration)
     navView.setupWithNavController(navController)
     navView.setNavigationItemSelectedListener(this)
   }
 
-  override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    menuInflater.inflate(R.menu.main, menu)
-
-    return true
-  }
+//  override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//    menuInflater.inflate(R.menu.main, menu)
+//
+//    return true
+//  }
 
   override fun onSupportNavigateUp(): Boolean {
     val navController = findNavController(R.id.nav_host_fragment)

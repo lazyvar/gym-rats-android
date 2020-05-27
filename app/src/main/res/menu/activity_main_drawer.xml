@@ -10,6 +10,11 @@
             android:title="@string/menu_home" />
 
         <item
+            android:id="@+id/nav_completed_challenges"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_completed_challenges" />
+
+        <item
             android:id="@+id/nav_join_challenge"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_join_challenge" />

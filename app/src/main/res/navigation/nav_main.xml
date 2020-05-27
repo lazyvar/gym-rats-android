@@ -24,6 +24,12 @@
         tools:layout="@layout/fragment_about" />
 
     <fragment
+        android:id="@+id/nav_completed_challenges"
+        android:name="com.hasz.gymrats.app.fragment.CompletedChallengesFragment"
+        android:label="@string/menu_completed_challenges"
+        tools:layout="@layout/fragment_completed_challenges" />
+
+    <fragment
         android:id="@+id/nav_no_challenges"
         android:name="com.hasz.gymrats.app.fragment.NoActiveChallengesFragment"
         tools:layout="@layout/fragment_no_active_challenges">
