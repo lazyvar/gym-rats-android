@@ -49,6 +49,7 @@ dependencies {
     implementation 'com.github.kittinunf.fuel:fuel:2.2.2'
     implementation 'com.github.kittinunf.fuel:fuel-gson:2.2.2'
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation "agency.tango.android:avatar-view:$rootProject.avatarViewVersion"
     implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
