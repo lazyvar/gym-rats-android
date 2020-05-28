@@ -10,6 +10,7 @@ import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.application.GymRatsApplication
 import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
+import com.hasz.gymrats.app.model.SettingsRow
 import java.text.SimpleDateFormat
 
 class CompletedChallengesAdapter(private val challenges: List<Challenge>): RecyclerView.Adapter<CompletedChallengesAdapter.ViewHolder>() {
