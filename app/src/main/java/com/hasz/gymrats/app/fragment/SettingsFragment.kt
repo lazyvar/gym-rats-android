@@ -35,7 +35,11 @@ class SettingsFragment: Fragment() {
     viewManager = LinearLayoutManager(context)
     viewAdapter = SettingsAdapter(arrayListOf(
       SettingsRow(headerText = "PROFILE", leftText = null, rightText = null, action = { }),
-      SettingsRow(headerText = null, leftText = "Email", rightText = account.email, action = { }),
+      SettingsRow(headerText = null, leftText = "Email", rightText = account.email, action = {
+        findNavController().navigate(
+          SettingsFragmentDirections.changeEmail()
+        )
+      }),
       SettingsRow(headerText = null, leftText = "Profile picture", rightText = null, action = { }),
       SettingsRow(headerText = null, leftText = "Name", rightText = account.full_name, action = {
         findNavController().navigate(

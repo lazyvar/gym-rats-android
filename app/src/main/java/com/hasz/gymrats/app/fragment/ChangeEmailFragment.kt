@@ -11,53 +11,56 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
-import com.hasz.gymrats.app.databinding.FragmentChangeNameBinding
+import com.hasz.gymrats.app.databinding.FragmentChangeEmailBinding
 import com.hasz.gymrats.app.service.AuthService
 import com.hasz.gymrats.app.service.GymRatsApi
 
-class ChangeNameFragment: Fragment() {
+class ChangeEmailFragment: Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    return DataBindingUtil.inflate<FragmentChangeNameBinding>(
-      inflater, R.layout.fragment_change_name, container, false
+    return DataBindingUtil.inflate<FragmentChangeEmailBinding>(
+      inflater, R.layout.fragment_change_email, container, false
     ).apply {
-      name.editText?.setText(AuthService.currentAccount?.full_name ?: "")
+      email.editText?.setText(AuthService.currentAccount?.email ?: "")
       progressBar.visibility = View.INVISIBLE
 
-      changeNameButton.setOnClickListener {
-        val name = name.editText?.text.toString()
+      changeEmailButton.setOnClickListener {
+        val email = email.editText?.text.toString()
 
-        if (name.isEmpty()) {
+        if (email.isEmpty()) {
           return@setOnClickListener
         }
 
-        changeNameButton.isEnabled = false
+        changeEmailButton.isEnabled = false
         progressBar.visibility = View.VISIBLE
 
-        GymRatsApi.updateAccount(name = name) { result ->
-          changeNameButton.isEnabled = true
+        GymRatsApi.updateAccount(email = email) { result ->
+          changeEmailButton.isEnabled = true
           progressBar.visibility = View.INVISIBLE
 
           result.fold(
             onSuccess = { account ->
               AuthService.storeAccount(account = account)
               val inputManager: InputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-              val currentFocusedView = requireActivity().currentFocus
 
+              val currentFocusedView = requireActivity().currentFocus
               if (currentFocusedView != null) {
                 inputManager.hideSoftInputFromWindow(
                   currentFocusedView.windowToken,
                   InputMethodManager.HIDE_NOT_ALWAYS
                 )
               }
-
               findNavController().popBackStack()
             },
             onFailure = { error ->
-              Snackbar.make(it, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+              Snackbar.make(
+                it,
+                error.message ?: "Something unpredictable happened.",
+                Snackbar.LENGTH_LONG
+              ).show()
             }
           )
         }

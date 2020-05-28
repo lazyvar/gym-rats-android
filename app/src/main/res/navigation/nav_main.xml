@@ -15,8 +15,7 @@
         android:id="@+id/nav_settings"
         android:name="com.hasz.gymrats.app.fragment.SettingsFragment"
         android:label="@string/menu_settings"
-        tools:layout="@layout/fragment_settings" />
-
+        tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/changeName"
             app:destination="@id/nav_change_name"
@@ -24,6 +23,16 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/changeEmail"
+            app:destination="@id/nav_change_email"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
     <fragment
         android:id="@+id/nav_about"
         android:name="com.hasz.gymrats.app.fragment.AboutFragment"
@@ -46,6 +55,12 @@
         android:id="@+id/nav_change_name"
         android:name="com.hasz.gymrats.app.fragment.ChangeNameFragment"
         tools:layout="@layout/fragment_change_name">
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_change_email"
+        android:name="com.hasz.gymrats.app.fragment.ChangeEmailFragment"
+        tools:layout="@layout/fragment_change_email">
     </fragment>
 
     <action

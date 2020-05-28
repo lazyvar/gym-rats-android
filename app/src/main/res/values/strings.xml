@@ -47,6 +47,9 @@
     <string name="change_name_title">Set your name.</string>
     <string name="change_name_hint">Name</string>
     <string name="change_name_button">SAVE</string>
+    <string name="change_email_title">Your email can be used for password recovery.</string>
+    <string name="change_email_hint">Email</string>
+    <string name="change_email_button">SAVE</string>
     <string name="about_this_app">
         What\'s up rats!\n\nThis app\'s goal is to act as a social motivator for fitness and health. Whether for a personal or group challenge, it is important to track workouts and hold yourself accountable.
         I hope you\'re finding it useful!

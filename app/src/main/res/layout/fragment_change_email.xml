@@ -7,7 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragment.AboutFragment">
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,13 +21,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+    <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/nunito"
-            android:text="@string/change_name_title"
+            android:text="@string/change_email_title"
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -36,7 +35,7 @@
             app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/name"
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -49,22 +48,22 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/change_name_hint"
+                android:hint="@string/change_email_hint"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/changeNameButton"
+            android:id="@+id/changeEmailButton"
             android:layout_width="256dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/colorBrand"
-            android:text="@string/change_name_button"
+            android:text="@string/change_email_button"
             android:textColor="@color/colorWhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name" />
+            app:layout_constraintTop_toBottomOf="@+id/email" />
 
         <ProgressBar
             android:id="@+id/progressBar"
