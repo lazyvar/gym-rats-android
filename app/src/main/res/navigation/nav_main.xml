@@ -31,6 +31,14 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/changePassword"
+            app:destination="@id/nav_change_password"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -55,6 +63,12 @@
         android:id="@+id/nav_change_name"
         android:name="com.hasz.gymrats.app.fragment.ChangeNameFragment"
         tools:layout="@layout/fragment_change_name">
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_change_password"
+        android:name="com.hasz.gymrats.app.fragment.ChangePasswordFragment"
+        tools:layout="@layout/fragment_change_password">
     </fragment>
 
     <fragment

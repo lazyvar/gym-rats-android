@@ -33,4 +33,14 @@ object AuthService {
     currentAccount = account
     GymRatsApi.setBaseHeaders()
   }
+
+  fun logout() {
+    val editor = sharedPreferences.edit()
+
+    editor.remove(key)
+    editor.apply()
+
+    currentAccount = null
+    GymRatsApi.setBaseHeaders()
+  }
 }

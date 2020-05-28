@@ -1,5 +1,6 @@
 package com.hasz.gymrats.app.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.activity.GymRatsRootActivity
 import com.hasz.gymrats.app.adapter.CompletedChallengesAdapter
 import com.hasz.gymrats.app.adapter.SettingsAdapter
 import com.hasz.gymrats.app.databinding.FragmentCompletedChallengesBinding
@@ -46,14 +48,26 @@ class SettingsFragment: Fragment() {
           SettingsFragmentDirections.changeName()
         )
       }),
-      SettingsRow(headerText = null, leftText = "Password", rightText = "••••••", action = { }),
+      SettingsRow(headerText = null, leftText = "Password", rightText = "••••••", action = {
+        findNavController().navigate(
+          SettingsFragmentDirections.changePassword()
+        )
+      }),
       SettingsRow(headerText = "APP INFO", leftText = null, rightText = null, action = { }),
       SettingsRow(headerText = null, leftText = "Google Play page", rightText = null, action = { }),
       SettingsRow(headerText = null, leftText = "Terms of Service", rightText = null, action = { }),
       SettingsRow(headerText = null, leftText = "Privacy Policy", rightText = null, action = { }),
       SettingsRow(headerText = null, leftText = "Support", rightText = null, action = { }),
       SettingsRow(headerText = "ACCOUNT", leftText = null, rightText = null, action = { }),
-      SettingsRow(headerText = null, leftText = "Sign out", rightText = null, action = { })
+      SettingsRow(headerText = null, leftText = "Sign out", rightText = null, action = {
+        AuthService.logout()
+
+        val intent = Intent().apply {
+          setClass(requireContext(), GymRatsRootActivity::class.java)
+        }
+
+        startActivity(intent)
+      })
     ))
 
     return DataBindingUtil.inflate<FragmentSettingsBinding>(
