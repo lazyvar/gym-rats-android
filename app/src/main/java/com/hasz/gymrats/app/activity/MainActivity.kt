@@ -3,10 +3,7 @@ package com.hasz.gymrats.app.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -41,6 +38,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     setSupportActionBar(toolbar)
 
+    fab.visibility = View.GONE
     fab.setOnClickListener { _ ->
       // TODO: fabulous
     }

@@ -6,10 +6,8 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.ResponseResultHandler
 import com.github.kittinunf.fuel.gson.responseObject
-import com.hasz.gymrats.app.model.Account
-import com.hasz.gymrats.app.model.Challenge
-import com.hasz.gymrats.app.model.ServiceResponse
-import com.hasz.gymrats.app.model.ServiceResponseError
+import com.hasz.gymrats.app.model.*
+import java.lang.Error
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -70,6 +68,12 @@ object GymRatsApi {
     currentPassword?.let { body.add("current_password" to it) }
 
     Fuel.put("/accounts/self", body)
+      .validate { true }
+      .responseObject(handleObject(handler))
+  }
+
+  fun getAllWorkouts(challenge: Challenge, handler: (Result<List<Workout>>) -> Unit) {
+    Fuel.get("/challenges/${challenge.id}/workouts")
       .validate { true }
       .responseObject(handleObject(handler))
   }

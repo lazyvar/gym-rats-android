@@ -28,17 +28,24 @@ class HomeFragment : Fragment() {
       GymRatsApi.allChallenges { result ->
         result.fold(
           onSuccess = { challenges ->
-              val activeChallenges = challenges.active()
+            progressBar2.visibility = View.GONE
 
-              if (activeChallenges.isEmpty()) {
-                val main = (context as MainActivity)
-                val tx = main.supportFragmentManager.beginTransaction()
+            val main = (context as MainActivity)
+            val tx = main.supportFragmentManager.beginTransaction()
 
-                tx.replace(R.id.fragment_home, NoActiveChallengesFragment())
-                tx.commit()
-              } else {
-                // TODO
-              }
+            tx.replace(R.id.fragment_home, ChallengeFragment(challenge = challenges.first()))
+            tx.commit()
+
+//              val activeChallenges = challenges.active()
+//              if (activeChallenges.isEmpty()) {
+//                val main = (context as MainActivity)
+//                val tx = main.supportFragmentManager.beginTransaction()
+//
+//                tx.replace(R.id.fragment_home, NoActiveChallengesFragment())
+//                tx.commit()
+//              } else {
+//                // TODO
+//              }
           },
           onFailure = { error ->
             Snackbar.make(root, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
