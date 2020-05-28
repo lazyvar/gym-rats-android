@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -36,7 +37,11 @@ class SettingsFragment: Fragment() {
       SettingsRow(headerText = "PROFILE", leftText = null, rightText = null, action = { }),
       SettingsRow(headerText = null, leftText = "Email", rightText = account.email, action = { }),
       SettingsRow(headerText = null, leftText = "Profile picture", rightText = null, action = { }),
-      SettingsRow(headerText = null, leftText = "Name", rightText = account.full_name, action = { }),
+      SettingsRow(headerText = null, leftText = "Name", rightText = account.full_name, action = {
+        findNavController().navigate(
+          SettingsFragmentDirections.changeName()
+        )
+      }),
       SettingsRow(headerText = null, leftText = "Password", rightText = "••••••", action = { }),
       SettingsRow(headerText = "APP INFO", leftText = null, rightText = null, action = { }),
       SettingsRow(headerText = null, leftText = "Google Play page", rightText = null, action = { }),

@@ -44,6 +44,9 @@
     <string name="join_challenge_subtitle">To join a challenge, you\'ll need the code. You can get it from someone who is already in the group. Once you have it, enter it here.</string>
     <string name="code_hint">Code</string>
     <string name="join_challenge_button">Join</string>
+    <string name="change_name_title">Set your name.</string>
+    <string name="change_name_hint">Name</string>
+    <string name="change_name_button">SAVE</string>
     <string name="about_this_app">
         What\'s up rats!\n\nThis app\'s goal is to act as a social motivator for fitness and health. Whether for a personal or group challenge, it is important to track workouts and hold yourself accountable.
         I hope you\'re finding it useful!

@@ -28,14 +28,14 @@ class SettingsAdapter(private val rows: List<SettingsRow>): RecyclerView.Adapter
   ): ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
 
-    if (viewType == 0) {
+    return if (viewType == 0) {
       val view = inflater.inflate(R.layout.item_header, parent, false)
 
-      return ViewHolder(view)
+      ViewHolder(view)
     } else {
       val view = inflater.inflate(R.layout.item_table_view_cell, parent, false)
 
-      return ViewHolder(view)
+      ViewHolder(view)
     }
   }
 
@@ -53,6 +53,7 @@ class SettingsAdapter(private val rows: List<SettingsRow>): RecyclerView.Adapter
     } else {
       holder.leftText?.text = row.leftText ?: ""
       holder.rightText?.text = row.rightText ?: ""
+      holder.itemView.setOnClickListener { row.action?.let { it() } }
     }
   }
 }

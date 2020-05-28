@@ -61,6 +61,19 @@ object GymRatsApi {
       .responseObject(handleObject(handler))
   }
 
+  fun updateAccount(email: String? = null, name: String? = null, password: String? = null, currentPassword: String? = null, handler: (Result<Account>) -> Unit) {
+    val body = ArrayList<Pair<String, String>>()
+
+    email?.let { body.add("email" to it) }
+    name?.let { body.add("full_name" to it) }
+    password?.let { body.add("password" to it) }
+    currentPassword?.let { body.add("current_password" to it) }
+
+    Fuel.put("/accounts/self", body)
+      .validate { true }
+      .responseObject(handleObject(handler))
+  }
+
   fun setBaseHeaders() {
     FuelManager.instance.baseHeaders = headers()
   }
