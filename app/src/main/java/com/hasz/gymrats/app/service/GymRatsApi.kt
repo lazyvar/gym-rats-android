@@ -78,6 +78,12 @@ object GymRatsApi {
       .responseObject(handleObject(handler))
   }
 
+  fun getChallengeInfo(challenge: Challenge, handler: (Result<ChallengeInfo>) -> Unit) {
+    Fuel.get("/challenges/${challenge.id}/info")
+      .validate { true }
+      .responseObject(handleObject(handler))
+  }
+
   fun setBaseHeaders() {
     FuelManager.instance.baseHeaders = headers()
   }
