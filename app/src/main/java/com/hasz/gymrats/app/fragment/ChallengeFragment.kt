@@ -14,7 +14,6 @@ import com.hasz.gymrats.app.adapter.ChallengeAdapter
 import com.hasz.gymrats.app.databinding.FragmentChallengeBinding
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.service.GymRatsApi
-import java.lang.Error
 
 class ChallengeFragment(val challenge: Challenge): Fragment() {
   private lateinit var viewAdapter: RecyclerView.Adapter<*>

@@ -9,7 +9,7 @@ data class Workout(
   val title: String,
   val description: String?,
   val photo_url: String?,
-  val created_at: Date?,
+  val created_at: Date,
   val google_place_id: String?,
   val duration: Int?,
   val distance: String?,
