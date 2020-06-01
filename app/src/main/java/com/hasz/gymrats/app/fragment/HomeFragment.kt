@@ -1,19 +1,15 @@
 package com.hasz.gymrats.app.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.work.Logger
 import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentHomeBinding
-import com.hasz.gymrats.app.extension.active
-import com.hasz.gymrats.app.service.AuthService
 import com.hasz.gymrats.app.service.GymRatsApi
 
 class HomeFragment : Fragment() {
@@ -28,7 +24,7 @@ class HomeFragment : Fragment() {
       GymRatsApi.allChallenges { result ->
         result.fold(
           onSuccess = { challenges ->
-            progressBar2.visibility = View.GONE
+            progressBar.visibility = View.GONE
 
             val main = (context as MainActivity)
             val tx = main.supportFragmentManager.beginTransaction()

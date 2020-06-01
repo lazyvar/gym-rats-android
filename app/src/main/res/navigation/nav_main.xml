@@ -14,7 +14,6 @@
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.hasz.gymrats.app.fragment.SettingsFragment"
-        android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/changeName"
@@ -44,13 +43,11 @@
     <fragment
         android:id="@+id/nav_about"
         android:name="com.hasz.gymrats.app.fragment.AboutFragment"
-        android:label="@string/menu_about"
         tools:layout="@layout/fragment_about" />
 
     <fragment
         android:id="@+id/nav_completed_challenges"
         android:name="com.hasz.gymrats.app.fragment.CompletedChallengesFragment"
-        android:label="@string/menu_completed_challenges"
         tools:layout="@layout/fragment_completed_challenges" />
 
     <fragment
