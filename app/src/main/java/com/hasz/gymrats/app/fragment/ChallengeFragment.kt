@@ -41,11 +41,22 @@ class ChallengeFragment(val challenge: Challenge): Fragment() {
       GymRatsApi.getAllWorkouts(challenge) { result ->
         result.fold(
           onSuccess = { workouts ->
-            viewAdapter = ChallengeAdapter(challenge, workouts)
-            recyclerView.adapter = viewAdapter
+            GymRatsApi.getChallengeInfo(challenge) { result ->
+              result.fold(
+                onSuccess = { challengeInfo ->
+                  viewAdapter = ChallengeAdapter(challenge, workouts, challengeInfo)
+                  recyclerView.adapter = viewAdapter
 
-            recyclerView.visibility = View.VISIBLE
-            progressBar.visibility = View.GONE
+                  recyclerView.visibility = View.VISIBLE
+                  progressBar.visibility = View.GONE
+                },
+                onFailure = { error ->
+                  recyclerView.visibility = View.VISIBLE
+                  progressBar.visibility = View.GONE
+
+                  Snackbar.make(root, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+                })
+            }
           },
           onFailure = { error ->
             recyclerView.visibility = View.VISIBLE

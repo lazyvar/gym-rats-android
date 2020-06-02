@@ -5,6 +5,8 @@ import com.hasz.gymrats.app.model.Workout
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.temporal.ChronoUnit
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -22,6 +24,19 @@ fun List<Challenge>.active(): List<Challenge> {
 
 fun List<Challenge>.completed(): List<Challenge> {
   return filter { it.completed() }
+}
+
+fun Challenge.daysLeft(): String {
+  val today = LocalDateTime.now()
+  val diff = ChronoUnit.DAYS.between(today, end_date).toInt()
+
+  if (diff == 0) {
+    return "Last day"
+  } else if (diff > 0) {
+    return "$diff\nDays left"
+  } else {
+    return "Completed\n${end_date.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}"
+  }
 }
 
 fun Challenge.days(): List<LocalDateTime> {

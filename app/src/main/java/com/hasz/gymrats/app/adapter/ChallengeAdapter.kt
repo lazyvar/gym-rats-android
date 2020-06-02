@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.extension.buckets
+import com.hasz.gymrats.app.extension.daysLeft
 import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.model.ChallengeInfo
@@ -44,11 +45,14 @@ class ChallengeAdapter(private val challenge: Challenge, private val workouts: L
     val avatar: AvatarView? = itemView.findViewById(R.id.avatarView)
     val time: TextView? = itemView.findViewById(R.id.time)
     val headerText: TextView? = itemView.findViewById(R.id.headerText)
+    val leaderAvatarView: AvatarView? = itemView.findViewById(R.id.leaderAvatarView)
+    val currentAccountAvatarView: AvatarView? = itemView.findViewById(R.id.currentAccountAvatarView)
+    val leaderScore: TextView? = itemView.findViewById(R.id.leaderScore)
+    var currentAccountScore: TextView? = itemView.findViewById(R.id.currentAccountScore)
+    val daysLeftTextView: TextView? = itemView.findViewById(R.id.daysLeftTextView)
   }
 
-  override fun getItemCount(): Int {
-    return rows.size
-  }
+  override fun getItemCount(): Int = rows.size
 
   // 0 = no workouts
   // 1 = challenge info
@@ -83,7 +87,7 @@ class ChallengeAdapter(private val challenge: Challenge, private val workouts: L
         return ViewHolder(view)
       }
       1 -> {
-        val view = inflater.inflate(R.layout.item_challenge_header, parent, false)
+        val view = inflater.inflate(R.layout.item_banner_no_image, parent, false)
 
         return ViewHolder(view)
       }
@@ -109,7 +113,13 @@ class ChallengeAdapter(private val challenge: Challenge, private val workouts: L
     if (row.noWorkouts) {
       holder.headerText?.text = "No workouts."
     } else if (row.challengeInfo != null) {
-      holder.headerText?.text = "Banner here."
+      val info = row.challengeInfo
+
+      holder.loader.loadImage(holder.leaderAvatarView!!, info.leader.profile_picture_url ?: "", info.leader.full_name ?: "")
+      holder.loader.loadImage(holder.currentAccountAvatarView!!, AuthService.currentAccount?.profile_picture_url ?: "", AuthService.currentAccount?.full_name ?: "")
+      holder.currentAccountScore?.text = "${info.current_account_score}\nMe"
+      holder.leaderScore?.text = "${info.leader_score}\nLeader"
+      holder.daysLeftTextView?.text = "${challenge.daysLeft()}"
     } else if (row.headerTitle != null) {
       holder.headerText?.text = row.headerTitle
     } else if (row.workout != null) {
