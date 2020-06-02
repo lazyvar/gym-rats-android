@@ -78,12 +78,12 @@ class ChallengeAdapter(private val challenge: Challenge, private val workouts: L
 
     when(viewType) {
       0 -> {
-        val view = inflater.inflate(R.layout.item_workout, parent, false)
+        val view = inflater.inflate(R.layout.item_challenge_header, parent, false)
 
         return ViewHolder(view)
       }
       1 -> {
-        val view = inflater.inflate(R.layout.item_workout, parent, false)
+        val view = inflater.inflate(R.layout.item_challenge_header, parent, false)
 
         return ViewHolder(view)
       }
@@ -107,9 +107,9 @@ class ChallengeAdapter(private val challenge: Challenge, private val workouts: L
     val row = rows[position]
 
     if (row.noWorkouts) {
-
+      holder.headerText?.text = "No workouts."
     } else if (row.challengeInfo != null) {
-
+      holder.headerText?.text = "Banner here."
     } else if (row.headerTitle != null) {
       holder.headerText?.text = row.headerTitle
     } else if (row.workout != null) {

@@ -5,6 +5,8 @@ import com.hasz.gymrats.app.model.Workout
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 
 fun Challenge.isActive(): Boolean {
   return false
@@ -37,15 +39,20 @@ fun Challenge.days(): List<LocalDateTime> {
 }
 
 fun Challenge.buckets(workouts: List<Workout>): List<Pair<LocalDateTime, List<Workout>>> {
-  return days().reversed().map { date ->
-    val workoutsOnDate = workouts.on(date)
+  val dateComparator = kotlin.Comparator<LocalDateTime> { a, b ->
+    return@Comparator b.compareTo(a)
+  }
+  val hash = TreeMap<LocalDateTime, ArrayList<Workout>>(dateComparator)
 
-    if (workoutsOnDate.isEmpty()) {
-      return@map null
-    } else {
-      return@map date to workoutsOnDate
-    }
-  }.filterNotNull()
+  for (workout in workouts) {
+    val day = workout.created_at
+    val workoutList = hash[day] ?: arrayListOf()
+    workoutList.add(workout)
+
+    hash[day] = workoutList
+  }
+
+  return hash.map { it.key to it.value }
 }
 
 fun List<Workout>.on(date: LocalDateTime): List<Workout> = filter { local2YouTeeSee(it.created_at.atZone(ZoneId.systemDefault()), date) }

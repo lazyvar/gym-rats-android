@@ -11,6 +11,7 @@ import com.hasz.gymrats.app.application.GymRatsApplication
 import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.model.SettingsRow
+import org.threeten.bp.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 
 class CompletedChallengesAdapter(private val challenges: List<Challenge>): RecyclerView.Adapter<CompletedChallengesAdapter.ViewHolder>() {
@@ -35,11 +36,9 @@ class CompletedChallengesAdapter(private val challenges: List<Challenge>): Recyc
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     val challenge = challenges[position]
-    val dateFormatter = SimpleDateFormat("MMMM d, yyyy")
-    val completed = dateFormatter.format(challenge.end_date).toString()
 
     holder.loader.loadImage(holder.avatarView, challenge.profile_picture_url ?: "", challenge.name)
     holder.name.text = challenge.name
-    holder.description.text = GymRatsApplication.context!!.getString(R.string.completed_challenge_description, completed)
+    holder.description.text = challenge.end_date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))
   }
 }
