@@ -6,42 +6,51 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.ResponseResultHandler
 import com.github.kittinunf.fuel.gson.responseObject
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.hasz.gymrats.app.model.*
-import java.lang.Error
+import org.threeten.bp.Instant
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import com.hasz.gymrats.app.typeadapter.LocalDateTimeConverter
+import org.threeten.bp.LocalDateTime
 
 object GymRatsApi {
   private const val baseUrl = "https://gym-rats-api-pre-production.gigalixirapp.com"
+  private val gsonGuy: Gson
 
   init {
     FuelManager.instance.basePath = baseUrl
+    gsonGuy = GsonBuilder()
+      .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeConverter())
+      .create()
+
     setBaseHeaders()
   }
 
   fun login(email: String, password: String, handler: (Result<Account>) -> Unit) {
     Fuel.post("/tokens", listOf("email" to email, "password" to password))
       .validate { true }
-      .responseObject(handleObject(handler))
+      .responseObject(gsonGuy, handleObject(handler))
   }
 
   fun createAccount(email: String, password: String, fullName: String, handler: (Result<Account>) -> Unit) {
     Fuel.post("/accounts", listOf("email" to email, "password" to password, "full_name" to fullName))
       .validate { true }
-      .responseObject(handleObject(handler))
+      .responseObject(gsonGuy, handleObject(handler))
   }
 
   fun joinChallenge(code: String, handler: (Result<Challenge>) -> Unit) {
     Fuel.post("/memberships", listOf("code" to code))
       .validate { true }
-      .responseObject(handleObject(handler))
+      .responseObject(gsonGuy, handleObject(handler))
   }
 
   fun allChallenges(handler: (Result<List<Challenge>>) -> Unit) {
     Fuel.get("/challenges")
       .validate { true }
-      .responseObject(handleObject(handler))
+      .responseObject(gsonGuy, handleObject(handler))
   }
 
   fun createChallenge(startDate: Date, endDate: Date, name: String, description: String?, scoreBy: String, handler: (Result<Challenge>) -> Unit) {
@@ -56,7 +65,7 @@ object GymRatsApi {
 
     Fuel.post("/challenges", body)
       .validate { true }
-      .responseObject(handleObject(handler))
+      .responseObject(gsonGuy, handleObject(handler))
   }
 
   fun updateAccount(email: String? = null, name: String? = null, password: String? = null, currentPassword: String? = null, handler: (Result<Account>) -> Unit) {
@@ -69,19 +78,19 @@ object GymRatsApi {
 
     Fuel.put("/accounts/self", body)
       .validate { true }
-      .responseObject(handleObject(handler))
+      .responseObject(gsonGuy, handleObject(handler))
   }
 
   fun getAllWorkouts(challenge: Challenge, handler: (Result<List<Workout>>) -> Unit) {
     Fuel.get("/challenges/${challenge.id}/workouts")
       .validate { true }
-      .responseObject(handleObject(handler))
+      .responseObject(gsonGuy, handleObject(handler))
   }
 
   fun getChallengeInfo(challenge: Challenge, handler: (Result<ChallengeInfo>) -> Unit) {
     Fuel.get("/challenges/${challenge.id}/info")
       .validate { true }
-      .responseObject(handleObject(handler))
+      .responseObject(gsonGuy, handleObject(handler))
   }
 
   fun setBaseHeaders() {

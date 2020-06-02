@@ -1,5 +1,6 @@
 package com.hasz.gymrats.app.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,13 +20,14 @@ class ChallengeFragment(val challenge: Challenge): Fragment() {
   private lateinit var viewAdapter: RecyclerView.Adapter<*>
   private lateinit var viewManager: RecyclerView.LayoutManager
 
+  @SuppressLint("RestrictedApi")
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
     viewManager = LinearLayoutManager(context)
-    viewAdapter = ChallengeAdapter(arrayListOf())
+    viewAdapter = ChallengeAdapter(challenge, arrayListOf())
 
     return DataBindingUtil.inflate<FragmentChallengeBinding>(
       inflater, R.layout.fragment_challenge, container, false
@@ -42,7 +44,7 @@ class ChallengeFragment(val challenge: Challenge): Fragment() {
 
         result.fold(
           onSuccess = { workouts ->
-            viewAdapter = ChallengeAdapter(workouts)
+            viewAdapter = ChallengeAdapter(challenge, workouts)
             recyclerView.adapter = viewAdapter
           },
           onFailure = { error ->

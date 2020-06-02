@@ -2,11 +2,13 @@ package com.hasz.gymrats.app.application
 
 import android.app.Application
 import android.content.Context
+import com.jakewharton.threetenabp.AndroidThreeTen
 
 class GymRatsApplication: Application() {
   override fun onCreate() {
     super.onCreate()
 
+    AndroidThreeTen.init(this)
     context = applicationContext
   }
 

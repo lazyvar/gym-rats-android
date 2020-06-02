@@ -1,6 +1,6 @@
 package com.hasz.gymrats.app.model
 
-import java.util.Date
+import org.threeten.bp.LocalDateTime
 
 data class Workout(
   val id: Int,
@@ -9,7 +9,7 @@ data class Workout(
   val title: String,
   val description: String?,
   val photo_url: String?,
-  val created_at: Date,
+  val created_at: LocalDateTime,
   val google_place_id: String?,
   val duration: Int?,
   val distance: String?,

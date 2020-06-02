@@ -9,28 +9,45 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.extension.buckets
 import com.hasz.gymrats.app.loader.GlideLoader
+import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.model.ChallengeInfo
+import com.hasz.gymrats.app.model.ChallengeRow
 import com.hasz.gymrats.app.model.Workout
+import com.hasz.gymrats.app.service.AuthService
+import org.threeten.bp.format.DateTimeFormatter
+import java.lang.Error
 
-class ChallengeAdapter(private val workouts: List<Workout>, private val challengeInfo: ChallengeInfo): RecyclerView.Adapter<ChallengeAdapter.ViewHolder>() {
+class ChallengeAdapter(private val challenge: Challenge, private val workouts: List<Workout>, private val challengeInfo: ChallengeInfo? = null): RecyclerView.Adapter<ChallengeAdapter.ViewHolder>() {
+  private var rows: List<ChallengeRow> = arrayListOf()
+
+  init {
+    val sections: List<ChallengeRow> = challenge.buckets(workouts).flatMap {
+      val headerSection = ChallengeRow(headerTitle = it.first.format(DateTimeFormatter.ofPattern("EEEE, MMM d")))
+      val workouts = it.second.map { w -> ChallengeRow(workout = w) }
+      val list = arrayListOf(headerSection)
+      list.addAll(workouts)
+
+      return@flatMap list
+    }
+
+    rows = arrayListOf(ChallengeRow(challengeInfo = challengeInfo ?: ChallengeInfo(0, 0, AuthService.currentAccount!!, "", "")))
+    (rows as ArrayList<ChallengeRow>).addAll(sections)
+  }
+
   inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val loader = GlideLoader()
-    val workoutImageView: ImageView = itemView.findViewById(R.id.workoutImageView)
-    val accountName: TextView = itemView.findViewById(R.id.accountName)
-    val title: TextView = itemView.findViewById(R.id.title)
-    val avatar: AvatarView = itemView.findViewById(R.id.avatarView)
-    val time: TextView = itemView.findViewById(R.id.time)
-
+    val workoutImageView: ImageView? = itemView.findViewById(R.id.workoutImageView)
+    val accountName: TextView? = itemView.findViewById(R.id.accountName)
+    val title: TextView? = itemView.findViewById(R.id.title)
+    val avatar: AvatarView? = itemView.findViewById(R.id.avatarView)
+    val time: TextView? = itemView.findViewById(R.id.time)
+    val headerText: TextView? = itemView.findViewById(R.id.headerText)
   }
 
   override fun getItemCount(): Int {
-    if (workouts.isEmpty()) { return 1 }
-
-    val numberOfDaysWithWorkouts = 1
-    val numberOfWorkouts = workouts.size
-
-    return 1 + numberOfDaysWithWorkouts + numberOfWorkouts
+    return rows.size
   }
 
   // 0 = no workouts
@@ -38,10 +55,19 @@ class ChallengeAdapter(private val workouts: List<Workout>, private val challeng
   // 2 = section header
   // 3 = workout
   override fun getItemViewType(position: Int): Int {
-    if (workouts.isEmpty()) { return 0 }
-    if (position == 0) { return 1 }
+    val row = rows[position]
 
-    return 3
+    return if (row.noWorkouts) {
+      0
+    } else if (row.challengeInfo != null) {
+      1
+    } else if (row.headerTitle != null){
+      2
+    } else if (row.workout != null) {
+      3
+    } else {
+      throw Error("Bad ViewType: $row")
+    }
   }
 
   override fun onCreateViewHolder(
@@ -49,24 +75,56 @@ class ChallengeAdapter(private val workouts: List<Workout>, private val challeng
     viewType: Int
   ): ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
-    val view = inflater.inflate(R.layout.item_workout, parent, false)
 
-    return ViewHolder(view)
+    when(viewType) {
+      0 -> {
+        val view = inflater.inflate(R.layout.item_workout, parent, false)
+
+        return ViewHolder(view)
+      }
+      1 -> {
+        val view = inflater.inflate(R.layout.item_workout, parent, false)
+
+        return ViewHolder(view)
+      }
+      2 -> {
+        val view = inflater.inflate(R.layout.item_challenge_header, parent, false)
+
+        return ViewHolder(view)
+      }
+      3 -> {
+        val view = inflater.inflate(R.layout.item_workout, parent, false)
+
+        return ViewHolder(view)
+      }
+      else -> {
+        throw Error("Bad viewType: $viewType")
+      }
+    }
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    val workout = workouts[position]
-//    val dateFormatter = SimpleLocalDateFormat("h:mm a")
+    val row = rows[position]
 
-    Glide.with(holder.itemView.context)
-      .load(workout.photo_url)
-      .into(holder.workoutImageView)
+    if (row.noWorkouts) {
 
-    holder.loader.loadImage(holder.avatar, workout.account.profile_picture_url ?: "", workout.account.full_name)
-    holder.accountName.text = workout.account.full_name
-    holder.title.text = workout.title
-    holder.time.text = "" // DATE TODO
+    } else if (row.challengeInfo != null) {
+
+    } else if (row.headerTitle != null) {
+      holder.headerText?.text = row.headerTitle
+    } else if (row.workout != null) {
+      val workout = row.workout
+
+      Glide.with(holder.itemView.context)
+        .load(workout.photo_url)
+        .into(holder.workoutImageView!!)
+
+      holder.loader.loadImage(holder.avatar!!, workout.account.profile_picture_url ?: "", workout.account.full_name)
+      holder.accountName?.text = workout.account.full_name
+      holder.title?.text = workout.title
+      holder.time?.text = workout.created_at.format(DateTimeFormatter.ofPattern("h:mm a"))
+    } else {
+      throw Error("Bad bind: $row")
+    }
   }
-
-
 }
