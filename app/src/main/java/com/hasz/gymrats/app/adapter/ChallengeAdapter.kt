@@ -50,6 +50,7 @@ class ChallengeAdapter(private val challenge: Challenge, private val workouts: L
     val leaderScore: TextView? = itemView.findViewById(R.id.leaderScore)
     var currentAccountScore: TextView? = itemView.findViewById(R.id.currentAccountScore)
     val daysLeftTextView: TextView? = itemView.findViewById(R.id.daysLeftTextView)
+    val bannerImageView: ImageView? = itemView.findViewById(R.id.bannerImageView)
   }
 
   override fun getItemCount(): Int = rows.size
@@ -87,9 +88,15 @@ class ChallengeAdapter(private val challenge: Challenge, private val workouts: L
         return ViewHolder(view)
       }
       1 -> {
-        val view = inflater.inflate(R.layout.item_banner_no_image, parent, false)
+        return if (challenge.profile_picture_url != null) {
+          val view = inflater.inflate(R.layout.item_banner_with_image, parent, false)
 
-        return ViewHolder(view)
+          ViewHolder(view)
+        } else {
+          val view = inflater.inflate(R.layout.item_banner_no_image, parent, false)
+
+          ViewHolder(view)
+        }
       }
       2 -> {
         val view = inflater.inflate(R.layout.item_challenge_header, parent, false)
@@ -120,6 +127,12 @@ class ChallengeAdapter(private val challenge: Challenge, private val workouts: L
       holder.currentAccountScore?.text = "${info.current_account_score}\nMe"
       holder.leaderScore?.text = "${info.leader_score}\nLeader"
       holder.daysLeftTextView?.text = "${challenge.daysLeft()}"
+
+      if (challenge.profile_picture_url != null) {
+        Glide.with(holder.itemView.context)
+          .load(challenge.profile_picture_url)
+          .into(holder.bannerImageView!!)
+      }
     } else if (row.headerTitle != null) {
       holder.headerText?.text = row.headerTitle
     } else if (row.workout != null) {
