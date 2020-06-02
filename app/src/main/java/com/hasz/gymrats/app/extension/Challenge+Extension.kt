@@ -2,6 +2,7 @@ package com.hasz.gymrats.app.extension
 
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.model.Workout
+import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -30,12 +31,12 @@ fun Challenge.daysLeft(): String {
   val today = LocalDateTime.now()
   val diff = ChronoUnit.DAYS.between(today, end_date).toInt()
 
-  if (diff == 0) {
-    return "Last day"
+  return if (diff == 0) {
+    "Last day"
   } else if (diff > 0) {
-    return "$diff\nDays left"
+    "$diff\nDays left"
   } else {
-    return "Completed\n${end_date.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}"
+    "Completed\n${end_date.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}"
   }
 }
 
@@ -53,14 +54,12 @@ fun Challenge.days(): List<LocalDateTime> {
   return days
 }
 
-fun Challenge.buckets(workouts: List<Workout>): List<Pair<LocalDateTime, List<Workout>>> {
-  val dateComparator = kotlin.Comparator<LocalDateTime> { a, b ->
-    return@Comparator b.compareTo(a)
-  }
-  val hash = TreeMap<LocalDateTime, ArrayList<Workout>>(dateComparator)
+fun Challenge.buckets(workouts: List<Workout>): List<Pair<LocalDate, List<Workout>>> {
+  val dateComparator = kotlin.Comparator<LocalDate> { a, b -> b.compareTo(a) }
+  val hash = TreeMap<LocalDate, ArrayList<Workout>>(dateComparator)
 
   for (workout in workouts) {
-    val day = workout.created_at
+    val day = workout.created_at.toLocalDate()
     val workoutList = hash[day] ?: arrayListOf()
     workoutList.add(workout)
 
