@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.extension.buckets
 import com.hasz.gymrats.app.extension.daysLeft
+import com.hasz.gymrats.app.fragment.ChallengeFragmentDirections
 import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.model.ChallengeInfo
@@ -117,6 +119,8 @@ class ChallengeAdapter(private val challenge: Challenge, private val workouts: L
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     val row = rows[position]
 
+    holder.itemView.setOnClickListener {  }
+
     if (row.noWorkouts) {
       holder.headerText?.text = "No workouts."
     } else if (row.challengeInfo != null) {
@@ -146,6 +150,11 @@ class ChallengeAdapter(private val challenge: Challenge, private val workouts: L
       holder.accountName?.text = workout.account.full_name
       holder.title?.text = workout.title
       holder.time?.text = workout.created_at.format(DateTimeFormatter.ofPattern("h:mm a"))
+      holder.itemView.setOnClickListener {
+        if (it.findNavController().currentDestination?.id == R.id.nav_challenge) {
+          it.findNavController().navigate(ChallengeFragmentDirections.workout(workout))
+        }
+      }
     } else {
       throw Error("Bad bind: $row")
     }

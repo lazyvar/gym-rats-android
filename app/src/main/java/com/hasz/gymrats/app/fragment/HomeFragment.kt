@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.activity.MainActivity
@@ -26,12 +27,8 @@ class HomeFragment: Fragment() {
           onSuccess = { challenges ->
             progressBar.visibility = View.GONE
 
-            val main = (context as MainActivity)
-            val tx = main.supportFragmentManager.beginTransaction()
-
-            tx.replace(R.id.fragment_home, ChallengeFragment.newInstance(challenges.first()))
-            tx.commit()
-
+            findNavController().navigate(HomeFragmentDirections.challenge(challenges.first()))
+            (context as? MainActivity)?.reloadNavGraph()
 //              val activeChallenges = challenges.active()
 //              if (activeChallenges.isEmpty()) {
 //                val main = (context as MainActivity)

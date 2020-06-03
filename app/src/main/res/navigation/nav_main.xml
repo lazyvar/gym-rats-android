@@ -9,6 +9,18 @@
         android:id="@+id/nav_home"
         android:name="com.hasz.gymrats.app.fragment.HomeFragment"
         tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/challenge"
+            app:destination="@id/nav_challenge"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="true">
+
+            <argument
+                android:name="challenge"
+                app:argType="com.hasz.gymrats.app.model.Challenge" />
+        </action>
     </fragment>
 
     <fragment
@@ -83,6 +95,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_workout"
+        android:name="com.hasz.gymrats.app.fragment.WorkoutFragment"
+        tools:layout="@layout/fragment_workout">
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_change_email"
         android:name="com.hasz.gymrats.app.fragment.ChangeEmailFragment"
         tools:layout="@layout/fragment_change_email">
@@ -92,6 +110,19 @@
         android:id="@+id/nav_challenge"
         android:name="com.hasz.gymrats.app.fragment.ChallengeFragment"
         tools:layout="@layout/fragment_challenge">
+
+        <action
+            android:id="@+id/workout"
+            app:destination="@id/nav_workout"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+
+            <argument
+                android:name="workout"
+                app:argType="com.hasz.gymrats.app.model.Workout" />
+        </action>
     </fragment>
 
     <action

@@ -82,6 +82,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //    return true
 //  }
 
+  fun reloadNavGraph() {
+    val appBarConfiguration = AppBarConfiguration(
+      setOf(
+        R.id.nav_challenge,
+        R.id.nav_completed_challenges,
+        R.id.nav_settings,
+        R.id.nav_about
+      ), drawer
+    )
+
+    val navView: NavigationView = findViewById(R.id.nav_view)
+    setupActionBarWithNavController(navController, appBarConfiguration)
+    navView.setupWithNavController(navController)
+  }
+
   override fun onSupportNavigateUp(): Boolean {
     val navController = findNavController(R.id.nav_host_fragment)
 

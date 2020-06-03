@@ -1,7 +1,10 @@
 package com.hasz.gymrats.app.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.LocalDateTime
 
+@Parcelize
 data class Workout(
   val id: Int,
   val account: Account,
@@ -20,4 +23,4 @@ data class Workout(
   val apple_source_name: String?,
   val apple_workout_uuid: String?,
   val activity_type: String?
-)
+): Parcelable
