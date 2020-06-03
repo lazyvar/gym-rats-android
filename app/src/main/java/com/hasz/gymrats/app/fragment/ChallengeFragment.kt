@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.adapter.ChallengeAdapter
 import com.hasz.gymrats.app.databinding.FragmentChallengeBinding
 import com.hasz.gymrats.app.model.Challenge
@@ -37,9 +38,13 @@ class ChallengeFragment: Fragment() {
     viewManager = LinearLayoutManager(context)
     viewAdapter = ChallengeAdapter(challenge, arrayListOf())
 
+    (context as? MainActivity)?.supportActionBar?.title = challenge.name
+
     return DataBindingUtil.inflate<FragmentChallengeBinding>(
       inflater, R.layout.fragment_challenge, container, false
     ).apply {
+
+
       recyclerView.adapter = viewAdapter
       recyclerView.layoutManager = viewManager
 

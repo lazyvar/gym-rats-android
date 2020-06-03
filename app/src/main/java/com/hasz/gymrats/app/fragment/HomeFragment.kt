@@ -12,7 +12,7 @@ import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentHomeBinding
 import com.hasz.gymrats.app.service.GymRatsApi
 
-class HomeFragment : Fragment() {
+class HomeFragment: Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
