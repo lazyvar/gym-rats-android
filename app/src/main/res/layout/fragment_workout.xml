@@ -65,13 +65,26 @@
                         android:id="@+id/timeLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="13dp"
                         android:layout_marginEnd="10dp"
                         android:fontFamily="@font/nunito"
                         android:text="TextView"
                         android:textColor="@android:color/black"
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/accountNameLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="14dp"
+                        android:fontFamily="@font/nunito"
+                        android:text="TextView"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toEndOf="@+id/avatarView"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView

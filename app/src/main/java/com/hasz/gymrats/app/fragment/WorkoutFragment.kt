@@ -67,6 +67,7 @@ class WorkoutFragment: Fragment() {
         desc.add("Earned ${workout.points} points")
       }
 
+      accountNameLabel.text = workout.account.full_name
       loader.loadImage(avatarView, workout.account.profile_picture_url ?: "", workout.account.full_name)
       titleLabel.text = workout.title
       descriptionLabel.text = desc.filterNotNull().joinToString("\n")
