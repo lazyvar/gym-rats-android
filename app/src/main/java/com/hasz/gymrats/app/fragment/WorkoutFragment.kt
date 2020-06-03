@@ -11,7 +11,6 @@ import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.databinding.FragmentWorkoutBinding
 import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Workout
-import kotlinx.android.synthetic.main.item_workout.*
 import org.threeten.bp.format.DateTimeFormatter
 
 class WorkoutFragment: Fragment() {
@@ -42,9 +41,35 @@ class WorkoutFragment: Fragment() {
           .into(workoutImageView)
       }
 
+      val desc = arrayListOf<String>()
+
+      if (workout.description != null) {
+        desc.add("${workout.description}\n")
+      }
+
+      if (workout.duration != null) {
+        desc.add("Active for ${workout.duration} minutes")
+      }
+
+      if (workout.distance != null) {
+        desc.add("Traveled ${workout.distance} miles")
+      }
+
+      if (workout.steps != null) {
+        desc.add("Strode ${workout.steps} steps")
+      }
+
+      if (workout.calories != null) {
+        desc.add("Burned ${workout.calories} calories")
+      }
+
+      if (workout.points != null) {
+        desc.add("Earned ${workout.points} points")
+      }
+
       loader.loadImage(avatarView, workout.account.profile_picture_url ?: "", workout.account.full_name)
       titleLabel.text = workout.title
-      descriptionLabel.text = workout.description
+      descriptionLabel.text = desc.filterNotNull().joinToString("\n")
       timeLabel.text = workout.created_at.format(DateTimeFormatter.ofPattern("h:mm a"))
     }.root
   }
