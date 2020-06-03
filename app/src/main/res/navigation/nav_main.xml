@@ -48,7 +48,21 @@
     <fragment
         android:id="@+id/nav_completed_challenges"
         android:name="com.hasz.gymrats.app.fragment.CompletedChallengesFragment"
-        tools:layout="@layout/fragment_completed_challenges" />
+        tools:layout="@layout/fragment_completed_challenges">
+
+        <action
+            android:id="@+id/challenge"
+            app:destination="@id/nav_challenge"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+
+            <argument
+                android:name="challenge"
+                app:argType="com.hasz.gymrats.app.model.Challenge" />
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_no_challenges"
@@ -72,6 +86,12 @@
         android:id="@+id/nav_change_email"
         android:name="com.hasz.gymrats.app.fragment.ChangeEmailFragment"
         tools:layout="@layout/fragment_change_email">
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_challenge"
+        android:name="com.hasz.gymrats.app.fragment.ChallengeFragment"
+        tools:layout="@layout/fragment_challenge">
     </fragment>
 
     <action

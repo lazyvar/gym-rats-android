@@ -1,6 +1,5 @@
 package com.hasz.gymrats.app.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,16 +15,25 @@ import com.hasz.gymrats.app.databinding.FragmentChallengeBinding
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.service.GymRatsApi
 
-class ChallengeFragment(val challenge: Challenge): Fragment() {
+class ChallengeFragment: Fragment() {
   private lateinit var viewAdapter: RecyclerView.Adapter<*>
   private lateinit var viewManager: RecyclerView.LayoutManager
+  private lateinit var challenge: Challenge
 
-  @SuppressLint("RestrictedApi")
+  companion object {
+    fun newInstance(challenge: Challenge): ChallengeFragment {
+      return ChallengeFragment().also {
+        it.arguments = Bundle().also { b -> b.putParcelable("challenge", challenge) }
+      }
+    }
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
+    challenge = requireArguments().getParcelable("challenge")!!
     viewManager = LinearLayoutManager(context)
     viewAdapter = ChallengeAdapter(challenge, arrayListOf())
 

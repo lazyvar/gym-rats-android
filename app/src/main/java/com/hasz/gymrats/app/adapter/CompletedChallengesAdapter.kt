@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.application.GymRatsApplication
+import com.hasz.gymrats.app.fragment.CompletedChallengesFragmentDirections
 import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.model.SettingsRow
@@ -40,5 +42,8 @@ class CompletedChallengesAdapter(private val challenges: List<Challenge>): Recyc
     holder.loader.loadImage(holder.avatarView, challenge.profile_picture_url ?: "", challenge.name)
     holder.name.text = challenge.name
     holder.description.text = challenge.end_date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))
+    holder.itemView.setOnClickListener {
+      it.findNavController().navigate(CompletedChallengesFragmentDirections.challenge(challenge))
+    }
   }
 }

@@ -29,7 +29,7 @@ class HomeFragment : Fragment() {
             val main = (context as MainActivity)
             val tx = main.supportFragmentManager.beginTransaction()
 
-            tx.replace(R.id.fragment_home, ChallengeFragment(challenge = challenges.first()))
+            tx.replace(R.id.fragment_home, ChallengeFragment.newInstance(challenges.first()))
             tx.commit()
 
 //              val activeChallenges = challenges.active()
