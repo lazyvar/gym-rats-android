@@ -20,6 +20,7 @@ class ChallengeFragment: Fragment() {
   private lateinit var viewAdapter: RecyclerView.Adapter<*>
   private lateinit var viewManager: RecyclerView.LayoutManager
   private lateinit var challenge: Challenge
+  private var savedView: View? = null
 
   companion object {
     fun newInstance(challenge: Challenge): ChallengeFragment {
@@ -34,17 +35,19 @@ class ChallengeFragment: Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
+    if (savedView != null) {
+      return savedView
+    }
+
     challenge = requireArguments().getParcelable("challenge")!!
     viewManager = LinearLayoutManager(context)
     viewAdapter = ChallengeAdapter(challenge, arrayListOf())
 
     (context as? MainActivity)?.supportActionBar?.title = challenge.name
 
-    return DataBindingUtil.inflate<FragmentChallengeBinding>(
+    savedView = DataBindingUtil.inflate<FragmentChallengeBinding>(
       inflater, R.layout.fragment_challenge, container, false
     ).apply {
-
-
       recyclerView.adapter = viewAdapter
       recyclerView.layoutManager = viewManager
 
@@ -80,5 +83,7 @@ class ChallengeFragment: Fragment() {
         )
       }
     }.root
+
+    return savedView
   }
 }

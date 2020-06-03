@@ -151,9 +151,7 @@ class ChallengeAdapter(private val challenge: Challenge, private val workouts: L
       holder.title?.text = workout.title
       holder.time?.text = workout.created_at.format(DateTimeFormatter.ofPattern("h:mm a"))
       holder.itemView.setOnClickListener {
-        if (it.findNavController().currentDestination?.id == R.id.nav_challenge) {
-          it.findNavController().navigate(ChallengeFragmentDirections.workout(workout))
-        }
+        it.findNavController().navigate(ChallengeFragmentDirections.workout(workout))
       }
     } else {
       throw Error("Bad bind: $row")
