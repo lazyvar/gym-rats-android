@@ -22,13 +22,20 @@ class HomeFragment: Fragment() {
     return DataBindingUtil.inflate<FragmentHomeBinding>(
       inflater, R.layout.fragment_home, container, false
     ).apply {
+      (context as? MainActivity)?.supportActionBar?.title = null
+      (context as? MainActivity)?.supportActionBar?.setHomeButtonEnabled(false)
+      (context as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
       GymRatsApi.allChallenges { result ->
         result.fold(
           onSuccess = { challenges ->
             progressBar.visibility = View.GONE
 
             findNavController().navigate(HomeFragmentDirections.challenge(challenges.first()))
-            (context as? MainActivity)?.reloadNavGraph()
+
+            (context as? MainActivity)?.supportActionBar?.setHomeButtonEnabled(false)
+            (context as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 //              val activeChallenges = challenges.active()
 //              if (activeChallenges.isEmpty()) {
 //                val main = (context as MainActivity)
