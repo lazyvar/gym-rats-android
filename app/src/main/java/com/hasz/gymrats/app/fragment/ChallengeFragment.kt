@@ -35,9 +35,7 @@ class ChallengeFragment: Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    if (savedView != null) {
-      return savedView
-    }
+    if (savedView != null) { return savedView }
 
     challenge = requireArguments().getParcelable("challenge")!!
     viewManager = LinearLayoutManager(context)

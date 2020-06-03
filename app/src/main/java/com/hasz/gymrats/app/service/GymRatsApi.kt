@@ -81,6 +81,12 @@ object GymRatsApi {
       .responseObject(gsonGuy, handleObject(handler))
   }
 
+  fun getWorkouts(account: Account, challenge: Challenge, handler: (Result<List<Workout>>) -> Unit) {
+    Fuel.get("challenges/${challenge.id}/members/${account.id}/workouts")
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
   fun getAllWorkouts(challenge: Challenge, handler: (Result<List<Workout>>) -> Unit) {
     Fuel.get("/challenges/${challenge.id}/workouts")
       .validate { true }

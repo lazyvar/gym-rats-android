@@ -71,6 +71,6 @@ fun Challenge.buckets(workouts: List<Workout>): List<Pair<LocalDate, List<Workou
 
 fun List<Workout>.on(date: LocalDateTime): List<Workout> = filter { local2YouTeeSee(it.created_at.atZone(ZoneId.systemDefault()), date) }
 
-private fun local2YouTeeSee(local: ZonedDateTime, youToo: LocalDateTime): Boolean {
+fun local2YouTeeSee(local: ZonedDateTime, youToo: LocalDateTime): Boolean {
   return local.dayOfYear == youToo.dayOfYear && local.year == youToo.year
 }
