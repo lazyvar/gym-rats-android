@@ -12,11 +12,21 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 fun Challenge.isActive(): Boolean {
-  return false
+  val now = LocalDateTime.now()
+
+  return now == start_date || now == end_date || (now.isAfter(start_date) && now.isBefore(end_date))
+}
+
+fun Challenge.isUpcoming(): Boolean {
+  val now = LocalDateTime.now()
+
+  return now.isBefore(start_date)
 }
 
 fun Challenge.completed(): Boolean {
-  return true
+  val now = LocalDateTime.now()
+
+  return now.isAfter(end_date)
 }
 
 fun List<Challenge>.active(): List<Challenge> {

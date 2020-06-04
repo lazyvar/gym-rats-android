@@ -9,7 +9,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.adapter.ChallengeAdapter
 import com.hasz.gymrats.app.databinding.FragmentProfileBinding
+import com.hasz.gymrats.app.extension.completed
+import com.hasz.gymrats.app.extension.isActive
 import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Account
 import com.hasz.gymrats.app.model.Challenge
@@ -45,6 +48,14 @@ class ProfileFragment: Fragment() {
       body.visibility = View.GONE
       progressBar.visibility = View.VISIBLE
 
+      if (challenge.completed()) {
+        calendarView.currentDate = CalendarDay.from(challenge.end_date.toLocalDate())
+      }
+
+      calendarView.setOnDateChangedListener { widget, date, selected ->
+
+      }
+
       calendarView.showOtherDates = MaterialCalendarView.SHOW_NONE
 
       GymRatsApi.getWorkouts(profile, challenge) { result ->
@@ -53,6 +64,7 @@ class ProfileFragment: Fragment() {
             body.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
 
+            recyclerView.adapter = ChallengeAdapter(challenge, it)
             calendarView.addDecorator(EventDecorator(Color.parseColor("#D33A2C"), it.map { w -> CalendarDay.from(w.created_at.atZone(ZoneId.systemDefault()).toLocalDate()) }))
             loader.loadImage(avatarView, profile.profile_picture_url ?: "", profile.full_name)
             nameLabel.text = profile.full_name
@@ -81,6 +93,6 @@ class EventDecorator(private val color: Int, dates: Collection<CalendarDay>?): D
   }
 
   override fun decorate(view: DayViewFacade) {
-    view.addSpan(DotSpan(3F, color))
+    view.addSpan(DotSpan(8F, color))
   }
 }
