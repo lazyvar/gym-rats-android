@@ -37,6 +37,8 @@ fun List<Challenge>.completed(): List<Challenge> {
   return filter { it.completed() }
 }
 
+fun List<Workout>.onDay(date: LocalDate): List<Workout> = filter { it.created_at.atZone(ZoneId.systemDefault()).toLocalDate() == date }
+
 fun Challenge.daysLeft(): String {
   val today = LocalDateTime.now()
   val diff = ChronoUnit.DAYS.between(today, end_date).toInt()
