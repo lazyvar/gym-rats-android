@@ -170,12 +170,6 @@
         android:id="@+id/nav_challenge_bottom_nav"
         android:name="com.hasz.gymrats.app.fragment.ChallengeBottomNavFragment"
         tools:layout="@layout/fragment_challenge_bottom_nav">
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_top_level_challenge"
-        android:name="com.hasz.gymrats.app.fragment.ChallengeFragment"
-        tools:layout="@layout/fragment_challenge">
 
         <action
             android:id="@+id/workout"

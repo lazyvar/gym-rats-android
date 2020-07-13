@@ -47,6 +47,10 @@ class ChallengeBottomNavFragment: Fragment() {
 
         fragmentTransaction.add(R.id.fragmentContainer, fragment)
         fragmentTransaction.commit()
+
+        bottomAppBar.setNavigationOnClickListener {
+          // TODO: push awards
+        }
       }
     }.root
 
