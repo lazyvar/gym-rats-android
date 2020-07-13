@@ -2,11 +2,10 @@
 
     <style name="Base.Theme.GymRats" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorBrand</item>
-        <item name="colorOnPrimary">@color/colorWhite</item>
+<!--        <item name="colorOnPrimary">@color/colorWhite</item>-->
         <item name="colorPrimaryDark">@color/colorBrand</item>
-        <item name="colorOnSurface">@color/colorBrand</item>
-        <item name="colorAccent">@color/colorBrand</item>
-        <item name="colorSurface">@color/colorBrand</item>
+<!--        <item name="colorOnSurface">@color/colorBrand</item>-->
+<!--        <item name="colorAccent">@color/colorBrand</item>-->
         <item name="colorSecondary">@color/colorWhite</item>
         <item name="android:colorBackground">@color/colorOffWhite</item>
     </style>
