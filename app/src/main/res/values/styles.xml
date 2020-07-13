@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="Base.Theme.GymRats" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Base.Theme.GymRats" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorBrand</item>
         <item name="colorOnPrimary">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorBrand</item>
@@ -24,5 +24,5 @@
         <!--        <item name="android:textColor">?attr/colorOnSurface</item>-->
     </style>
 
-    <style name="Theme.GymRats.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.GymRats.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 </resources>

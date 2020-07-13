@@ -31,7 +31,7 @@ class HomeFragment: Fragment() {
           onSuccess = { challenges ->
             progressBar.visibility = View.GONE
 
-            findNavController().navigate(HomeFragmentDirections.challenge(challenges.first()))
+            findNavController().navigate(HomeFragmentDirections.challengeBottomNav(challenges.first()))
 
             (context as? MainActivity)?.supportActionBar?.setHomeButtonEnabled(false)
             (context as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)

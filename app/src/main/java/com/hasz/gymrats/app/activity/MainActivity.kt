@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
       setOf(
         R.id.home,
         R.id.nav_top_level_challenge,
+        R.id.nav_challenge_bottom_nav,
         R.id.nav_completed_challenges,
         R.id.nav_settings,
         R.id.nav_about
