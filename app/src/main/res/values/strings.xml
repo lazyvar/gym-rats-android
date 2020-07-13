@@ -48,6 +48,7 @@
     <string name="change_name_button">SAVE</string>
     <string name="change_email_title">Your email can be used for password recovery.</string>
     <string name="change_email_hint">Email</string>
+    <string name="title_choose_image_provider">Log workout proof</string>
     <string name="change_email_button">SAVE</string>
     <string name="change_password_title">Password must be between 6 and 16 characters long.</string>
     <string name="old_password_hint">Current password</string>
@@ -65,4 +66,7 @@
         \nCPO (Chief Protein Officer)
     </string>
     <string name="mack_hasz">Mack Hasz</string>
+    <string name="description_optional">Description (optional)</string>
+    <string name="workout_title">Title</string>
+    <string name="post">Post</string>
 </resources>

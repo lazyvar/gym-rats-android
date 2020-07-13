@@ -1,16 +1,21 @@
 package com.hasz.gymrats.app.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.activity.LogWorkoutActivity
 import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentChallengeBottomNavBinding
 import com.hasz.gymrats.app.model.Challenge
-
+import java.io.File
 
 class ChallengeBottomNavFragment: Fragment() {
   private lateinit var challenge: Challenge
@@ -47,6 +52,28 @@ class ChallengeBottomNavFragment: Fragment() {
 
         fragmentTransaction.add(R.id.fragmentContainer, fragment)
         fragmentTransaction.commit()
+
+        fab.setOnClickListener {
+          ImagePicker
+            .with(requireContext() as MainActivity)
+            .compress(1024)
+            .start { resultCode, data ->
+              when (resultCode) {
+                Activity.RESULT_OK -> {
+                  val fileUri = data?.data
+                  val intent = Intent().apply {
+                    setClass(requireContext(), LogWorkoutActivity::class.java)
+                    putExtra("workout_image_uri", fileUri)
+                  }
+
+                  startActivity(intent)
+                }
+                ImagePicker.RESULT_ERROR -> {
+                  Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+                }
+              }
+            }
+        }
 
         bottomAppBar.setNavigationOnClickListener {
           // TODO: push awards

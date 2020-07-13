@@ -1,6 +1,5 @@
 package com.hasz.gymrats.app.activity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
@@ -13,11 +12,9 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.bumptech.glide.Glide
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.service.AuthService
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
   private lateinit var appBarConfiguration: AppBarConfiguration
@@ -30,18 +27,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     setContentView(R.layout.activity_main)
 
     val toolbar: Toolbar = findViewById(R.id.toolbar)
-    val fab: FloatingActionButton = findViewById(R.id.fab)
     val navView: NavigationView = findViewById(R.id.nav_view)
 
     drawer = findViewById(R.id.drawer_layout)
     navController = findNavController(R.id.nav_host_fragment)
 
     setSupportActionBar(toolbar)
-
-    fab.visibility = View.GONE
-    fab.setOnClickListener { _ ->
-      // TODO: fabulous
-    }
 
     navView.apply {
       val header = LayoutInflater.from(context).inflate(R.layout.nav_header_main, null)
