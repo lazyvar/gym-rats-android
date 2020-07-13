@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "470372409042",
+    "firebase_url": "https://gymrats-1549569453212.firebaseio.com",
+    "project_id": "gymrats-1549569453212",
+    "storage_bucket": "gymrats-1549569453212.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470372409042:android:337df779ee9d227c3b570b",
+        "android_client_info": {
+          "package_name": "com.hasz.gymrats.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "470372409042-7m3t7roae0uj9l4dg2lv6os7tn1ff5od.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDacqK_6Maw0hxZBlyUhba7clM6Sq1avCY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "470372409042-7m3t7roae0uj9l4dg2lv6os7tn1ff5od.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "470372409042-ueiv2nt7f83ot2l0bjmtdcimgjemsl7v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hasz.GymRats"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,15 +1,19 @@
 package com.hasz.gymrats.app.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import androidx.work.Logger
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.service.GService
 import kotlinx.android.synthetic.main.activity_log_workout.*
 
 class LogWorkoutActivity: Activity() {
   private lateinit var workoutImageURI: Uri
 
+  @SuppressLint("RestrictedApi")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -25,8 +29,16 @@ class LogWorkoutActivity: Activity() {
     }
 
     logWorkoutToolbar.setOnMenuItemClickListener { _ ->
-      finish()
-
+      GService.uploadImage(workoutImageURI) { result ->
+        result.fold(
+          onSuccess = { url ->
+            Logger.LogcatLogger.get().warning("mack", url)
+          },
+          onFailure = { error ->
+            Logger.LogcatLogger.get().warning("mack", error.toString())
+          }
+        )
+      }
       return@setOnMenuItemClickListener true
     }
   }
