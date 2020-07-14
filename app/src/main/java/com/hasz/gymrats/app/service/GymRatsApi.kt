@@ -1,5 +1,6 @@
 package com.hasz.gymrats.app.service
 
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import com.github.kittinunf.fuel.Fuel
@@ -66,6 +67,58 @@ object GymRatsApi {
     Fuel.post("/challenges", body)
       .validate { true }
       .responseObject(gsonGuy, handleObject(handler))
+  }
+
+  fun postWorkout(
+    uri: Uri,
+    title: String,
+    description: String?,
+    duration: Int?,
+    distance: String?,
+    calories: Int?,
+    steps: Int?,
+    points: Int?,
+    challenges: List<Int>,
+    handler: (Result<Workout>) -> Unit
+  ) {
+    GService.uploadImage(uri) { result ->
+      result.fold(
+        onSuccess = { url ->
+          val body = arrayListOf("title" to title, "challenges" to challenges, "photo_url" to url)
+
+          description?.let {
+            body.add("description" to it)
+          }
+
+          duration?.let {
+            body.add("duration" to it)
+          }
+
+          distance?.let {
+            body.add("distance" to it)
+          }
+
+          calories?.let {
+            body.add("calories" to it)
+          }
+
+          steps?.let {
+            body.add("steps" to it)
+          }
+
+          points?.let {
+            body.add("points" to it)
+          }
+
+          Fuel.post("/workouts", body)
+            .validate { true }
+            .responseObject(gsonGuy, handleObject(handler))
+        },
+        onFailure = { error ->
+          handler(Result.failure(error))
+        }
+      )
+    }
   }
 
   fun updateAccount(email: String? = null, name: String? = null, password: String? = null, currentPassword: String? = null, handler: (Result<Account>) -> Unit) {

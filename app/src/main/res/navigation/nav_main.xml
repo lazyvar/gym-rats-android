@@ -11,8 +11,8 @@
         tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/challenge"
-            app:destination="@id/nav_top_level_challenge"
+            android:id="@+id/challengeBottomNav"
+            app:destination="@id/nav_challenge_bottom_nav"
             app:enterAnim="@anim/fragment_fade_enter"
             app:popUpTo="@+id/nav_home"
             app:popUpToInclusive="true">
@@ -165,10 +165,11 @@
                 app:argType="com.hasz.gymrats.app.model.Challenge" />
         </action>
     </fragment>
+
     <fragment
-        android:id="@+id/nav_top_level_challenge"
-        android:name="com.hasz.gymrats.app.fragment.ChallengeFragment"
-        tools:layout="@layout/fragment_challenge">
+        android:id="@+id/nav_challenge_bottom_nav"
+        android:name="com.hasz.gymrats.app.fragment.ChallengeBottomNavFragment"
+        tools:layout="@layout/fragment_challenge_bottom_nav">
 
         <action
             android:id="@+id/workout"

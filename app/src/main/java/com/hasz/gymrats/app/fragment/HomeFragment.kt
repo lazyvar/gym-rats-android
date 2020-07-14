@@ -31,21 +31,10 @@ class HomeFragment: Fragment() {
           onSuccess = { challenges ->
             progressBar.visibility = View.GONE
 
-            findNavController().navigate(HomeFragmentDirections.challenge(challenges.first()))
+            findNavController().navigate(HomeFragmentDirections.challengeBottomNav(challenges.first()))
 
             (context as? MainActivity)?.supportActionBar?.setHomeButtonEnabled(false)
             (context as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-//              val activeChallenges = challenges.active()
-//              if (activeChallenges.isEmpty()) {
-//                val main = (context as MainActivity)
-//                val tx = main.supportFragmentManager.beginTransaction()
-//
-//                tx.replace(R.id.fragment_home, NoActiveChallengesFragment())
-//                tx.commit()
-//              } else {
-//                // TODO
-//              }
           },
           onFailure = { error ->
             Snackbar.make(root, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
