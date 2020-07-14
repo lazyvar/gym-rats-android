@@ -20,7 +20,7 @@ import org.threeten.bp.LocalDateTime
 
 object GymRatsApi {
   private const val baseUrl = "https://gym-rats-api-pre-production.gigalixirapp.com"
-  private val gsonGuy: Gson
+  val gsonGuy: Gson
 
   init {
     FuelManager.instance.basePath = baseUrl
