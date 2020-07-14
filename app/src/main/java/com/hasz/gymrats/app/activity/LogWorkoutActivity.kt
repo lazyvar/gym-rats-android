@@ -48,8 +48,9 @@ class LogWorkoutActivity: Activity() {
       ) { result ->
         result.fold(
           onSuccess = { workout ->
-            // TODO workout
             workoutProgressBar.visibility = View.INVISIBLE
+
+            setResult(9114112)
             finish()
           },
           onFailure = { error ->

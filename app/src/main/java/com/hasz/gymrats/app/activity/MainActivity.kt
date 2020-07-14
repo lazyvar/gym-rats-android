@@ -1,7 +1,6 @@
 package com.hasz.gymrats.app.activity
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -19,7 +18,6 @@ import com.hasz.gymrats.app.extension.activeOrUpcoming
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.service.AuthService
 import com.hasz.gymrats.app.state.ChallengeState
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
   private lateinit var appBarConfiguration: AppBarConfiguration
