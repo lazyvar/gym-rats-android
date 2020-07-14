@@ -33,6 +33,10 @@ fun List<Challenge>.active(): List<Challenge> {
   return filter { it.isActive() }
 }
 
+fun List<Challenge>.activeOrUpcoming(): List<Challenge> {
+  return filter { it.isActive() || it.isUpcoming() }
+}
+
 fun List<Challenge>.completed(): List<Challenge> {
   return filter { it.completed() }
 }
@@ -45,6 +49,8 @@ fun Challenge.daysLeft(): String {
 
   return if (diff == 0) {
     "Last day"
+  } else if (diff == 1) {
+    "1 Day left"
   } else if (diff > 0) {
     "$diff\nDays left"
   } else {

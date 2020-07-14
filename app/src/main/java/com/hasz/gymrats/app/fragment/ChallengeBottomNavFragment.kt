@@ -15,6 +15,7 @@ import com.hasz.gymrats.app.activity.LogWorkoutActivity
 import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentChallengeBottomNavBinding
 import com.hasz.gymrats.app.model.Challenge
+import com.hasz.gymrats.app.state.ChallengeState
 import java.io.File
 
 class ChallengeBottomNavFragment: Fragment() {
@@ -38,7 +39,10 @@ class ChallengeBottomNavFragment: Fragment() {
       return savedView
     }
 
-    challenge = requireArguments().getParcelable("challenge")!!
+    challenge = arguments?.getParcelable("challenge")
+      ?: ChallengeState.allChallenges.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId }
+      ?: ChallengeState.allChallenges.first()
+
     (context as? MainActivity)?.supportActionBar?.title = challenge.name
 
     savedView = DataBindingUtil.inflate<FragmentChallengeBottomNavBinding>(

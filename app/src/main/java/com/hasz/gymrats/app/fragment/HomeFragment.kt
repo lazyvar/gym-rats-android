@@ -11,7 +11,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentHomeBinding
+import com.hasz.gymrats.app.extension.active
+import com.hasz.gymrats.app.extension.activeOrUpcoming
+import com.hasz.gymrats.app.extension.isActive
+import com.hasz.gymrats.app.extension.isUpcoming
+import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.service.GymRatsApi
+import com.hasz.gymrats.app.state.ChallengeState
 
 class HomeFragment: Fragment() {
   override fun onCreateView(
@@ -30,8 +36,24 @@ class HomeFragment: Fragment() {
         result.fold(
           onSuccess = { challenges ->
             progressBar.visibility = View.GONE
+            ChallengeState.allChallenges = challenges
 
-            findNavController().navigate(HomeFragmentDirections.challengeBottomNav(challenges.first()))
+            val activeOrUpcoming = challenges.activeOrUpcoming()
+            val nav = findNavController()
+
+            if (activeOrUpcoming.isEmpty()) {
+              nav.navigate(HomeFragmentDirections.noChallenges())
+            } else {
+              (requireContext() as MainActivity).updateNav(activeOrUpcoming)
+
+              val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
+
+              if (challenge.isActive()) {
+                nav.navigate(HomeFragmentDirections.challengeBottomNav(challenge))
+              } else {
+                nav.navigate(HomeFragmentDirections.challengeBottomNav(challenge))
+              }
+            }
 
             (context as? MainActivity)?.supportActionBar?.setHomeButtonEnabled(false)
             (context as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
