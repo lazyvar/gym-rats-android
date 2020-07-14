@@ -27,3 +27,22 @@ class LocalDateTimeConverter: JsonSerializer<LocalDateTime?>, JsonDeserializer<L
     return LocalDateTime.parse(date, formatter)
   }
 }
+
+class InstantConverter: JsonSerializer<Instant?>, JsonDeserializer<Instant?> {
+  override fun serialize(
+    src: Instant?,
+    srcType: Type?,
+    context: JsonSerializationContext?
+  ): JsonElement? {
+    throw Error()
+  }
+
+  @Throws(JsonParseException::class)
+  override fun deserialize(
+    json: JsonElement,
+    type: Type?,
+    context: JsonDeserializationContext?
+  ): Instant {
+    return Instant.parse(json.asString)
+  }
+}

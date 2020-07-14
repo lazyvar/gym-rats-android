@@ -2,7 +2,7 @@ package com.hasz.gymrats.app.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import org.threeten.bp.LocalDateTime
+import org.threeten.bp.*
 
 @Parcelize
 data class Workout(
@@ -12,7 +12,7 @@ data class Workout(
   val title: String,
   val description: String?,
   val photo_url: String?,
-  val created_at: LocalDateTime,
+  val created_at: Instant,
   val google_place_id: String?,
   val duration: Int?,
   val distance: String?,
@@ -24,3 +24,6 @@ data class Workout(
   val apple_workout_uuid: String?,
   val activity_type: String?
 ): Parcelable
+
+fun Workout.createdAt(): LocalDateTime =
+  ZonedDateTime.ofInstant(this.created_at, ZoneId.systemDefault()).toLocalDateTime()

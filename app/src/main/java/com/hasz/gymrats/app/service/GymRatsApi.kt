@@ -10,6 +10,7 @@ import com.github.kittinunf.fuel.gson.responseObject
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.hasz.gymrats.app.model.*
+import com.hasz.gymrats.app.typeadapter.InstantConverter
 import org.threeten.bp.Instant
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,6 +26,7 @@ object GymRatsApi {
     FuelManager.instance.basePath = baseUrl
     gsonGuy = GsonBuilder()
       .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeConverter())
+      .registerTypeAdapter(Instant::class.java, InstantConverter())
       .create()
 
     setBaseHeaders()
