@@ -20,6 +20,8 @@ class ChallengeFragment: Fragment() {
   private lateinit var viewAdapter: RecyclerView.Adapter<*>
   private lateinit var viewManager: RecyclerView.LayoutManager
   private lateinit var challenge: Challenge
+  private lateinit var binding: FragmentChallengeBinding
+
   private var savedView: View? = null
 
   companion object {
@@ -46,6 +48,15 @@ class ChallengeFragment: Fragment() {
     savedView = DataBindingUtil.inflate<FragmentChallengeBinding>(
       inflater, R.layout.fragment_challenge, container, false
     ).apply {
+      binding = this
+      refresh()
+    }.root
+
+    return savedView
+  }
+
+  fun refresh() {
+    binding.apply {
       recyclerView.adapter = viewAdapter
       recyclerView.layoutManager = viewManager
 
@@ -68,7 +79,11 @@ class ChallengeFragment: Fragment() {
                   recyclerView.visibility = View.VISIBLE
                   progressBar.visibility = View.GONE
 
-                  Snackbar.make(root, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+                  Snackbar.make(
+                    root,
+                    error.message ?: "Something unpredictable happened.",
+                    Snackbar.LENGTH_LONG
+                  ).show()
                 })
             }
           },
@@ -76,12 +91,14 @@ class ChallengeFragment: Fragment() {
             recyclerView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
 
-            Snackbar.make(root, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(
+              root,
+              error.message ?: "Something unpredictable happened.",
+              Snackbar.LENGTH_LONG
+            ).show()
           }
         )
       }
-    }.root
-
-    return savedView
+    }
   }
 }

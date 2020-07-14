@@ -15,9 +15,11 @@ import com.hasz.gymrats.app.activity.LogWorkoutActivity
 import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentChallengeBottomNavBinding
 import com.hasz.gymrats.app.model.Challenge
+import com.hasz.gymrats.app.state.ChallengeState
 import java.io.File
 
 class ChallengeBottomNavFragment: Fragment() {
+  private lateinit var challengeFragment: ChallengeFragment
   private lateinit var challenge: Challenge
   private var savedView: View? = null
 
@@ -38,7 +40,10 @@ class ChallengeBottomNavFragment: Fragment() {
       return savedView
     }
 
-    challenge = requireArguments().getParcelable("challenge")!!
+    challenge = arguments?.getParcelable("challenge")
+      ?: ChallengeState.allChallenges.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId }
+      ?: ChallengeState.allChallenges.first()
+
     (context as? MainActivity)?.supportActionBar?.title = challenge.name
 
     savedView = DataBindingUtil.inflate<FragmentChallengeBottomNavBinding>(
@@ -48,9 +53,9 @@ class ChallengeBottomNavFragment: Fragment() {
         if (manager == null) { return@let }
 
         val fragmentTransaction = manager.beginTransaction()
-        val fragment = ChallengeFragment.newInstance(challenge)
+        challengeFragment = ChallengeFragment.newInstance(challenge)
 
-        fragmentTransaction.add(R.id.fragmentContainer, fragment)
+        fragmentTransaction.add(R.id.fragmentContainer, challengeFragment)
         fragmentTransaction.commit()
 
         fab.setOnClickListener {
@@ -66,7 +71,7 @@ class ChallengeBottomNavFragment: Fragment() {
                     putExtra("workout_image_uri", fileUri)
                   }
 
-                  startActivity(intent)
+                  startActivityForResult(intent, 65533)
                 }
                 ImagePicker.RESULT_ERROR -> {
                   Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
@@ -82,5 +87,13 @@ class ChallengeBottomNavFragment: Fragment() {
     }.root
 
     return savedView
+  }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+
+    if (resultCode == 9114112 && requestCode == 65533) {
+      challengeFragment.refresh()
+    }
   }
 }

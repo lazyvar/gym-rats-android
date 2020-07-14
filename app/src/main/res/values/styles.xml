@@ -6,7 +6,7 @@
         <item name="colorPrimaryDark">@color/colorBrand</item>
 <!--        <item name="colorOnSurface">@color/colorBrand</item>-->
 <!--        <item name="colorAccent">@color/colorBrand</item>-->
-        <item name="colorSecondary">@color/colorWhite</item>
+        <item name="colorSecondary">@color/colorBrand</item>
         <item name="android:colorBackground">@color/colorOffWhite</item>
     </style>
 

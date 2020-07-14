@@ -14,7 +14,10 @@ import androidx.navigation.ui.*
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.extension.activeOrUpcoming
+import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.service.AuthService
+import com.hasz.gymrats.app.state.ChallengeState
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
   private lateinit var appBarConfiguration: AppBarConfiguration
@@ -68,6 +71,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     navView.setNavigationItemSelectedListener(this)
   }
 
+  fun updateNav(challenges: List<Challenge>) {
+    val navView: NavigationView = findViewById(R.id.nav_view)
+    val menu = navView.menu
+
+    menu.clear()
+
+    val challengesMenu = menu.addSubMenu("Active Challenges")
+
+    challenges.forEachIndexed { index, challenge ->
+      challengesMenu.add(Menu.NONE, R.id.nav_challenge_bottom_nav, index, challenge.name)
+    }
+
+    menuInflater.inflate(R.menu.activity_main_drawer, menu)
+    menu.removeItem(menu.findItem(R.id.nav_home).itemId)
+  }
+
 //  override fun onCreateOptionsMenu(menu: Menu): Boolean {
 //    menuInflater.inflate(R.menu.main, menu)
 //
@@ -99,6 +118,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         startActivity(intent)
 
         false
+      }
+      R.id.nav_challenge_bottom_nav -> {
+        val order = item.order
+        val challenges = ChallengeState.allChallenges.activeOrUpcoming()
+        val challenge = challenges.elementAtOrNull(order) ?: challenges.first()
+
+        ChallengeState.lastOpenedChallengeId = challenge.id
+
+        NavigationUI.onNavDestinationSelected(item, navController)
+        drawer.closeDrawer(Gravity.START)
+
+        true
       }
       else -> {
         NavigationUI.onNavDestinationSelected(item, navController)

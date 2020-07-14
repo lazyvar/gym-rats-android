@@ -9,8 +9,10 @@ import android.view.View
 import androidx.work.Logger
 import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.extension.active
 import com.hasz.gymrats.app.service.GService
 import com.hasz.gymrats.app.service.GymRatsApi
+import com.hasz.gymrats.app.state.ChallengeState
 import kotlinx.android.synthetic.main.activity_log_workout.*
 
 class LogWorkoutActivity: Activity() {
@@ -42,12 +44,13 @@ class LogWorkoutActivity: Activity() {
         calories = calories.text.toString().toIntOrNull(),
         steps = steps.text.toString().toIntOrNull(),
         points = points.text.toString().toIntOrNull(),
-        challenges = listOf(382)
+        challenges = ChallengeState.allChallenges.active().map { it.id }
       ) { result ->
         result.fold(
           onSuccess = { workout ->
-            // TODO workout
             workoutProgressBar.visibility = View.INVISIBLE
+
+            setResult(9114112)
             finish()
           },
           onFailure = { error ->
