@@ -71,6 +71,12 @@ object GymRatsApi {
       .responseObject(gsonGuy, handleObject(handler))
   }
 
+  fun chatMessages(challenge: Challenge, page: Int, handler: (Result<List<ChatMessage>>) -> Unit) {
+    Fuel.get("challenges/${challenge.id}/messages?page=${page}")
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
   fun postWorkout(
     uri: Uri,
     title: String,

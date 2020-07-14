@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.activity.LogWorkoutActivity
@@ -82,6 +83,14 @@ class ChallengeBottomNavFragment: Fragment() {
 
         bottomAppBar.setNavigationOnClickListener {
           // TODO: push awards
+        }
+
+        bottomAppBar.setOnMenuItemClickListener {
+          findNavController().navigate(
+            ChallengeBottomNavFragmentDirections.chat(challenge)
+          )
+
+          true
         }
       }
     }.root
