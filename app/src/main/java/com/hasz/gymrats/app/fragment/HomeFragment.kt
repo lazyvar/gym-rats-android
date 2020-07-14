@@ -35,17 +35,6 @@ class HomeFragment: Fragment() {
 
             (context as? MainActivity)?.supportActionBar?.setHomeButtonEnabled(false)
             (context as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-//              val activeChallenges = challenges.active()
-//              if (activeChallenges.isEmpty()) {
-//                val main = (context as MainActivity)
-//                val tx = main.supportFragmentManager.beginTransaction()
-//
-//                tx.replace(R.id.fragment_home, NoActiveChallengesFragment())
-//                tx.commit()
-//              } else {
-//                // TODO
-//              }
           },
           onFailure = { error ->
             Snackbar.make(root, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
