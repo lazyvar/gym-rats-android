@@ -123,6 +123,9 @@ class ChallengeAdapter(private val challenge: Challenge, private val workouts: L
     } else if (row.challengeInfo != null) {
       val info = row.challengeInfo
 
+      holder.itemView.setOnClickListener { view ->
+        view.findNavController().navigate(ChallengeFragmentDirections.stats(challenge))
+      }
       holder.loader.loadImage(holder.leaderAvatarView!!, info.leader.profile_picture_url ?: "", info.leader.full_name ?: "")
       holder.loader.loadImage(holder.currentAccountAvatarView!!, AuthService.currentAccount?.profile_picture_url ?: "", AuthService.currentAccount?.full_name ?: "")
       holder.currentAccountScore?.text = "${info.current_account_score}\nMe"

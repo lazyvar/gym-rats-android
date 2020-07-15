@@ -180,6 +180,19 @@
         tools:layout="@layout/fragment_challenge">
 
         <action
+            android:id="@+id/stats"
+            app:destination="@id/nav_stats"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+
+            <argument
+                android:name="challenge"
+                app:argType="com.hasz.gymrats.app.model.Challenge" />
+        </action>
+
+        <action
             android:id="@+id/workout"
             app:destination="@id/nav_workout"
             app:enterAnim="@anim/slide_in_right"
