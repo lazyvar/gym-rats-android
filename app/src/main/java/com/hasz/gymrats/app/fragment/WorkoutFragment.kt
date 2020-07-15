@@ -13,6 +13,7 @@ import com.hasz.gymrats.app.databinding.FragmentWorkoutBinding
 import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.model.Workout
+import com.hasz.gymrats.app.model.createdAt
 import org.threeten.bp.format.DateTimeFormatter
 
 class WorkoutFragment: Fragment() {
@@ -84,7 +85,7 @@ class WorkoutFragment: Fragment() {
       loader.loadImage(avatarView, workout.account.profile_picture_url ?: "", workout.account.full_name)
       titleLabel.text = workout.title
       descriptionLabel.text = desc.filterNotNull().joinToString("\n")
-      timeLabel.text = workout.created_at.format(DateTimeFormatter.ofPattern("h:mm a"))
+      timeLabel.text = workout.createdAt().format(DateTimeFormatter.ofPattern("h:mm a"))
     }.root
 
     return savedView

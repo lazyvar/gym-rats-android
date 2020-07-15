@@ -10,6 +10,7 @@ import com.github.kittinunf.fuel.gson.responseObject
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.hasz.gymrats.app.model.*
+import com.hasz.gymrats.app.typeadapter.InstantConverter
 import org.threeten.bp.Instant
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,12 +20,13 @@ import org.threeten.bp.LocalDateTime
 
 object GymRatsApi {
   private const val baseUrl = "https://gym-rats-api-pre-production.gigalixirapp.com"
-  private val gsonGuy: Gson
+  val gsonGuy: Gson
 
   init {
     FuelManager.instance.basePath = baseUrl
     gsonGuy = GsonBuilder()
       .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeConverter())
+      .registerTypeAdapter(Instant::class.java, InstantConverter())
       .create()
 
     setBaseHeaders()
@@ -65,6 +67,12 @@ object GymRatsApi {
     }
 
     Fuel.post("/challenges", body)
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
+  fun chatMessages(challenge: Challenge, page: Int, handler: (Result<List<ChatMessage>>) -> Unit) {
+    Fuel.get("challenges/${challenge.id}/messages?page=${page}")
       .validate { true }
       .responseObject(gsonGuy, handleObject(handler))
   }

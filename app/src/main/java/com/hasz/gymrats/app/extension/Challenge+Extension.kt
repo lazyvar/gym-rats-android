@@ -77,7 +77,7 @@ fun Challenge.buckets(workouts: List<Workout>): List<Pair<LocalDate, List<Workou
   val hash = TreeMap<LocalDate, ArrayList<Workout>>(dateComparator)
 
   for (workout in workouts) {
-    val day = workout.created_at.toLocalDate()
+    val day = ZonedDateTime.ofInstant(workout.created_at, ZoneId.systemDefault()).toLocalDate()
     val workoutList = hash[day] ?: arrayListOf()
     workoutList.add(workout)
 

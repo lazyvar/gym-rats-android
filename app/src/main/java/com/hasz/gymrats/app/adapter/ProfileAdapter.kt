@@ -15,10 +15,7 @@ import com.hasz.gymrats.app.extension.daysLeft
 import com.hasz.gymrats.app.fragment.ChallengeFragmentDirections
 import com.hasz.gymrats.app.fragment.ProfileFragmentDirections
 import com.hasz.gymrats.app.loader.GlideLoader
-import com.hasz.gymrats.app.model.Challenge
-import com.hasz.gymrats.app.model.ChallengeInfo
-import com.hasz.gymrats.app.model.ChallengeRow
-import com.hasz.gymrats.app.model.Workout
+import com.hasz.gymrats.app.model.*
 import com.hasz.gymrats.app.service.AuthService
 import org.threeten.bp.format.DateTimeFormatter
 import java.lang.Error
@@ -138,7 +135,7 @@ class ProfileAdapter(private val challenge: Challenge, private val workouts: Lis
       holder.loader.loadImage(holder.avatar!!, workout.account.profile_picture_url ?: "", workout.account.full_name)
       holder.accountName?.text = workout.account.full_name
       holder.title?.text = workout.title
-      holder.time?.text = workout.created_at.format(DateTimeFormatter.ofPattern("h:mm a"))
+      holder.time?.text = workout.createdAt().format(DateTimeFormatter.ofPattern("h:mm a"))
       holder.itemView.setOnClickListener {
         it.findNavController().navigate(ProfileFragmentDirections.workout(workout, challenge))
       }
