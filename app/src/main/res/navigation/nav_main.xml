@@ -151,6 +151,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_stats"
+        android:name="com.hasz.gymrats.app.fragment.StatsFragment"
+        tools:layout="@layout/fragment_stats">
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_challenge"
         android:name="com.hasz.gymrats.app.fragment.ChallengeFragment"
         tools:layout="@layout/fragment_challenge">
@@ -196,6 +202,18 @@
         <action
             android:id="@+id/chat"
             app:destination="@id/nav_chat"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+
+            <argument
+                android:name="challenge"
+                app:argType="com.hasz.gymrats.app.model.Challenge" />
+        </action>
+        <action
+            android:id="@+id/stats"
+            app:destination="@id/nav_stats"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

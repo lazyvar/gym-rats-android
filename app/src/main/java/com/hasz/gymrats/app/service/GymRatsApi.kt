@@ -129,6 +129,12 @@ object GymRatsApi {
     }
   }
 
+  fun rankings(challenge: Challenge, handler: (Result<List<Ranking>>) -> Unit) {
+    Fuel.get("challenges/${challenge.id}/rankings")
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
   fun updateAccount(email: String? = null, name: String? = null, password: String? = null, currentPassword: String? = null, handler: (Result<Account>) -> Unit) {
     val body = ArrayList<Pair<String, String>>()
 

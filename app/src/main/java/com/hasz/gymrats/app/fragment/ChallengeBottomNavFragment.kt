@@ -82,7 +82,9 @@ class ChallengeBottomNavFragment: Fragment() {
         }
 
         bottomAppBar.setNavigationOnClickListener {
-          // TODO: push awards
+          findNavController().navigate(
+            ChallengeBottomNavFragmentDirections.stats(challenge)
+          )
         }
 
         bottomAppBar.setOnMenuItemClickListener {
