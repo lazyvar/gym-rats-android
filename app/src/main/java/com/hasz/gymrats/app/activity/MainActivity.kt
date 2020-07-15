@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     menu.clear()
 
-    val challengesMenu = menu.addSubMenu("Active Challenges")
+    val challengesMenu = menu.addSubMenu("Challenges")
 
     challenges.forEachIndexed { index, challenge ->
       challengesMenu.add(Menu.NONE, R.id.nav_challenge_bottom_nav, index, challenge.name)

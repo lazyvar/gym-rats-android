@@ -26,6 +26,7 @@
         android:layout_marginTop="15dp"
         android:fontFamily="@font/nunito_bold"
         android:text="@string/app_name"
+        android:textColor="@color/colorBlack"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/avatarView"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,6 +38,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:text="@string/challenge_score_by_hint"
+        android:textColor="@color/colorBlack"
         app:layout_constraintStart_toEndOf="@+id/avatarView"
         app:layout_constraintTop_toBottomOf="@+id/nameLabel" />
 

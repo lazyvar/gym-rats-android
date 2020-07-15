@@ -154,6 +154,22 @@
         android:id="@+id/nav_stats"
         android:name="com.hasz.gymrats.app.fragment.StatsFragment"
         tools:layout="@layout/fragment_stats">
+
+        <action
+            android:id="@+id/profile"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+
+        <argument
+            android:name="profile"
+            app:argType="com.hasz.gymrats.app.model.Account" />
+        <argument
+            android:name="challenge"
+            app:argType="com.hasz.gymrats.app.model.Challenge" />
+        </action>
     </fragment>
 
     <fragment

@@ -37,8 +37,8 @@ class StatsFragment: Fragment() {
     savedInstanceState: Bundle?
   ): View? {
     viewManager = LinearLayoutManager(context)
-    viewAdapter = StatsAdapter(listOf())
     challenge = requireArguments().getParcelable("challenge")!!
+    viewAdapter = StatsAdapter(challenge, listOf())
 
     savedView = DataBindingUtil.inflate<FragmentCompletedChallengesBinding>(
       inflater, R.layout.fragment_completed_challenges, container, false
@@ -55,7 +55,7 @@ class StatsFragment: Fragment() {
 
         result.fold(
           onSuccess = { rankings ->
-            viewAdapter = StatsAdapter(rankings.map { StatsRow(ranking = it) })
+            viewAdapter = StatsAdapter(challenge, listOf(StatsRow(challenge = challenge)) + rankings.map { StatsRow(ranking = it) })
             recyclerView.adapter = viewAdapter
           },
           onFailure = { error ->
