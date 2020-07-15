@@ -78,9 +78,11 @@ class WorkoutFragment: Fragment() {
       avatarView.setOnClickListener {
         it.findNavController().navigate(WorkoutFragmentDirections.profile(profile = workout.account, challenge = challenge))
       }
+
       accountNameLabel.setOnClickListener {
         it.findNavController().navigate(WorkoutFragmentDirections.profile(profile = workout.account, challenge = challenge))
       }
+
       accountNameLabel.text = workout.account.full_name
       loader.loadImage(avatarView, workout.account.profile_picture_url ?: "", workout.account.full_name)
       titleLabel.text = workout.title
