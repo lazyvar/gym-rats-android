@@ -33,7 +33,7 @@ import java.util.*
 
 class ProfileFragment: Fragment(), Refreshable {
   private lateinit var profile: Account
-  private lateinit var challenge: Challenge
+  private var challenge: Challenge? = null
   private lateinit var viewManager: RecyclerView.LayoutManager
   private lateinit var viewAdapter: RecyclerView.Adapter<*>
   private lateinit var binding: FragmentProfileBinding
@@ -50,7 +50,7 @@ class ProfileFragment: Fragment(), Refreshable {
 
     viewManager = LinearLayoutManager(context)
     profile = requireArguments().getParcelable("profile")!!
-    challenge = requireArguments().getParcelable("challenge")!!
+    challenge = requireArguments().getParcelable("challenge")
 
     savedView = DataBindingUtil.inflate<FragmentProfileBinding>(
       inflater, R.layout.fragment_profile, container, false
@@ -68,8 +68,8 @@ class ProfileFragment: Fragment(), Refreshable {
       progressBar.visibility = View.VISIBLE
       recyclerView.layoutManager = viewManager
 
-      if (challenge.completed()) {
-        val date = challenge.end_date
+      if (challenge != null && challenge!!.completed()) {
+        val date = challenge!!.end_date
         calendarView.currentDate = CalendarDay.from(date.year, date.monthValue, date.dayOfMonth)
         calendarView.selectedDate = CalendarDay.from(date.year, date.monthValue, date.dayOfMonth)
       } else {
@@ -80,52 +80,60 @@ class ProfileFragment: Fragment(), Refreshable {
       }
 
       calendarView.setOnDateChangedListener { _, date, _ ->
-        viewAdapter = ProfileAdapter(challenge, workouts.onDay(LocalDate.of(date.year, date.month, date.day)))
-        recyclerView.adapter = viewAdapter
+        if (challenge != null) {
+          viewAdapter = ProfileAdapter(challenge!!, workouts.onDay(LocalDate.of(date.year, date.month, date.day)))
+          recyclerView.adapter = viewAdapter
+        } else {
+          // ...
+        }
       }
 
       calendarView.showOtherDates = MaterialCalendarView.SHOW_NONE
 
-      GymRatsApi.getWorkouts(profile, challenge) { result ->
-        result.fold(
-          onSuccess = {
-            workouts = it
-            viewAdapter = ProfileAdapter(
-              challenge,
-              it.onDay(
-                LocalDate.of(
-                  calendarView.selectedDate!!.year,
-                  calendarView.selectedDate!!.month,
-                  calendarView.selectedDate!!.day
+      if (challenge == null) {
+        // ...
+      } else {
+        GymRatsApi.getWorkouts(profile, challenge!!) { result ->
+          result.fold(
+            onSuccess = {
+              workouts = it
+              viewAdapter = ProfileAdapter(
+                challenge!!,
+                it.onDay(
+                  LocalDate.of(
+                    calendarView.selectedDate!!.year,
+                    calendarView.selectedDate!!.month,
+                    calendarView.selectedDate!!.day
+                  )
                 )
               )
-            )
 
-            recyclerView.adapter = viewAdapter
-            body.visibility = View.VISIBLE
-            progressBar.visibility = View.GONE
+              recyclerView.adapter = viewAdapter
+              body.visibility = View.VISIBLE
+              progressBar.visibility = View.GONE
 
-            calendarView.addDecorator(
-              EventDecorator(
-                Color.parseColor("#D33A2C"),
-                it.map { w ->
-                  CalendarDay.from(
-                    w.created_at.atZone(ZoneId.systemDefault()).toLocalDate()
-                  )
-                })
-            )
-            loader.loadImage(avatarView, profile.profile_picture_url ?: "", profile.full_name)
-            nameLabel.text = profile.full_name
-            totalWorkoutsLabel.text = "Total workouts: ${it.size}"
-          },
-          onFailure = { error ->
-            Snackbar.make(
-              root,
-              error.message ?: "Something unpredictable happened.",
-              Snackbar.LENGTH_LONG
-            ).show()
-          }
-        )
+              calendarView.addDecorator(
+                EventDecorator(
+                  Color.parseColor("#D33A2C"),
+                  it.map { w ->
+                    CalendarDay.from(
+                      w.created_at.atZone(ZoneId.systemDefault()).toLocalDate()
+                    )
+                  })
+              )
+              loader.loadImage(avatarView, profile.profile_picture_url ?: "", profile.full_name)
+              nameLabel.text = profile.full_name
+              totalWorkoutsLabel.text = "Total workouts: ${it.size}"
+            },
+            onFailure = { error ->
+              Snackbar.make(
+                root,
+                error.message ?: "Something unpredictable happened.",
+                Snackbar.LENGTH_LONG
+              ).show()
+            }
+          )
+        }
       }
     }
   }

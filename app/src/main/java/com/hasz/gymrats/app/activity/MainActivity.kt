@@ -1,5 +1,6 @@
 package com.hasz.gymrats.app.activity
 
+import agency.tango.android.avatarview.views.AvatarView
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
@@ -9,12 +10,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
+import com.hasz.gymrats.app.MainNavigationDirections
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.extension.activeOrUpcoming
+import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.service.AuthService
 import com.hasz.gymrats.app.state.ChallengeState
@@ -23,6 +27,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
   private lateinit var appBarConfiguration: AppBarConfiguration
   private lateinit var navController: NavController
   private lateinit var drawer: DrawerLayout
+  private val loader = GlideLoader()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -41,17 +46,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
       val header = LayoutInflater.from(context).inflate(R.layout.nav_header_main, null)
       val name = header.findViewById<TextView>(R.id.name)
       val email = header.findViewById<TextView>(R.id.email)
-      val imageView = header.findViewById<ImageView>(R.id.imageView)
+      val avatarView = header.findViewById<AvatarView>(R.id.avatarView)
 
       name.text = AuthService.currentAccount!!.full_name
       email.text = AuthService.currentAccount!!.email
-
-      AuthService.currentAccount!!.profile_picture_url?.let {
-        Glide.with(this)
-          .load(it)
-          .circleCrop()
-          .into(imageView)
-      }
+      loader.loadImage(avatarView!!, AuthService.currentAccount!!.profile_picture_url ?: "", AuthService.currentAccount!!.name)
 
       addHeaderView(header)
     }
