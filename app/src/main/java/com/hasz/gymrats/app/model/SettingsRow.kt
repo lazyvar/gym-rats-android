@@ -4,5 +4,6 @@ data class SettingsRow(
   val headerText: String?,
   val action: (() -> Unit)?,
   val leftText: String?,
-  val rightText: String?
+  val rightText: String?,
+  val isProfilePicture: Boolean = false
 )

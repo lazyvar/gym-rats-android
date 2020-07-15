@@ -7,17 +7,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hasz.gymrats.app.R
-import com.hasz.gymrats.app.application.GymRatsApplication
 import com.hasz.gymrats.app.loader.GlideLoader
-import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.model.SettingsRow
-import java.text.SimpleDateFormat
+import com.hasz.gymrats.app.service.AuthService
 
 class SettingsAdapter(private val rows: List<SettingsRow>): RecyclerView.Adapter<SettingsAdapter.ViewHolder>() {
   inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
     val leftText: TextView? = itemView.findViewById(R.id.leftText)
     val rightText: TextView? = itemView.findViewById(R.id.rightText)
     val headerText: TextView? = itemView.findViewById(R.id.headerText)
+    val avatarView: AvatarView? = itemView.findViewById(R.id.avatarView)
+    val loader = GlideLoader()
   }
 
   override fun getItemCount() = rows.size
@@ -54,6 +54,13 @@ class SettingsAdapter(private val rows: List<SettingsRow>): RecyclerView.Adapter
       holder.leftText?.text = row.leftText ?: ""
       holder.rightText?.text = row.rightText ?: ""
       holder.itemView.setOnClickListener { row.action?.let { it() } }
+    }
+
+    if (row.isProfilePicture) {
+      holder.avatarView?.visibility = View.VISIBLE
+      holder.loader.loadImage(holder.avatarView!!, AuthService.currentAccount!!.profile_picture_url ?: "", AuthService.currentAccount!!.full_name)
+    } else {
+      holder.avatarView?.visibility = View.GONE
     }
   }
 }

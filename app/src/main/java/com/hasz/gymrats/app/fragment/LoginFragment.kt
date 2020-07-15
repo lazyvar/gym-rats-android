@@ -49,10 +49,11 @@ class LoginFragment: Fragment() {
               AuthService.storeAccount(account = account)
               val intent = Intent().apply {
                 context?.let { it -> setClass(it, MainActivity::class.java) }
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
               }
 
               startActivity(intent)
+              activity?.finish()
             },
             onFailure = { error ->
               Snackbar.make(it, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()

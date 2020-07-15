@@ -141,9 +141,10 @@ object GymRatsApi {
       .responseObject(gsonGuy, handleObject(handler))
   }
 
-  fun updateAccount(email: String? = null, name: String? = null, password: String? = null, currentPassword: String? = null, handler: (Result<Account>) -> Unit) {
+  fun updateAccount(profilePictureUrl: String? = null, email: String? = null, name: String? = null, password: String? = null, currentPassword: String? = null, handler: (Result<Account>) -> Unit) {
     val body = ArrayList<Pair<String, String>>()
 
+    profilePictureUrl?.let { body.add("profile_picture_url" to it) }
     email?.let { body.add("email" to it) }
     name?.let { body.add("full_name" to it) }
     password?.let { body.add("password" to it) }

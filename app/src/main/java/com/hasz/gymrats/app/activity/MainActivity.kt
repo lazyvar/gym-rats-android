@@ -1,21 +1,22 @@
 package com.hasz.gymrats.app.activity
 
 import agency.tango.android.avatarview.views.AvatarView
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
-import android.widget.ImageView
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
-import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
-import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
-import com.hasz.gymrats.app.MainNavigationDirections
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.extension.activeOrUpcoming
 import com.hasz.gymrats.app.loader.GlideLoader
@@ -89,6 +90,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
   override fun onSupportNavigateUp(): Boolean {
     val navController = findNavController(R.id.nav_host_fragment)
 
+    hideSoftKeyboard(this)
+
     return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
   }
 
@@ -129,6 +132,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer.closeDrawer(Gravity.START)
 
         true
+      }
+    }
+  }
+
+  fun hideSoftKeyboard(activity: Activity) {
+    val inputMethodManager: InputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+
+    if (inputMethodManager.isActive()) {
+      if (activity.currentFocus != null) {
+        inputMethodManager.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
       }
     }
   }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.adapter.CompletedChallengesAdapter
 import com.hasz.gymrats.app.databinding.FragmentCompletedChallengesBinding
 import com.hasz.gymrats.app.extension.completed
@@ -24,6 +25,8 @@ class CompletedChallengesFragment: Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
+    (context as? MainActivity)?.supportActionBar?.title = "Completed challenges"
+
     viewManager = LinearLayoutManager(context)
     viewAdapter = CompletedChallengesAdapter(arrayListOf())
 

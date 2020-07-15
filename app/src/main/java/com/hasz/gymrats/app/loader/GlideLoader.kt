@@ -19,9 +19,8 @@ class GlideLoader: ImageLoaderBase, ImageLoader {
   ) {
     Glide.with(avatarView.context)
       .load(avatarUrl)
-      .centerCrop()
+      .circleCrop()
       .placeholder(avatarPlaceholder)
-      .fitCenter()
       .into(avatarView)
   }
 
@@ -30,6 +29,8 @@ class GlideLoader: ImageLoaderBase, ImageLoader {
 
     Glide.with(GymRatsApplication.context!!)
       .load(url)
+      .fitCenter()
+      .circleCrop()
       .into(imageView)
   }
 }
