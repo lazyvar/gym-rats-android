@@ -129,6 +129,12 @@ object GymRatsApi {
     }
   }
 
+  fun deleteWorkout(workout: Workout, handler: (Result<Workout>) -> Unit) {
+    Fuel.delete("workouts/${workout.id}")
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
   fun rankings(challenge: Challenge, handler: (Result<List<Ranking>>) -> Unit) {
     Fuel.get("challenges/${challenge.id}/rankings")
       .validate { true }

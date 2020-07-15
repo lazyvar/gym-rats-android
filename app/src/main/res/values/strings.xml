@@ -69,4 +69,5 @@
     <string name="description_optional">Description (optional)</string>
     <string name="workout_title">Title</string>
     <string name="post">Post</string>
+    <string name="remove">Remove</string>
 </resources>
