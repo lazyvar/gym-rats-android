@@ -30,7 +30,6 @@ class GlideLoader: ImageLoaderBase, ImageLoader {
 
     Glide.with(GymRatsApplication.context!!)
       .load(url)
-      .fitCenter()
       .into(imageView)
   }
 }
