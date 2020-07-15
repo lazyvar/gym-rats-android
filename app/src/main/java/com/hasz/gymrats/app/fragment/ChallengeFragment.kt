@@ -14,9 +14,10 @@ import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.adapter.ChallengeAdapter
 import com.hasz.gymrats.app.databinding.FragmentChallengeBinding
 import com.hasz.gymrats.app.model.Challenge
+import com.hasz.gymrats.app.refreshable.Refreshable
 import com.hasz.gymrats.app.service.GymRatsApi
 
-class ChallengeFragment: Fragment() {
+class ChallengeFragment: Fragment(), Refreshable {
   private lateinit var viewAdapter: RecyclerView.Adapter<*>
   private lateinit var viewManager: RecyclerView.LayoutManager
   private lateinit var challenge: Challenge
@@ -55,7 +56,7 @@ class ChallengeFragment: Fragment() {
     return savedView
   }
 
-  fun refresh() {
+  override fun refresh() {
     binding.apply {
       recyclerView.adapter = viewAdapter
       recyclerView.layoutManager = viewManager

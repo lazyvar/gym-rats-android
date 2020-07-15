@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.adapter.ProfileAdapter
+import com.hasz.gymrats.app.databinding.FragmentChallengeBinding
 import com.hasz.gymrats.app.databinding.FragmentProfileBinding
 import com.hasz.gymrats.app.extension.completed
 import com.hasz.gymrats.app.extension.onDay
@@ -19,6 +20,7 @@ import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Account
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.model.Workout
+import com.hasz.gymrats.app.refreshable.Refreshable
 import com.hasz.gymrats.app.service.GymRatsApi
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
@@ -29,11 +31,12 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.LocalDate
 import java.util.*
 
-class ProfileFragment: Fragment() {
+class ProfileFragment: Fragment(), Refreshable {
   private lateinit var profile: Account
   private lateinit var challenge: Challenge
   private lateinit var viewManager: RecyclerView.LayoutManager
   private lateinit var viewAdapter: RecyclerView.Adapter<*>
+  private lateinit var binding: FragmentProfileBinding
 
   private val loader = GlideLoader()
   private var savedView: View? = null
@@ -52,6 +55,15 @@ class ProfileFragment: Fragment() {
     savedView = DataBindingUtil.inflate<FragmentProfileBinding>(
       inflater, R.layout.fragment_profile, container, false
     ).apply {
+      binding = this
+      refresh()
+    }.root
+
+    return savedView
+  }
+
+  override fun refresh() {
+    binding.apply {
       body.visibility = View.GONE
       progressBar.visibility = View.VISIBLE
       recyclerView.layoutManager = viewManager
@@ -78,13 +90,30 @@ class ProfileFragment: Fragment() {
         result.fold(
           onSuccess = {
             workouts = it
-            viewAdapter = ProfileAdapter(challenge, it.onDay(LocalDate.of(calendarView.selectedDate!!.year, calendarView.selectedDate!!.month, calendarView.selectedDate!!.day)))
-            recyclerView.adapter = viewAdapter
+            viewAdapter = ProfileAdapter(
+              challenge,
+              it.onDay(
+                LocalDate.of(
+                  calendarView.selectedDate!!.year,
+                  calendarView.selectedDate!!.month,
+                  calendarView.selectedDate!!.day
+                )
+              )
+            )
 
+            recyclerView.adapter = viewAdapter
             body.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
 
-            calendarView.addDecorator(EventDecorator(Color.parseColor("#D33A2C"), it.map { w -> CalendarDay.from(w.created_at.atZone(ZoneId.systemDefault()).toLocalDate()) }))
+            calendarView.addDecorator(
+              EventDecorator(
+                Color.parseColor("#D33A2C"),
+                it.map { w ->
+                  CalendarDay.from(
+                    w.created_at.atZone(ZoneId.systemDefault()).toLocalDate()
+                  )
+                })
+            )
             loader.loadImage(avatarView, profile.profile_picture_url ?: "", profile.full_name)
             nameLabel.text = profile.full_name
             totalWorkoutsLabel.text = "Total workouts: ${it.size}"
@@ -98,9 +127,7 @@ class ProfileFragment: Fragment() {
           }
         )
       }
-    }.root
-
-    return savedView
+    }
   }
 }
 

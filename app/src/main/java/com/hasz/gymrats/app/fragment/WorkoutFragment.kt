@@ -1,20 +1,25 @@
 package com.hasz.gymrats.app.fragment
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.databinding.FragmentWorkoutBinding
 import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.model.Workout
 import com.hasz.gymrats.app.model.createdAt
+import com.hasz.gymrats.app.refreshable.Refreshable
+import com.hasz.gymrats.app.service.AuthService
+import com.hasz.gymrats.app.service.GymRatsApi
 import org.threeten.bp.format.DateTimeFormatter
+
 
 class WorkoutFragment: Fragment() {
   private lateinit var workout: Workout
@@ -39,6 +44,10 @@ class WorkoutFragment: Fragment() {
 
     workout = requireArguments().getParcelable("workout")!!
     challenge = requireArguments().getParcelable("challenge")!!
+
+    if (workout.account.id == AuthService.currentAccount!!.id) {
+      setHasOptionsMenu(true)
+    }
 
     savedView = DataBindingUtil.inflate<FragmentWorkoutBinding>(
       inflater, R.layout.fragment_workout, container, false
@@ -78,9 +87,11 @@ class WorkoutFragment: Fragment() {
       avatarView.setOnClickListener {
         it.findNavController().navigate(WorkoutFragmentDirections.profile(profile = workout.account, challenge = challenge))
       }
+
       accountNameLabel.setOnClickListener {
         it.findNavController().navigate(WorkoutFragmentDirections.profile(profile = workout.account, challenge = challenge))
       }
+
       accountNameLabel.text = workout.account.full_name
       loader.loadImage(avatarView, workout.account.profile_picture_url ?: "", workout.account.full_name)
       titleLabel.text = workout.title
@@ -89,5 +100,49 @@ class WorkoutFragment: Fragment() {
     }.root
 
     return savedView
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    super.onCreateOptionsMenu(menu, inflater)
+
+    if (workout.account.id == AuthService.currentAccount!!.id) {
+      inflater.inflate(R.menu.workout, menu)
+    }
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return when (item.itemId) {
+      R.id.remove -> {
+        AlertDialog.Builder(context)
+          .setTitle("Delete workout")
+          .setMessage("Are you sure you want to delete this workout?")
+          .setPositiveButton(android.R.string.yes) { _, _ ->
+            GymRatsApi.deleteWorkout(workout) { result ->
+              result.fold(
+                onSuccess = { _ ->
+                  activity?.supportFragmentManager?.fragments?.forEach { frag ->
+                    if (frag is Refreshable) {
+                      frag.refresh()
+                    }
+                  }
+                  activity?.findNavController(R.id.workoutImageView)?.popBackStack()
+                },
+                onFailure = { error ->
+                  Snackbar.make(savedView!!, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+                }
+              )
+            }
+          }
+          .setCancelable(false)
+          .setNeutralButton(android.R.string.no, null)
+          .setIcon(android.R.drawable.ic_dialog_alert)
+          .show()
+
+        true
+      }
+      else -> {
+        super.onOptionsItemSelected(item)
+      }
+    }
   }
 }

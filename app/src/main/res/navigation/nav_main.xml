@@ -97,7 +97,9 @@
     <fragment
         android:id="@+id/nav_workout"
         android:name="com.hasz.gymrats.app.fragment.WorkoutFragment"
-        tools:layout="@layout/fragment_workout">
+        tools:layout="@layout/fragment_workout"
+        app:menu="@menu/log_workout"
+        >
 
         <action
             android:id="@+id/profile"
