@@ -7,6 +7,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.hasz.gymrats.app.application.GymRatsApplication
 import com.stfalcon.chatkit.commons.ImageLoader
+import com.stfalcon.chatkit.utils.ShapeImageView
 
 class GlideLoader: ImageLoaderBase, ImageLoader {
   constructor() : super() {}
@@ -19,17 +20,26 @@ class GlideLoader: ImageLoaderBase, ImageLoader {
   ) {
     Glide.with(avatarView.context)
       .load(avatarUrl)
-      .centerCrop()
+      .circleCrop()
       .placeholder(avatarPlaceholder)
-      .fitCenter()
       .into(avatarView)
   }
 
   override fun loadImage(imageView: ImageView?, url: String?, payload: Any?) {
     if (url == null || url.isEmpty() || imageView == null) { return }
 
-    Glide.with(GymRatsApplication.context!!)
-      .load(url)
-      .into(imageView)
+    if (imageView is ShapeImageView) {
+      Glide.with(GymRatsApplication.context!!)
+        .load(url)
+        .fitCenter()
+        .circleCrop()
+        .into(imageView)
+    } else {
+      Glide.with(GymRatsApplication.context!!)
+        .load(url)
+        .fitCenter()
+        .centerCrop()
+        .into(imageView)
+    }
   }
 }

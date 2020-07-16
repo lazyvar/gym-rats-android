@@ -1,7 +1,6 @@
 package com.hasz.gymrats.app.fragment
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
@@ -95,7 +94,14 @@ class WorkoutFragment: Fragment() {
       accountNameLabel.text = workout.account.full_name
       loader.loadImage(avatarView, workout.account.profile_picture_url ?: "", workout.account.full_name)
       titleLabel.text = workout.title
-      descriptionLabel.text = desc.filterNotNull().joinToString("\n")
+
+      val compiled = desc.filterNotNull()
+      if (compiled.isEmpty()) {
+        descriptionLabel.text = null
+      } else {
+        descriptionLabel.text = compiled.joinToString("\n")
+      }
+
       timeLabel.text = workout.createdAt().format(DateTimeFormatter.ofPattern("h:mm a"))
     }.root
 

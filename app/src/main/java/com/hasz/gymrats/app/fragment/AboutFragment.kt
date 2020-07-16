@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.hasz.gymrats.app.R
+import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentAboutBinding
 
 class AboutFragment : Fragment() {
@@ -16,6 +17,8 @@ class AboutFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
+    (context as? MainActivity)?.supportActionBar?.title = "About"
+
     return DataBindingUtil.inflate<FragmentAboutBinding>(
       inflater, R.layout.fragment_about, container, false
     ).apply {

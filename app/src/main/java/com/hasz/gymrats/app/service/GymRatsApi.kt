@@ -9,6 +9,7 @@ import com.github.kittinunf.fuel.core.ResponseResultHandler
 import com.github.kittinunf.fuel.gson.responseObject
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.hasz.gymrats.app.config.EnvironmentConfig
 import com.hasz.gymrats.app.model.*
 import com.hasz.gymrats.app.typeadapter.InstantConverter
 import org.threeten.bp.Instant
@@ -19,7 +20,7 @@ import com.hasz.gymrats.app.typeadapter.LocalDateTimeConverter
 import org.threeten.bp.LocalDateTime
 
 object GymRatsApi {
-  private const val baseUrl = "https://gym-rats-api-pre-production.gigalixirapp.com"
+  private val baseUrl = EnvironmentConfig.base
   val gsonGuy: Gson
 
   init {
@@ -141,9 +142,10 @@ object GymRatsApi {
       .responseObject(gsonGuy, handleObject(handler))
   }
 
-  fun updateAccount(email: String? = null, name: String? = null, password: String? = null, currentPassword: String? = null, handler: (Result<Account>) -> Unit) {
+  fun updateAccount(profilePictureUrl: String? = null, email: String? = null, name: String? = null, password: String? = null, currentPassword: String? = null, handler: (Result<Account>) -> Unit) {
     val body = ArrayList<Pair<String, String>>()
 
+    profilePictureUrl?.let { body.add("profile_picture_url" to it) }
     email?.let { body.add("email" to it) }
     name?.let { body.add("full_name" to it) }
     password?.let { body.add("password" to it) }

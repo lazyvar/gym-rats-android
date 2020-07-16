@@ -1,28 +1,37 @@
 package com.hasz.gymrats.app.activity
 
+import agency.tango.android.avatarview.views.AvatarView
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageView
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
-import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
+import com.hasz.gymrats.app.MainNavigationDirections
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.extension.activeOrUpcoming
+import com.hasz.gymrats.app.extension.isActive
+import com.hasz.gymrats.app.fragment.HomeFragmentDirections
+import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.service.AuthService
+import com.hasz.gymrats.app.service.GymRatsApi
 import com.hasz.gymrats.app.state.ChallengeState
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
   private lateinit var appBarConfiguration: AppBarConfiguration
   private lateinit var navController: NavController
   private lateinit var drawer: DrawerLayout
+  private val loader = GlideLoader()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -41,17 +50,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
       val header = LayoutInflater.from(context).inflate(R.layout.nav_header_main, null)
       val name = header.findViewById<TextView>(R.id.name)
       val email = header.findViewById<TextView>(R.id.email)
-      val imageView = header.findViewById<ImageView>(R.id.imageView)
+      val avatarView = header.findViewById<AvatarView>(R.id.avatarView)
 
       name.text = AuthService.currentAccount!!.full_name
       email.text = AuthService.currentAccount!!.email
-
-      AuthService.currentAccount!!.profile_picture_url?.let {
-        Glide.with(this)
-          .load(it)
-          .circleCrop()
-          .into(imageView)
-      }
+      loader.loadImage(avatarView!!, AuthService.currentAccount!!.profile_picture_url ?: "", AuthService.currentAccount!!.name)
 
       addHeaderView(header)
     }
@@ -59,6 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     appBarConfiguration = AppBarConfiguration(
       setOf(
         R.id.home,
+        R.id.noChallenges,
         R.id.nav_challenge_bottom_nav,
         R.id.nav_completed_challenges,
         R.id.nav_settings,
@@ -90,7 +94,45 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
   override fun onSupportNavigateUp(): Boolean {
     val navController = findNavController(R.id.nav_host_fragment)
 
+    hideSoftKeyboard(this)
+
     return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+  }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+
+    if (resultCode == 54321 && requestCode == 999) {
+      GymRatsApi.allChallenges { result ->
+        result.fold(
+          onSuccess = { challenges ->
+            drawer.closeDrawer(Gravity.START)
+
+            ChallengeState.allChallenges = challenges
+
+            val activeOrUpcoming = challenges.activeOrUpcoming()
+
+            if (activeOrUpcoming.isEmpty()) {
+              navController.navigate(MainNavigationDirections.noChallenges())
+            } else {
+              updateNav(activeOrUpcoming)
+
+              val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
+
+              if (challenge.isActive()) {
+                navController.navigate(MainNavigationDirections.challengeBottomNav(challenge))
+              } else {
+                // TODO: upcoming challenge
+                navController.navigate(MainNavigationDirections.challengeBottomNav(challenge))
+              }
+            }
+          },
+          onFailure = { error ->
+            Snackbar.make(drawer, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+          }
+        )
+      }
+    }
   }
 
   override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -100,7 +142,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
           applicationContext?.let { setClass(it, JoinChallengeActivity::class.java) }
         }
 
-        startActivity(intent)
+        startActivityForResult(intent, 999)
 
         false
       }
@@ -109,7 +151,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
           applicationContext?.let { setClass(it, CreateChallengeActivity::class.java) }
         }
 
-        startActivity(intent)
+        startActivityForResult(intent, 999)
 
         false
       }
@@ -130,6 +172,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer.closeDrawer(Gravity.START)
 
         true
+      }
+    }
+  }
+
+  fun hideSoftKeyboard(activity: Activity) {
+    val inputMethodManager: InputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+
+    if (inputMethodManager.isActive()) {
+      if (activity.currentFocus != null) {
+        inputMethodManager.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
       }
     }
   }

@@ -21,29 +21,46 @@ class CompletedChallengesAdapter(private val challenges: List<Challenge>): Recyc
     val name: TextView = itemView.findViewById(R.id.name)
     val description: TextView = itemView.findViewById(R.id.description)
     val avatarView: AvatarView = itemView.findViewById(R.id.avatarView)
+    val headerText: TextView? = itemView.findViewById(R.id.headerText)
     val loader = GlideLoader()
   }
 
-  override fun getItemCount() = challenges.size
+  override fun getItemCount() = if (challenges.isEmpty()) { 1 } else { challenges.size }
 
   override fun onCreateViewHolder(
     parent: ViewGroup,
     viewType: Int
   ): ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
-    val view = inflater.inflate(R.layout.item_completed_challenge, parent, false)
 
-    return ViewHolder(view)
+    return if (challenges.isEmpty()) {
+      val view = inflater.inflate(R.layout.item_challenge_header, parent, false)
+
+      ViewHolder(view)
+    } else {
+      val view = inflater.inflate(R.layout.item_completed_challenge, parent, false)
+
+      ViewHolder(view)
+    }
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     val challenge = challenges[position]
 
-    holder.loader.loadImage(holder.avatarView, challenge.profile_picture_url ?: "", challenge.name)
-    holder.name.text = challenge.name
-    holder.description.text = challenge.end_date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))
-    holder.itemView.setOnClickListener {
-      it.findNavController().navigate(CompletedChallengesFragmentDirections.challenge(challenge))
+    if (challenges.isEmpty()) {
+      holder.headerText?.text = "No completed challenges"
+    } else {
+      holder.loader.loadImage(
+        holder.avatarView,
+        challenge.profile_picture_url ?: "",
+        challenge.name
+      )
+      holder.name.text = challenge.name
+      holder.description.text =
+        challenge.end_date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))
+      holder.itemView.setOnClickListener {
+        it.findNavController().navigate(CompletedChallengesFragmentDirections.challenge(challenge))
+      }
     }
   }
 }

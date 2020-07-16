@@ -15,6 +15,7 @@ import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentJoinChallengeBinding
 import com.hasz.gymrats.app.service.AuthService
 import com.hasz.gymrats.app.service.GymRatsApi
+import com.hasz.gymrats.app.state.ChallengeState
 
 class JoinChallengeFragment: Fragment() {
   override fun onCreateView(
@@ -44,8 +45,10 @@ class JoinChallengeFragment: Fragment() {
           progressBar.visibility = View.INVISIBLE
 
           result.fold(
-            onSuccess = { _ ->
-              // TODO: handle challenges state change
+            onSuccess = { challenge ->
+              ChallengeState.lastOpenedChallengeId = challenge.id
+              activity?.setResult(54321)
+              activity?.finish()
             },
             onFailure = { error ->
               Snackbar.make(
