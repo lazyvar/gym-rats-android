@@ -69,4 +69,6 @@
     <string name="workout_title">Title</string>
     <string name="post">Post</string>
     <string name="remove">Remove</string>
+    <string name="stats">Stats</string>
+    <string name="chat">Chat</string>
 </resources>

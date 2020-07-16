@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.hasz.gymrats.app.R
 
-class CreateChallengeActivity : AppCompatActivity() {
+class CreateChallengeActivity: AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

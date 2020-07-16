@@ -97,8 +97,10 @@ class CreateChallengeFragment : Fragment() {
           createChallengeButton.isEnabled = true
 
           result.fold(
-            onSuccess = { _ ->
-              // TODO
+            onSuccess = { challenge ->
+              ChallengeState.lastOpenedChallengeId = challenge.id
+              activity?.setResult(54321)
+              activity?.finish()
             },
             onFailure = { error ->
               Snackbar.make(it, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()

@@ -1,7 +1,6 @@
 package com.hasz.gymrats.app.fragment
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil

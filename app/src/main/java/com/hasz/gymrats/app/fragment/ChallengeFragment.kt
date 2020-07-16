@@ -1,11 +1,10 @@
 package com.hasz.gymrats.app.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -13,6 +12,7 @@ import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.adapter.ChallengeAdapter
 import com.hasz.gymrats.app.databinding.FragmentChallengeBinding
+import com.hasz.gymrats.app.extension.completed
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.refreshable.Refreshable
 import com.hasz.gymrats.app.service.GymRatsApi
@@ -38,18 +38,31 @@ class ChallengeFragment: Fragment(), Refreshable {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    if (savedView != null) { return savedView }
-
     challenge = requireArguments().getParcelable("challenge")!!
+    (context as? MainActivity)?.supportActionBar?.title = challenge.name
+
+    if (savedView != null) {
+      return savedView
+    }
+
     viewManager = LinearLayoutManager(context)
     viewAdapter = ChallengeAdapter(challenge, arrayListOf())
-
-    (context as? MainActivity)?.supportActionBar?.title = challenge.name
 
     savedView = DataBindingUtil.inflate<FragmentChallengeBinding>(
       inflater, R.layout.fragment_challenge, container, false
     ).apply {
       binding = this
+
+      if (challenge.completed()) {
+        val p = recyclerView.layoutParams as ViewGroup.MarginLayoutParams
+        p.bottomMargin = 0
+
+        recyclerView.layoutParams = p
+        recyclerView.requestLayout()
+
+        setHasOptionsMenu(true)
+      }
+
       refresh()
     }.root
 
@@ -100,6 +113,32 @@ class ChallengeFragment: Fragment(), Refreshable {
           }
         )
       }
+    }
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    super.onCreateOptionsMenu(menu, inflater)
+
+    inflater.inflate(R.menu.completed_challenge, menu)
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return when (item.itemId) {
+      R.id.nav_chat -> {
+        findNavController().navigate(
+          ChallengeFragmentDirections.chat(challenge)
+        )
+
+        true
+      }
+      R.id.nav_stats -> {
+        findNavController().navigate(
+          ChallengeFragmentDirections.stats(challenge)
+        )
+
+        true
+      }
+      else -> { super.onOptionsItemSelected(item) }
     }
   }
 }

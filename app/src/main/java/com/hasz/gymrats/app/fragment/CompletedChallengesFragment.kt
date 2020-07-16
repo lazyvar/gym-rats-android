@@ -47,12 +47,8 @@ class CompletedChallengesFragment: Fragment() {
           onSuccess = { challenges ->
             val completedChallenges = challenges.completed()
 
-            if (completedChallenges.isEmpty()) {
-              // TODO
-            } else {
-              viewAdapter = CompletedChallengesAdapter(completedChallenges)
-              recyclerView.adapter = viewAdapter
-            }
+            viewAdapter = CompletedChallengesAdapter(completedChallenges)
+            recyclerView.adapter = viewAdapter
           },
           onFailure = { error ->
             Snackbar.make(root, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()

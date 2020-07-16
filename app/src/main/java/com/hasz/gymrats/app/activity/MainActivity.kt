@@ -4,10 +4,7 @@ import agency.tango.android.avatarview.views.AvatarView
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,13 +12,19 @@ import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
+import com.hasz.gymrats.app.MainNavigationDirections
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.extension.activeOrUpcoming
+import com.hasz.gymrats.app.extension.isActive
+import com.hasz.gymrats.app.fragment.HomeFragmentDirections
 import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.service.AuthService
+import com.hasz.gymrats.app.service.GymRatsApi
 import com.hasz.gymrats.app.state.ChallengeState
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -59,6 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     appBarConfiguration = AppBarConfiguration(
       setOf(
         R.id.home,
+        R.id.noChallenges,
         R.id.nav_challenge_bottom_nav,
         R.id.nav_completed_challenges,
         R.id.nav_settings,
@@ -95,6 +99,42 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
   }
 
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+
+    if (resultCode == 54321 && requestCode == 999) {
+      GymRatsApi.allChallenges { result ->
+        result.fold(
+          onSuccess = { challenges ->
+            drawer.closeDrawer(Gravity.START)
+
+            ChallengeState.allChallenges = challenges
+
+            val activeOrUpcoming = challenges.activeOrUpcoming()
+
+            if (activeOrUpcoming.isEmpty()) {
+              navController.navigate(MainNavigationDirections.noChallenges())
+            } else {
+              updateNav(activeOrUpcoming)
+
+              val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
+
+              if (challenge.isActive()) {
+                navController.navigate(MainNavigationDirections.challengeBottomNav(challenge))
+              } else {
+                // TODO: upcoming challenge
+                navController.navigate(MainNavigationDirections.challengeBottomNav(challenge))
+              }
+            }
+          },
+          onFailure = { error ->
+            Snackbar.make(drawer, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+          }
+        )
+      }
+    }
+  }
+
   override fun onNavigationItemSelected(item: MenuItem): Boolean {
     return when(item.itemId) {
       R.id.nav_join_challenge -> {
@@ -102,7 +142,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
           applicationContext?.let { setClass(it, JoinChallengeActivity::class.java) }
         }
 
-        startActivity(intent)
+        startActivityForResult(intent, 999)
 
         false
       }
@@ -111,7 +151,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
           applicationContext?.let { setClass(it, CreateChallengeActivity::class.java) }
         }
 
-        startActivity(intent)
+        startActivityForResult(intent, 999)
 
         false
       }
