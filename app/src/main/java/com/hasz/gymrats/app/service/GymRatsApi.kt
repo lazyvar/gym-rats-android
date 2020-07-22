@@ -72,6 +72,12 @@ object GymRatsApi {
       .responseObject(gsonGuy, handleObject(handler))
   }
 
+  fun getMembers(challenge: Challenge, handler: (Result<List<Account>>) -> Unit) {
+    Fuel.get("challenges/${challenge.id}/members")
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
   fun createChallenge(startDate: Date, endDate: Date, name: String, description: String?, scoreBy: String, handler: (Result<Challenge>) -> Unit) {
     val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ")
     val start = dateFormatter.format(atStartOfDay(startDate))

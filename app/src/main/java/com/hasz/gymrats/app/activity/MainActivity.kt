@@ -12,7 +12,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -20,7 +19,6 @@ import com.hasz.gymrats.app.MainNavigationDirections
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.extension.activeOrUpcoming
 import com.hasz.gymrats.app.extension.isActive
-import com.hasz.gymrats.app.fragment.HomeFragmentDirections
 import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.service.AuthService
@@ -63,6 +61,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
       setOf(
         R.id.home,
         R.id.nav_no_challenges,
+        R.id.nav_upcoming_challenge,
         R.id.nav_challenge_bottom_nav,
         R.id.nav_completed_challenges,
         R.id.nav_settings,
@@ -119,7 +118,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
               val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
 
               navController.popBackStack()
-              navController.navigate(MainNavigationDirections.challengeBottomNav(challenge))
+
+              if (challenge.isActive()) {
+                navController.navigate(MainNavigationDirections.challengeBottomNav(challenge))
+              } else {
+                navController.navigate(MainNavigationDirections.upcomingChallenge(challenge))
+              }
             }
           },
           onFailure = { error ->
@@ -157,7 +161,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         ChallengeState.lastOpenedChallengeId = challenge.id
 
-        NavigationUI.onNavDestinationSelected(item, navController)
+        if (challenge.isActive()) {
+          navController.navigate(MainNavigationDirections.challengeBottomNav(challenge))
+        } else {
+          navController.navigate(MainNavigationDirections.upcomingChallenge(challenge))
+        }
+
         drawer.closeDrawer(Gravity.START)
 
         true

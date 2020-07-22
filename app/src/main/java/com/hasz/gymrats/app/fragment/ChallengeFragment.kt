@@ -12,13 +12,10 @@ import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.adapter.ChallengeAdapter
 import com.hasz.gymrats.app.databinding.FragmentChallengeBinding
-import com.hasz.gymrats.app.extension.activeOrUpcoming
 import com.hasz.gymrats.app.extension.completed
-import com.hasz.gymrats.app.extension.isActive
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.refreshable.Refreshable
 import com.hasz.gymrats.app.service.GymRatsApi
-import com.hasz.gymrats.app.state.ChallengeState
 
 class ChallengeFragment: Fragment(), Refreshable {
   private lateinit var viewAdapter: RecyclerView.Adapter<*>
