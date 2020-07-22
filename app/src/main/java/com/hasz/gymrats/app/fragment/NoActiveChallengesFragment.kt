@@ -17,6 +17,7 @@ import com.hasz.gymrats.app.activity.JoinChallengeActivity
 import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentNoActiveChallengesBinding
 import com.hasz.gymrats.app.extension.activeOrUpcoming
+import com.hasz.gymrats.app.extension.isActive
 import com.hasz.gymrats.app.service.GymRatsApi
 import com.hasz.gymrats.app.state.ChallengeState
 
@@ -67,7 +68,12 @@ class NoActiveChallengesFragment: Fragment() {
               val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
 
               nav.popBackStack()
-              nav.navigate(MainNavigationDirections.challengeBottomNav(challenge))
+
+              if (challenge.isActive()) {
+                nav.navigate(MainNavigationDirections.challengeBottomNav(challenge))
+              } else {
+                nav.navigate(MainNavigationDirections.upcomingChallenge(challenge))
+              }
             }
           },
           onFailure = { error ->

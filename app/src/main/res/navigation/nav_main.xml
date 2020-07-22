@@ -291,6 +291,18 @@
         app:popUpToInclusive="true"/>
 
     <action
+        android:id="@+id/upcomingChallenge"
+        app:destination="@id/nav_upcoming_challenge"
+        app:enterAnim="@anim/fragment_fade_enter"
+        app:popUpTo="@+id/main_navigation"
+        app:popUpToInclusive="true">
+
+        <argument
+            android:name="challenge"
+            app:argType="com.hasz.gymrats.app.model.Challenge" />
+    </action>
+
+    <action
         android:id="@+id/challengeBottomNav"
         app:destination="@id/nav_challenge_bottom_nav"
         app:enterAnim="@anim/fragment_fade_enter"
@@ -306,5 +318,36 @@
         android:id="@+id/nav_edit_challenge"
         android:name="com.hasz.gymrats.app.fragment.EditChallengeFragment"
         tools:layout="@layout/fragment_edit_challenge">
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_upcoming_challenge"
+        android:name="com.hasz.gymrats.app.fragment.UpcomingChallengeFragment"
+        tools:layout="@layout/fragment_upcoming_challenge">
+
+        <action
+            android:id="@+id/chat"
+            app:destination="@id/nav_chat"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+
+        <argument
+            android:name="challenge"
+            app:argType="com.hasz.gymrats.app.model.Challenge" />
+        </action>
+        <action
+            android:id="@+id/edit"
+            app:destination="@id/nav_edit_challenge"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+
+            <argument
+                android:name="challenge"
+                app:argType="com.hasz.gymrats.app.model.Challenge" />
+        </action>
     </fragment>
 </navigation>

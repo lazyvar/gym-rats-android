@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.hasz.gymrats.app.MainNavigationDirections
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentCreateChallengeBinding
@@ -107,7 +108,11 @@ class EditChallengeFragment : Fragment() {
                     } else {
                       val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
 
-                      nav.navigate(HomeFragmentDirections.challengeBottomNav(challenge))
+                      if (challenge.isActive()) {
+                        nav.navigate(MainNavigationDirections.challengeBottomNav(challenge))
+                      } else {
+                        nav.navigate(MainNavigationDirections.upcomingChallenge(challenge))
+                      }
                     }
                   },
                   onFailure = { error ->
