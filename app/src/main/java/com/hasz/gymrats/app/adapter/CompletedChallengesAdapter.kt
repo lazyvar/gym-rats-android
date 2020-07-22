@@ -51,7 +51,7 @@ class CompletedChallengesAdapter(private val challenges: List<Challenge>): Recyc
       val challenge = challenges[position]
 
       holder.loader.loadImage(
-        holder.avatarView,
+        holder.avatarView!!,
         challenge.profile_picture_url ?: "",
         challenge.name
       )

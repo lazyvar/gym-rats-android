@@ -49,6 +49,8 @@ class CreateChallengeFragment : Fragment() {
       startDate.editText?.inputType = InputType.TYPE_NULL
       startDate.editText?.setOnClickListener {
         val cal: Calendar = Calendar.getInstance()
+        cal.time = startDateTime
+
         val day: Int = cal.get(Calendar.DAY_OF_MONTH)
         val month: Int = cal.get(Calendar.MONTH)
         val year: Int = cal.get(Calendar.YEAR)
@@ -66,6 +68,8 @@ class CreateChallengeFragment : Fragment() {
       endDate.editText?.inputType = InputType.TYPE_NULL
       endDate.editText?.setOnClickListener {
         val cal: Calendar = Calendar.getInstance()
+        cal.time = endDateTime
+
         val day: Int = cal.get(Calendar.DAY_OF_MONTH)
         val month: Int = cal.get(Calendar.MONTH)
         val year: Int = cal.get(Calendar.YEAR)

@@ -18,6 +18,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import com.hasz.gymrats.app.typeadapter.LocalDateTimeConverter
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 
 object GymRatsApi {
   private val baseUrl = EnvironmentConfig.base
@@ -53,6 +54,20 @@ object GymRatsApi {
 
   fun allChallenges(handler: (Result<List<Challenge>>) -> Unit) {
     Fuel.get("/challenges")
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
+  fun editChallenge(id: Int, startDate: LocalDateTime, endDate: LocalDateTime, name: String, description: String?, handler: (Result<Challenge>) -> Unit) {
+    val start = startDate.toLocalDate().atStartOfDay().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+    val end = endDate.toLocalDate().atStartOfDay().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+    var body = listOf("start_date" to start, "end_date" to end, "name" to name)
+
+    description?.let {
+      body = ArrayList(body).apply { add("description" to it) }
+    }
+
+    Fuel.put("/challenges/${id}", body)
       .validate { true }
       .responseObject(gsonGuy, handleObject(handler))
   }

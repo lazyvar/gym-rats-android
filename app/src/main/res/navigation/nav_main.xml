@@ -255,6 +255,20 @@
                 android:name="challenge"
                 app:argType="com.hasz.gymrats.app.model.Challenge" />
         </action>
+
+        <action
+            android:id="@+id/edit"
+            app:destination="@id/nav_edit_challenge"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+
+            <argument
+                android:name="challenge"
+                app:argType="com.hasz.gymrats.app.model.Challenge" />
+        </action>
+
         <action
             android:id="@+id/stats"
             app:destination="@id/nav_stats"
@@ -288,4 +302,9 @@
             app:argType="com.hasz.gymrats.app.model.Challenge" />
     </action>
 
+    <fragment
+        android:id="@+id/nav_edit_challenge"
+        android:name="com.hasz.gymrats.app.fragment.EditChallengeFragment"
+        tools:layout="@layout/fragment_edit_challenge">
+    </fragment>
 </navigation>

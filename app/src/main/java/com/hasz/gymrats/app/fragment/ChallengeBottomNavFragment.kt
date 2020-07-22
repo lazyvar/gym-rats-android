@@ -132,11 +132,7 @@ class ChallengeBottomNavFragment: Fragment() {
                     } else {
                       val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
 
-                      if (challenge.isActive()) {
-                        nav.navigate(HomeFragmentDirections.challengeBottomNav(challenge))
-                      } else {
-                        nav.navigate(HomeFragmentDirections.challengeBottomNav(challenge))
-                      }
+                      nav.navigate(HomeFragmentDirections.challengeBottomNav(challenge))
                     }
 
                     (context as? MainActivity)?.supportActionBar?.setHomeButtonEnabled(false)
@@ -153,6 +149,13 @@ class ChallengeBottomNavFragment: Fragment() {
             }
           )
         }
+
+        true
+      }
+      R.id.nav_edit -> {
+        findNavController().navigate(
+          ChallengeBottomNavFragmentDirections.edit(challenge)
+        )
 
         true
       }
