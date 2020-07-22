@@ -23,6 +23,8 @@ class StatsAdapter(private val challenge: Challenge, private val rows: List<Stat
     val scoreBy: TextView? = itemView.findViewById(R.id.scoredBy)
     val startDate: TextView? = itemView.findViewById(R.id.startDate)
     val endDate: TextView? = itemView.findViewById(R.id.endDate)
+    val joinCode: TextView? = itemView.findViewById(R.id.joinCode)
+    val description: TextView? = itemView.findViewById(R.id.description)
 
     val loader = GlideLoader()
   }
@@ -64,6 +66,8 @@ class StatsAdapter(private val challenge: Challenge, private val rows: List<Stat
       holder.startDate?.text = row.challenge.start_date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))
       holder.endDate?.text = row.challenge.end_date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))
       holder.scoreBy?.text = row.challenge.score_by?.capitalize()
+      holder.description?.text = row.challenge.description
+      holder.joinCode?.text = row.challenge.code
     } else if (row.ranking != null) {
       holder.loader.loadImage(holder.avatar!!, row.ranking.account.profile_picture_url ?: "", row.ranking.account.name)
       holder.nameLabel?.text = row.ranking.account.name
