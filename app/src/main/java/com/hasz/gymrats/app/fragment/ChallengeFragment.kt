@@ -12,10 +12,13 @@ import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.adapter.ChallengeAdapter
 import com.hasz.gymrats.app.databinding.FragmentChallengeBinding
+import com.hasz.gymrats.app.extension.activeOrUpcoming
 import com.hasz.gymrats.app.extension.completed
+import com.hasz.gymrats.app.extension.isActive
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.refreshable.Refreshable
 import com.hasz.gymrats.app.service.GymRatsApi
+import com.hasz.gymrats.app.state.ChallengeState
 
 class ChallengeFragment: Fragment(), Refreshable {
   private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -40,6 +43,7 @@ class ChallengeFragment: Fragment(), Refreshable {
   ): View? {
     challenge = requireArguments().getParcelable("challenge")!!
     (context as? MainActivity)?.supportActionBar?.title = challenge.name
+    setHasOptionsMenu(challenge.completed())
 
     if (savedView != null) {
       return savedView
@@ -59,8 +63,6 @@ class ChallengeFragment: Fragment(), Refreshable {
 
         recyclerView.layoutParams = p
         recyclerView.requestLayout()
-
-        setHasOptionsMenu(true)
       }
 
       refresh()
@@ -119,7 +121,11 @@ class ChallengeFragment: Fragment(), Refreshable {
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
     super.onCreateOptionsMenu(menu, inflater)
 
-    inflater.inflate(R.menu.completed_challenge, menu)
+    menu.clear()
+
+    if (challenge.completed()) {
+      inflater.inflate(R.menu.completed_challenge, menu)
+    }
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {

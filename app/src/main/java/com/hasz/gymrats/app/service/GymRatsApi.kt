@@ -130,6 +130,12 @@ object GymRatsApi {
     }
   }
 
+  fun leave(challenge: Challenge, handler: (Result<Challenge>) -> Unit) {
+    Fuel.delete("memberships/${challenge.id}")
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
   fun deleteWorkout(workout: Workout, handler: (Result<Workout>) -> Unit) {
     Fuel.delete("workouts/${workout.id}")
       .validate { true }

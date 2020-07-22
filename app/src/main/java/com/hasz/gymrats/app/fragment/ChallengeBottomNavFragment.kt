@@ -3,19 +3,22 @@ package com.hasz.gymrats.app.fragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.activity.LogWorkoutActivity
 import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentChallengeBottomNavBinding
+import com.hasz.gymrats.app.extension.activeOrUpcoming
+import com.hasz.gymrats.app.extension.completed
+import com.hasz.gymrats.app.extension.isActive
 import com.hasz.gymrats.app.model.Challenge
+import com.hasz.gymrats.app.service.GymRatsApi
 import com.hasz.gymrats.app.state.ChallengeState
 import java.io.File
 
@@ -37,9 +40,9 @@ class ChallengeBottomNavFragment: Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    if (savedView != null) {
-      return savedView
-    }
+    if (savedView != null) { return savedView }
+
+    setHasOptionsMenu(true)
 
     challenge = arguments?.getParcelable("challenge")
       ?: ChallengeState.allChallenges.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId }
@@ -98,6 +101,63 @@ class ChallengeBottomNavFragment: Fragment() {
     }.root
 
     return savedView
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    super.onCreateOptionsMenu(menu, inflater)
+
+    menu.clear()
+
+    inflater.inflate(R.menu.challenge_menu, menu)
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return when(item.itemId) {
+      R.id.nav_leave -> {
+        GymRatsApi.leave(challenge) { result ->
+          result.fold(
+            onSuccess = { _ ->
+              GymRatsApi.allChallenges { result ->
+                result.fold(
+                  onSuccess = { challenges ->
+                    ChallengeState.lastOpenedChallengeId = 0
+                    ChallengeState.allChallenges = challenges
+
+                    val activeOrUpcoming = challenges.activeOrUpcoming()
+                    val nav = findNavController()
+                    (requireContext() as MainActivity).updateNav(activeOrUpcoming)
+
+                    if (activeOrUpcoming.isEmpty()) {
+                      nav.navigate(HomeFragmentDirections.noChallenges())
+                    } else {
+                      val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
+
+                      if (challenge.isActive()) {
+                        nav.navigate(HomeFragmentDirections.challengeBottomNav(challenge))
+                      } else {
+                        nav.navigate(HomeFragmentDirections.challengeBottomNav(challenge))
+                      }
+                    }
+
+                    (context as? MainActivity)?.supportActionBar?.setHomeButtonEnabled(false)
+                    (context as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                  },
+                  onFailure = { error ->
+                    Snackbar.make(requireView(), error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+                  }
+                )
+              }
+            },
+            onFailure = { error ->
+              Snackbar.make(requireView(), error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+            }
+          )
+        }
+
+        true
+      }
+      else -> { super.onOptionsItemSelected(item) }
+    }
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

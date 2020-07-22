@@ -18,9 +18,9 @@ import java.text.SimpleDateFormat
 
 class CompletedChallengesAdapter(private val challenges: List<Challenge>): RecyclerView.Adapter<CompletedChallengesAdapter.ViewHolder>() {
   inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
-    val name: TextView = itemView.findViewById(R.id.name)
-    val description: TextView = itemView.findViewById(R.id.description)
-    val avatarView: AvatarView = itemView.findViewById(R.id.avatarView)
+    val name: TextView? = itemView.findViewById(R.id.name)
+    val description: TextView? = itemView.findViewById(R.id.description)
+    val avatarView: AvatarView? = itemView.findViewById(R.id.avatarView)
     val headerText: TextView? = itemView.findViewById(R.id.headerText)
     val loader = GlideLoader()
   }
@@ -45,18 +45,18 @@ class CompletedChallengesAdapter(private val challenges: List<Challenge>): Recyc
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    val challenge = challenges[position]
-
     if (challenges.isEmpty()) {
       holder.headerText?.text = "No completed challenges"
     } else {
+      val challenge = challenges[position]
+
       holder.loader.loadImage(
         holder.avatarView,
         challenge.profile_picture_url ?: "",
         challenge.name
       )
-      holder.name.text = challenge.name
-      holder.description.text =
+      holder.name?.text = challenge.name
+      holder.description?.text =
         challenge.end_date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))
       holder.itemView.setOnClickListener {
         it.findNavController().navigate(CompletedChallengesFragmentDirections.challenge(challenge))

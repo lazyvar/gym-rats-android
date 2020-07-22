@@ -40,12 +40,11 @@ class HomeFragment: Fragment() {
 
             val activeOrUpcoming = challenges.activeOrUpcoming()
             val nav = findNavController()
+            (requireContext() as MainActivity).updateNav(activeOrUpcoming)
 
             if (activeOrUpcoming.isEmpty()) {
               nav.navigate(HomeFragmentDirections.noChallenges())
             } else {
-              (requireContext() as MainActivity).updateNav(activeOrUpcoming)
-
               val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
 
               if (challenge.isActive()) {
