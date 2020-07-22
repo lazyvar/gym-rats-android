@@ -71,4 +71,7 @@
     <string name="remove">Remove</string>
     <string name="stats">Stats</string>
     <string name="chat">Chat</string>
+    <string name="leave">Leave</string>
+    <string name="edit">Edit</string>
+    <string name="invite">Invite</string>
 </resources>

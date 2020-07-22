@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     appBarConfiguration = AppBarConfiguration(
       setOf(
         R.id.home,
-        R.id.noChallenges,
+        R.id.nav_no_challenges,
         R.id.nav_challenge_bottom_nav,
         R.id.nav_completed_challenges,
         R.id.nav_settings,
@@ -111,20 +111,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ChallengeState.allChallenges = challenges
 
             val activeOrUpcoming = challenges.activeOrUpcoming()
+            updateNav(activeOrUpcoming)
 
             if (activeOrUpcoming.isEmpty()) {
               navController.navigate(MainNavigationDirections.noChallenges())
             } else {
-              updateNav(activeOrUpcoming)
-
               val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
 
-              if (challenge.isActive()) {
-                navController.navigate(MainNavigationDirections.challengeBottomNav(challenge))
-              } else {
-                // TODO: upcoming challenge
-                navController.navigate(MainNavigationDirections.challengeBottomNav(challenge))
-              }
+              navController.popBackStack()
+              navController.navigate(MainNavigationDirections.challengeBottomNav(challenge))
             }
           },
           onFailure = { error ->

@@ -273,7 +273,7 @@
         android:id="@+id/noChallenges"
         app:destination="@id/nav_no_challenges"
         app:enterAnim="@anim/fragment_fade_enter"
-        app:popUpTo="@+id/nav_home"
+        app:popUpTo="@+id/main_navigation"
         app:popUpToInclusive="true"/>
 
     <action
