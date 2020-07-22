@@ -2,6 +2,7 @@ package com.hasz.gymrats.app.fragment
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -15,12 +16,9 @@ import com.hasz.gymrats.app.activity.LogWorkoutActivity
 import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentChallengeBottomNavBinding
 import com.hasz.gymrats.app.extension.activeOrUpcoming
-import com.hasz.gymrats.app.extension.completed
-import com.hasz.gymrats.app.extension.isActive
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.service.GymRatsApi
 import com.hasz.gymrats.app.state.ChallengeState
-import java.io.File
 
 class ChallengeBottomNavFragment: Fragment() {
   private lateinit var challengeFragment: ChallengeFragment
@@ -149,6 +147,14 @@ class ChallengeBottomNavFragment: Fragment() {
             }
           )
         }
+
+        true
+      }
+      R.id.nav_invite -> {
+        val sendIntent = Intent(Intent.ACTION_VIEW)
+        sendIntent.data = Uri.parse("sms:")
+        sendIntent.putExtra("sms_body", "Let's workout together! Download GymRats and join \"${challenge.name}\" using code ${challenge.code}.  https://www.gymrats.app")
+        startActivity(sendIntent)
 
         true
       }
