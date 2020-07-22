@@ -47,11 +47,7 @@ class HomeFragment: Fragment() {
             } else {
               val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
 
-              if (challenge.isActive()) {
-                nav.navigate(HomeFragmentDirections.challengeBottomNav(challenge))
-              } else {
-                nav.navigate(HomeFragmentDirections.challengeBottomNav(challenge))
-              }
+              nav.navigate(HomeFragmentDirections.challengeBottomNav(challenge))
             }
 
             (context as? MainActivity)?.supportActionBar?.setHomeButtonEnabled(false)
