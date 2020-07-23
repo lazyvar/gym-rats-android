@@ -55,17 +55,25 @@ class ChallengeFragment: Fragment(), Refreshable {
       binding = this
 
       if (challenge.completed()) {
-        val p = recyclerView.layoutParams as ViewGroup.MarginLayoutParams
+        val p = swipeRefresh.layoutParams as ViewGroup.MarginLayoutParams
         p.bottomMargin = 0
 
         recyclerView.layoutParams = p
         recyclerView.requestLayout()
       }
 
-      refresh()
+      swipeRefresh.setOnRefreshListener {
+        refresh()
+      }
     }.root
 
     return savedView
+  }
+
+  override fun onResume() {
+    super.onResume()
+
+    refresh()
   }
 
   override fun refresh() {
@@ -87,10 +95,12 @@ class ChallengeFragment: Fragment(), Refreshable {
 
                   recyclerView.visibility = View.VISIBLE
                   progressBar.visibility = View.GONE
+                  swipeRefresh.isRefreshing = false
                 },
                 onFailure = { error ->
                   recyclerView.visibility = View.VISIBLE
                   progressBar.visibility = View.GONE
+                  swipeRefresh.isRefreshing = false
 
                   Snackbar.make(
                     root,
@@ -103,6 +113,7 @@ class ChallengeFragment: Fragment(), Refreshable {
           onFailure = { error ->
             recyclerView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
+            swipeRefresh.isRefreshing = false
 
             Snackbar.make(
               root,
