@@ -1,6 +1,7 @@
 package com.hasz.gymrats.app.fragment
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
@@ -19,6 +21,7 @@ import com.hasz.gymrats.app.databinding.FragmentChallengeBottomNavBinding
 import com.hasz.gymrats.app.extension.activeOrUpcoming
 import com.hasz.gymrats.app.extension.isActive
 import com.hasz.gymrats.app.model.Challenge
+import com.hasz.gymrats.app.refreshable.Refreshable
 import com.hasz.gymrats.app.service.GymRatsApi
 import com.hasz.gymrats.app.state.ChallengeState
 
@@ -114,45 +117,55 @@ class ChallengeBottomNavFragment: Fragment() {
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     return when(item.itemId) {
       R.id.nav_leave -> {
-        GymRatsApi.leave(challenge) { result ->
-          result.fold(
-            onSuccess = { _ ->
-              GymRatsApi.allChallenges { result ->
-                result.fold(
-                  onSuccess = { challenges ->
-                    ChallengeState.lastOpenedChallengeId = 0
-                    ChallengeState.allChallenges = challenges
+        AlertDialog.Builder(context)
+          .setTitle("Leave challenge")
+          .setMessage("Are you sure you want to leave ${challenge.name}?")
+          .setPositiveButton(android.R.string.yes) { _, _ ->
 
-                    val activeOrUpcoming = challenges.activeOrUpcoming()
-                    val nav = findNavController()
-                    (requireContext() as MainActivity).updateNav(activeOrUpcoming)
+            GymRatsApi.leave(challenge) { result ->
+              result.fold(
+                onSuccess = { _ ->
+                  GymRatsApi.allChallenges { result ->
+                    result.fold(
+                      onSuccess = { challenges ->
+                        ChallengeState.lastOpenedChallengeId = 0
+                        ChallengeState.allChallenges = challenges
 
-                    if (activeOrUpcoming.isEmpty()) {
-                      nav.navigate(HomeFragmentDirections.noChallenges())
-                    } else {
-                      val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
+                        val activeOrUpcoming = challenges.activeOrUpcoming()
+                        val nav = findNavController()
+                        (requireContext() as MainActivity).updateNav(activeOrUpcoming)
 
-                      if (challenge.isActive()) {
-                        nav.navigate(MainNavigationDirections.challengeBottomNav(challenge))
-                      } else {
-                        nav.navigate(MainNavigationDirections.upcomingChallenge(challenge))
+                        if (activeOrUpcoming.isEmpty()) {
+                          nav.navigate(HomeFragmentDirections.noChallenges())
+                        } else {
+                          val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
+
+                          if (challenge.isActive()) {
+                            nav.navigate(MainNavigationDirections.challengeBottomNav(challenge))
+                          } else {
+                            nav.navigate(MainNavigationDirections.upcomingChallenge(challenge))
+                          }
+                        }
+
+                        (context as? MainActivity)?.supportActionBar?.setHomeButtonEnabled(false)
+                        (context as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                      },
+                      onFailure = { error ->
+                        Snackbar.make(requireView(), error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
                       }
-                    }
-
-                    (context as? MainActivity)?.supportActionBar?.setHomeButtonEnabled(false)
-                    (context as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                  },
-                  onFailure = { error ->
-                    Snackbar.make(requireView(), error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+                    )
                   }
-                )
-              }
-            },
-            onFailure = { error ->
-              Snackbar.make(requireView(), error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+                },
+                onFailure = { error ->
+                  Snackbar.make(requireView(), error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+                }
+              )
             }
-          )
-        }
+          }
+          .setCancelable(false)
+          .setNeutralButton(android.R.string.no, null)
+          .setIcon(android.R.drawable.ic_dialog_alert)
+          .show()
 
         true
       }

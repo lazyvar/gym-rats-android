@@ -80,14 +80,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     menu.clear()
 
-    val challengesMenu = menu.addSubMenu("Challenges")
+    if (challenges.isEmpty()) {
+      menuInflater.inflate(R.menu.activity_main_drawer, menu)
+    } else {
+      val challengesMenu = menu.addSubMenu("Challenges")
 
-    challenges.forEachIndexed { index, challenge ->
-      challengesMenu.add(Menu.NONE, R.id.nav_challenge_bottom_nav, index, challenge.name)
+      challenges.forEachIndexed { index, challenge ->
+        challengesMenu.add(Menu.NONE, R.id.nav_challenge_bottom_nav, index, challenge.name)
+      }
+
+      menuInflater.inflate(R.menu.activity_main_drawer, menu)
+      menu.removeItem(menu.findItem(R.id.nav_home).itemId)
     }
-
-    menuInflater.inflate(R.menu.activity_main_drawer, menu)
-    menu.removeItem(menu.findItem(R.id.nav_home).itemId)
   }
 
   override fun onSupportNavigateUp(): Boolean {

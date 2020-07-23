@@ -1,5 +1,6 @@
 package com.hasz.gymrats.app.fragment
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -92,46 +93,55 @@ class UpcomingChallengeFragment: Fragment() {
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     return when (item.itemId) {
       R.id.nav_leave -> {
-        GymRatsApi.leave(challenge) { result ->
-          result.fold(
-            onSuccess = { _ ->
-              GymRatsApi.allChallenges { result ->
-                result.fold(
-                  onSuccess = { challenges ->
-                    ChallengeState.lastOpenedChallengeId = 0
-                    ChallengeState.allChallenges = challenges
+        AlertDialog.Builder(context)
+          .setTitle("Leave challenge")
+          .setMessage("Are you sure you want to leave ${challenge.name}?")
+          .setPositiveButton(android.R.string.yes) { _, _ ->
+            GymRatsApi.leave(challenge) { result ->
+              result.fold(
+                onSuccess = { _ ->
+                  GymRatsApi.allChallenges { result ->
+                    result.fold(
+                      onSuccess = { challenges ->
+                        ChallengeState.lastOpenedChallengeId = 0
+                        ChallengeState.allChallenges = challenges
 
-                    val activeOrUpcoming = challenges.activeOrUpcoming()
-                    val nav = findNavController()
-                    (requireContext() as MainActivity).updateNav(activeOrUpcoming)
+                        val activeOrUpcoming = challenges.activeOrUpcoming()
+                        val nav = findNavController()
+                        (requireContext() as MainActivity).updateNav(activeOrUpcoming)
 
-                    if (activeOrUpcoming.isEmpty()) {
-                      nav.navigate(HomeFragmentDirections.noChallenges())
-                    } else {
-                      val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
+                        if (activeOrUpcoming.isEmpty()) {
+                          nav.navigate(HomeFragmentDirections.noChallenges())
+                        } else {
+                          val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
 
 
-                      if (challenge.isActive()) {
-                        nav.navigate(MainNavigationDirections.challengeBottomNav(challenge))
-                      } else {
-                        nav.navigate(MainNavigationDirections.upcomingChallenge(challenge))
+                          if (challenge.isActive()) {
+                            nav.navigate(MainNavigationDirections.challengeBottomNav(challenge))
+                          } else {
+                            nav.navigate(MainNavigationDirections.upcomingChallenge(challenge))
+                          }
+                        }
+
+                        (context as? MainActivity)?.supportActionBar?.setHomeButtonEnabled(false)
+                        (context as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                      },
+                      onFailure = { error ->
+                        Snackbar.make(requireView(), error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
                       }
-                    }
-
-                    (context as? MainActivity)?.supportActionBar?.setHomeButtonEnabled(false)
-                    (context as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                  },
-                  onFailure = { error ->
-                    Snackbar.make(requireView(), error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+                    )
                   }
-                )
-              }
-            },
-            onFailure = { error ->
-              Snackbar.make(requireView(), error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+                },
+                onFailure = { error ->
+                  Snackbar.make(requireView(), error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
+                }
+              )
             }
-          )
-        }
+          }
+          .setCancelable(false)
+          .setNeutralButton(android.R.string.no, null)
+          .setIcon(android.R.drawable.ic_dialog_alert)
+          .show()
 
         true
       }

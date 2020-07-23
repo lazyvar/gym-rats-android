@@ -1,19 +1,19 @@
 package com.hasz.gymrats.app.activity
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
-import androidx.work.Logger
 import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.extension.active
-import com.hasz.gymrats.app.service.GService
 import com.hasz.gymrats.app.service.GymRatsApi
 import com.hasz.gymrats.app.state.ChallengeState
 import kotlinx.android.synthetic.main.activity_log_workout.*
+import kotlinx.android.synthetic.main.activity_log_workout.workoutImageView
+import kotlinx.android.synthetic.main.fragment_workout.*
 
 class LogWorkoutActivity: Activity() {
   private lateinit var workoutImageUri: Uri
@@ -32,6 +32,19 @@ class LogWorkoutActivity: Activity() {
       finish()
     }
 
+    val post = logWorkoutToolbar.menu.findItem(R.id.nav_post)
+    post.isEnabled = false
+
+    titleEditText.addTextChangedListener(object : TextWatcher {
+      override fun afterTextChanged(s: Editable) {}
+      override fun beforeTextChanged(s: CharSequence, start: Int,
+                                     count: Int, after: Int) {}
+      override fun onTextChanged(s: CharSequence, start: Int,
+                                 before: Int, count: Int) {
+        post.isEnabled = count > 0
+      }
+    })
+
     logWorkoutToolbar.setOnMenuItemClickListener { _ ->
       workoutProgressBar.visibility = View.VISIBLE
 
@@ -47,7 +60,7 @@ class LogWorkoutActivity: Activity() {
         challenges = ChallengeState.allChallenges.active().map { it.id }
       ) { result ->
         result.fold(
-          onSuccess = { workout ->
+          onSuccess = { _ ->
             workoutProgressBar.visibility = View.INVISIBLE
 
             setResult(9114112)

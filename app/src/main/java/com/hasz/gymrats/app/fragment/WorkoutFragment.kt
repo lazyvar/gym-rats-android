@@ -95,11 +95,10 @@ class WorkoutFragment: Fragment() {
       loader.loadImage(avatarView, workout.account.profile_picture_url ?: "", workout.account.full_name)
       titleLabel.text = workout.title
 
-      val compiled = desc.filterNotNull()
-      if (compiled.isEmpty()) {
-        descriptionLabel.text = null
+      if (desc.isEmpty()) {
+        descriptionLabel.visibility = View.GONE
       } else {
-        descriptionLabel.text = compiled.joinToString("\n")
+        descriptionLabel.text = desc.joinToString("\n")
       }
 
       timeLabel.text = workout.createdAt().format(DateTimeFormatter.ofPattern("h:mm a"))
