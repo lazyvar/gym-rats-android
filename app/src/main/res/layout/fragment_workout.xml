@@ -54,6 +54,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
+                            android:paddingBottom="10dp"
                             app:layout_constraintTop_toBottomOf="@+id/workoutImageView">
 
                             <agency.tango.android.avatarview.views.AvatarView
@@ -126,12 +127,10 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginEnd="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:fontFamily="@font/nunito"
                                 android:text="TextView"
                                 android:textColor="@android:color/black"
                                 android:textSize="14sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/titleLabel" />
