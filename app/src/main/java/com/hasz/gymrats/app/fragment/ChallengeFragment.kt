@@ -65,15 +65,11 @@ class ChallengeFragment: Fragment(), Refreshable {
       swipeRefresh.setOnRefreshListener {
         refresh()
       }
+
+      refresh()
     }.root
 
     return savedView
-  }
-
-  override fun onResume() {
-    super.onResume()
-
-    refresh()
   }
 
   override fun refresh() {
