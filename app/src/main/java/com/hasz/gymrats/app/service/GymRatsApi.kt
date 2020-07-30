@@ -9,6 +9,7 @@ import com.github.kittinunf.fuel.core.ResponseResultHandler
 import com.github.kittinunf.fuel.gson.responseObject
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.internal.LinkedTreeMap
 import com.hasz.gymrats.app.config.EnvironmentConfig
 import com.hasz.gymrats.app.model.*
 import com.hasz.gymrats.app.typeadapter.InstantConverter
@@ -191,6 +192,12 @@ object GymRatsApi {
 
   fun getAllWorkouts(challenge: Challenge, handler: (Result<List<Workout>>) -> Unit) {
     Fuel.get("/challenges/${challenge.id}/workouts")
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
+  fun resetPassword(email: String, handler: (Result<LinkedTreeMap<Any, Any>>) -> Unit) {
+    Fuel.post("/passwords", listOf("email" to email))
       .validate { true }
       .responseObject(gsonGuy, handleObject(handler))
   }
