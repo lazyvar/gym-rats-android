@@ -12,21 +12,25 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 fun Challenge.isActive(): Boolean {
-  val now = LocalDateTime.now()
+  val now = LocalDate.now()
+  val start = start_date.toLocalDate()
+  val end = end_date.toLocalDate()
 
-  return now == start_date || now == end_date || (now.isAfter(start_date) && now.isBefore(end_date))
+  return now == start || now == end || (now.isAfter(start) && now.isBefore(end))
 }
 
 fun Challenge.isUpcoming(): Boolean {
-  val now = LocalDateTime.now()
+  val now = LocalDate.now()
+  val start = start_date.toLocalDate()
 
-  return now.isBefore(start_date)
+  return now.isBefore(start)
 }
 
 fun Challenge.completed(): Boolean {
-  val now = LocalDateTime.now()
+  val now = LocalDate.now()
+  val end = end_date.toLocalDate()
 
-  return now.isAfter(end_date)
+  return now.isAfter(end)
 }
 
 fun List<Challenge>.active(): List<Challenge> {
@@ -44,8 +48,9 @@ fun List<Challenge>.completed(): List<Challenge> {
 fun List<Workout>.onDay(date: LocalDate): List<Workout> = filter { it.created_at.atZone(ZoneId.systemDefault()).toLocalDate() == date }
 
 fun Challenge.daysLeft(): String {
-  val today = LocalDateTime.now()
-  val diff = ChronoUnit.DAYS.between(today, end_date).toInt()
+  val today = LocalDate.now()
+  val end = end_date.toLocalDate()
+  val diff = ChronoUnit.DAYS.between(today, end).toInt()
 
   return if (diff == 0) {
     "Last day"
