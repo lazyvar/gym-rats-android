@@ -145,7 +145,11 @@ class SettingsFragment: Fragment() {
             headerText = null,
             leftText = "Google Play page",
             rightText = null,
-            action = { }),
+            action = {
+              val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.hasz.gymrats.app"))
+
+              startActivity(browserIntent)
+            }),
           SettingsRow(headerText = null, leftText = "Terms of Service", rightText = null, action = {
             val browserIntent =
               Intent(Intent.ACTION_VIEW, Uri.parse("https://www.gymrats.app/terms/"))

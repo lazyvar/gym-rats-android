@@ -2,6 +2,7 @@ package com.hasz.gymrats.app.adapter
 
 import agency.tango.android.avatarview.views.AvatarView
 import android.annotation.SuppressLint
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,6 +68,7 @@ class StatsAdapter(private val challenge: Challenge, private val rows: List<Stat
       holder.endDate?.text = row.challenge.end_date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))
       holder.scoreBy?.text = row.challenge.score_by?.capitalize()
       holder.description?.text = row.challenge.description
+      holder.description?.movementMethod = LinkMovementMethod.getInstance()
       holder.joinCode?.text = row.challenge.code
     } else if (row.ranking != null) {
       holder.loader.loadImage(holder.avatar!!, row.ranking.account.profile_picture_url ?: "", row.ranking.account.name)
