@@ -10,7 +10,7 @@ import com.github.kittinunf.fuel.gson.responseObject
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.internal.LinkedTreeMap
-import com.hasz.gymrats.app.config.EnvironmentConfig
+import com.hasz.gymrats.app.BuildConfig
 import com.hasz.gymrats.app.model.*
 import com.hasz.gymrats.app.typeadapter.InstantConverter
 import org.threeten.bp.Instant
@@ -22,7 +22,7 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
 object GymRatsApi {
-  private val baseUrl = EnvironmentConfig.base
+  private val baseUrl = BuildConfig.API
   val gsonGuy: Gson
 
   init {

@@ -30,10 +30,21 @@ android {
         versionName "1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
     }
 
     buildTypes {
+        dev {
+            buildConfigField "String", 'WS', '"ws://localhost:4000/chat/websocket"'
+            buildConfigField "String", 'API', '"http://localhost:4000"'
+        }
+        preProduction {
+            buildConfigField "String", 'WS', '"wss://gym-rats-api-pre-production.gigalixirapp.com/chat/websocket"'
+            buildConfigField "String", 'API', '"https://gym-rats-api-pre-production.gigalixirapp.com"'
+        }
         release {
+            buildConfigField "String", 'WS', '"wss://www.gymratsapi.com/chat/websocket"'
+            buildConfigField "String", 'API', '"https://www.gymratsapi.com"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
