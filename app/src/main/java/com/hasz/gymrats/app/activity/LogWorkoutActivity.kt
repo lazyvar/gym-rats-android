@@ -21,7 +21,7 @@ class LogWorkoutActivity: Activity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    workoutImageUri = intent.getParcelableExtra("workout_image_uri") as Uri
+    workoutImageUri = intent.getParcelableExtra<Uri>("workout_image_uri")!!
     setContentView(R.layout.activity_log_workout)
 
     workoutImageView.setImageURI(workoutImageUri)
