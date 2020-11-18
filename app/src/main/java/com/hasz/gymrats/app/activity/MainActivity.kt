@@ -23,6 +23,7 @@ import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.service.AuthService
 import com.hasz.gymrats.app.service.GymRatsApi
+import com.hasz.gymrats.app.service.JoinCodeService
 import com.hasz.gymrats.app.state.ChallengeState
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -78,6 +79,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     setupActionBarWithNavController(navController, appBarConfiguration)
     navView.setupWithNavController(navController)
     navView.setNavigationItemSelectedListener(this)
+
+    val code = JoinCodeService.retrieve()
+
+    if (code != null) {
+      JoinCodeService.clear()
+      GymRatsApi.getChallenge(code = code) { result ->
+        result.fold(
+          onSuccess = { challenges ->
+            if (challenges.isEmpty()) {
+              return@getChallenge
+            }
+
+            val intent = Intent().apply {
+              setClass(applicationContext, ChallengePreviewActivity::class.java)
+              putExtra("challenge", challenges.first())
+            }
+
+            startActivityForResult(intent, 999)
+          },
+          onFailure = { error ->
+            // ...
+          }
+        )
+      }
+    }
   }
 
   fun updateNav(challenges: List<Challenge>) {
