@@ -1,13 +1,12 @@
 package com.hasz.gymrats.app.activity
 
-import android.R
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.hasz.gymrats.app.service.AuthService
+import com.hasz.gymrats.app.service.GymRatsApi
 import io.branch.referral.Branch
 import io.branch.referral.Branch.BranchReferralInitListener
-
 
 class GymRatsRootActivity: AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,9 +41,35 @@ class GymRatsRootActivity: AppCompatActivity() {
       .withCallback(branchReferralInitListener).reInit()
   }
 
-  private val branchReferralInitListener =
-    BranchReferralInitListener { linkProperties, error ->
-      print(linkProperties)
-      print(error)
+  private val branchReferralInitListener = BranchReferralInitListener { linkProperties, error ->
+    if (linkProperties == null) {
+      return@BranchReferralInitListener
     }
+
+    if (!linkProperties.has("code")) {
+      return@BranchReferralInitListener
+    }
+
+    val code = linkProperties.getString("code")
+
+    GymRatsApi.getChallenge(code = code) { result ->
+      result.fold(
+        onSuccess = { challenges ->
+          if (challenges.isEmpty()) {
+            return@getChallenge
+          }
+
+          val intent = Intent().apply {
+            setClass(applicationContext, ChallengePreviewActivity::class.java)
+            putExtra("challenge", challenges.first())
+          }
+
+          startActivityForResult(intent, 999)
+        },
+        onFailure = { error ->
+          // ...
+        }
+      )
+    }
+  }
 }

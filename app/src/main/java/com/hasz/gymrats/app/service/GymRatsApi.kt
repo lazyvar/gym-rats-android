@@ -47,6 +47,12 @@ object GymRatsApi {
       .responseObject(gsonGuy, handleObject(handler))
   }
 
+  fun getChallenge(code: String, handler: (Result<List<Challenge>>) -> Unit) {
+    Fuel.get("/challenges", listOf("code" to code))
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
   fun joinChallenge(code: String, handler: (Result<Challenge>) -> Unit) {
     Fuel.post("/memberships", listOf("code" to code))
       .validate { true }

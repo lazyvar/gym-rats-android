@@ -19,8 +19,12 @@
             android:name=".activity.JoinChallengeActivity"
             android:theme="@style/Theme.GymRats.NoActionBar" />
         <activity
+            android:name=".activity.ChallengePreviewActivity"
+            android:theme="@style/Theme.GymRats.NoActionBar" />
+        <activity
             android:name=".activity.GymRatsRootActivity"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -48,6 +52,7 @@
         <activity
             android:name=".activity.LogWorkoutActivity"
             android:theme="@style/Theme.GymRats.NoActionBar" />
+
         <activity
             android:name=".activity.WelcomeActivity"
             android:theme="@style/Theme.GymRats.NoActionBar" />

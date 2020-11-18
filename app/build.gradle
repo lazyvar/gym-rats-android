@@ -38,15 +38,18 @@ android {
             initWith debug
             buildConfigField "String", 'WS', '"ws://localhost:4000/chat/websocket"'
             buildConfigField "String", 'API', '"http://localhost:4000"'
+            buildConfigField "String", 'INVITE_URL', '"https://gym-rats.test-app.link/join?code="'
         }
         preProduction {
             initWith debug
             buildConfigField "String", 'WS', '"wss://gym-rats-api-pre-production.gigalixirapp.com/chat/websocket"'
             buildConfigField "String", 'API', '"https://gym-rats-api-pre-production.gigalixirapp.com"'
+            buildConfigField "String", 'INVITE_URL', '"https://gym-rats.test-app.link/join?code="'
         }
         release {
             buildConfigField "String", 'WS', '"wss://www.gymratsapi.com/chat/websocket"'
             buildConfigField "String", 'API', '"https://www.gymratsapi.com"'
+            buildConfigField "String", 'INVITE_URL', '"https://share.gymrats.app/join?code="'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

@@ -13,6 +13,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
+import com.hasz.gymrats.app.BuildConfig
 import com.hasz.gymrats.app.MainNavigationDirections
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.activity.LogWorkoutActivity
@@ -170,9 +171,10 @@ class ChallengeBottomNavFragment: Fragment() {
         true
       }
       R.id.nav_invite -> {
+        var link = BuildConfig.INVITE_URL + challenge.code
         val sendIntent = Intent(Intent.ACTION_VIEW)
         sendIntent.data = Uri.parse("sms:")
-        sendIntent.putExtra("sms_body", "Let's workout together! Download GymRats and join \"${challenge.name}\" using code ${challenge.code}.  https://www.gymrats.app")
+        sendIntent.putExtra("sms_body", "Let's workout together! Download GymRats and join \"${challenge.name}\" using code ${challenge.code}. ${link}")
         startActivity(sendIntent)
 
         true
