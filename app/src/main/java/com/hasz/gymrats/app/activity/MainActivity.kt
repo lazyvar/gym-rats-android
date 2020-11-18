@@ -23,6 +23,7 @@ import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
 import com.hasz.gymrats.app.service.AuthService
 import com.hasz.gymrats.app.service.GymRatsApi
+import com.hasz.gymrats.app.service.JoinCodeService
 import com.hasz.gymrats.app.state.ChallengeState
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -31,8 +32,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
   private lateinit var drawer: DrawerLayout
   private val loader = GlideLoader()
 
+  companion object {
+    var shared: MainActivity? = null
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    shared = this
 
     setContentView(R.layout.activity_main)
 
@@ -72,6 +79,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     setupActionBarWithNavController(navController, appBarConfiguration)
     navView.setupWithNavController(navController)
     navView.setNavigationItemSelectedListener(this)
+
+    val code = JoinCodeService.retrieve()
+
+    if (code != null) {
+      JoinCodeService.clear()
+      GymRatsApi.getChallenge(code = code) { result ->
+        result.fold(
+          onSuccess = { challenges ->
+            if (challenges.isEmpty()) {
+              return@getChallenge
+            }
+
+            val intent = Intent().apply {
+              setClass(applicationContext, ChallengePreviewActivity::class.java)
+              putExtra("challenge", challenges.first())
+            }
+
+            startActivityForResult(intent, 999)
+          },
+          onFailure = { error ->
+            // ...
+          }
+        )
+      }
+    }
   }
 
   fun updateNav(challenges: List<Challenge>) {
@@ -106,35 +138,45 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     super.onActivityResult(requestCode, resultCode, data)
 
     if (resultCode == 54321 && requestCode == 999) {
-      GymRatsApi.allChallenges { result ->
-        result.fold(
-          onSuccess = { challenges ->
-            drawer.closeDrawer(Gravity.START)
+      refresh()
+    }
+  }
 
-            ChallengeState.allChallenges = challenges
+  fun refresh() {
+    GymRatsApi.allChallenges { result ->
+      result.fold(
+        onSuccess = { challenges ->
+          drawer.closeDrawer(Gravity.START)
 
-            val activeOrUpcoming = challenges.activeOrUpcoming()
-            updateNav(activeOrUpcoming)
+          ChallengeState.allChallenges = challenges
 
-            if (activeOrUpcoming.isEmpty()) {
-              navController.navigate(MainNavigationDirections.noChallenges())
+          val activeOrUpcoming = challenges.activeOrUpcoming()
+          updateNav(activeOrUpcoming)
+
+          if (activeOrUpcoming.isEmpty()) {
+            navController.navigate(MainNavigationDirections.noChallenges())
+          } else {
+            val challenge =
+              activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId }
+                ?: activeOrUpcoming.first()
+
+            navController.popBackStack()
+
+            if (challenge.isActive()) {
+              navController.navigate(MainNavigationDirections.challengeBottomNav(challenge))
             } else {
-              val challenge = activeOrUpcoming.firstOrNull { it.id == ChallengeState.lastOpenedChallengeId } ?: activeOrUpcoming.first()
-
-              navController.popBackStack()
-
-              if (challenge.isActive()) {
-                navController.navigate(MainNavigationDirections.challengeBottomNav(challenge))
-              } else {
-                navController.navigate(MainNavigationDirections.upcomingChallenge(challenge))
-              }
+              navController.navigate(MainNavigationDirections.upcomingChallenge(challenge))
             }
-          },
-          onFailure = { error ->
-            Snackbar.make(drawer, error.message ?: "Something unpredictable happened.", Snackbar.LENGTH_LONG).show()
           }
-        )
-      }
+        },
+        onFailure = { error ->
+          Snackbar.make(
+            drawer,
+            error.message ?: "Something unpredictable happened.",
+            Snackbar.LENGTH_LONG
+          ).show()
+        }
+      )
     }
   }
 

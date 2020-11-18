@@ -19,23 +19,50 @@
             android:name=".activity.JoinChallengeActivity"
             android:theme="@style/Theme.GymRats.NoActionBar" />
         <activity
+            android:name=".activity.ChallengePreviewActivity"
+            android:theme="@style/Theme.GymRats.NoActionBar" />
+        <activity
             android:name=".activity.GymRatsRootActivity"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <data android:scheme="gymrats" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="share.gymrats.app" />
+                <data android:scheme="https" android:host="gym-rats.app.link" />
+                <data android:scheme="https" android:host="gym-rats-alternate.app.link" />
+                <data android:scheme="https" android:host="gym-rats.test-app.link" />
+                <data android:scheme="https" android:host="gym-rats-alternate.test-app.link" />
+            </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.LogWorkoutActivity"
             android:theme="@style/Theme.GymRats.NoActionBar" />
+
         <activity
             android:name=".activity.WelcomeActivity"
             android:theme="@style/Theme.GymRats.NoActionBar" />
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/Theme.GymRats.NoActionBar" />
+
+        <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_efQvTUX1NzDoCAu0iTP0UdmnDAhRsoMe" />
+        <meta-data android:name="io.branch.sdk.BranchKey.test" android:value="key_test_adPCNMX2RrsiFCq7eZSdWclfyCoTqcSt" />
+        <meta-data android:name="io.branch.sdk.TestMode" android:value="false" />
     </application>
 
 </manifest>

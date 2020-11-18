@@ -10,7 +10,7 @@ import com.github.kittinunf.fuel.gson.responseObject
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.internal.LinkedTreeMap
-import com.hasz.gymrats.app.config.EnvironmentConfig
+import com.hasz.gymrats.app.BuildConfig
 import com.hasz.gymrats.app.model.*
 import com.hasz.gymrats.app.typeadapter.InstantConverter
 import org.threeten.bp.Instant
@@ -22,7 +22,7 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
 object GymRatsApi {
-  private val baseUrl = EnvironmentConfig.base
+  private val baseUrl = BuildConfig.API
   val gsonGuy: Gson
 
   init {
@@ -43,6 +43,12 @@ object GymRatsApi {
 
   fun createAccount(email: String, password: String, fullName: String, handler: (Result<Account>) -> Unit) {
     Fuel.post("/accounts", listOf("email" to email, "password" to password, "full_name" to fullName))
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
+  fun getChallenge(code: String, handler: (Result<List<Challenge>>) -> Unit) {
+    Fuel.get("/challenges", listOf("code" to code))
       .validate { true }
       .responseObject(gsonGuy, handleObject(handler))
   }

@@ -7,11 +7,14 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.hasz.gymrats.app.service.GService
 import com.jakewharton.threetenabp.AndroidThreeTen
+import io.branch.referral.Branch
 
 class GymRatsApplication: Application() {
   override fun onCreate() {
     super.onCreate()
 
+    Branch.enableLogging();
+    Branch.getAutoInstance(this);
     FirebaseApp.initializeApp(this)
     AndroidThreeTen.init(this)
     context = applicationContext

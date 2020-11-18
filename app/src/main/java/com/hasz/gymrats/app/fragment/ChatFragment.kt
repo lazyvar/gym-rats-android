@@ -1,9 +1,7 @@
 package com.hasz.gymrats.app.fragment
 
-import android.app.ActionBar
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,14 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
+import com.hasz.gymrats.app.BuildConfig
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.activity.MainActivity
-import com.hasz.gymrats.app.config.EnvironmentConfig
 import com.hasz.gymrats.app.databinding.FragmentChatBinding
 import com.hasz.gymrats.app.loader.GlideLoader
 import com.hasz.gymrats.app.model.Challenge
@@ -30,7 +27,6 @@ import com.stfalcon.chatkit.messages.MessagesListAdapter
 import kotlinx.android.synthetic.main.fragment_chat.*
 import org.phoenixframework.Channel
 import org.phoenixframework.Socket
-
 
 class ChatFragment: Fragment() {
   private lateinit var challenge: Challenge
@@ -118,7 +114,7 @@ class ChatFragment: Fragment() {
         false
       }
 
-      socket = Socket(EnvironmentConfig.ws, params)
+      socket = Socket(BuildConfig.WS, params)
       socket.onOpen {
         channel = socket.channel("room:challenge:${challenge.id}")
         channel.on("new_msg") { event ->

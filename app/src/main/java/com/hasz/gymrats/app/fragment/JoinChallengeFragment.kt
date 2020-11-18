@@ -1,19 +1,15 @@
 package com.hasz.gymrats.app.fragment
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
-import com.hasz.gymrats.app.activity.MainActivity
 import com.hasz.gymrats.app.databinding.FragmentJoinChallengeBinding
-import com.hasz.gymrats.app.service.AuthService
 import com.hasz.gymrats.app.service.GymRatsApi
 import com.hasz.gymrats.app.state.ChallengeState
 
@@ -47,8 +43,8 @@ class JoinChallengeFragment: Fragment() {
           result.fold(
             onSuccess = { challenge ->
               ChallengeState.lastOpenedChallengeId = challenge.id
-              activity?.setResult(54321)
-              activity?.finish()
+              (context as? Activity)?.setResult(54321)
+              (context as? Activity)?.finish()
             },
             onFailure = { error ->
               Snackbar.make(
