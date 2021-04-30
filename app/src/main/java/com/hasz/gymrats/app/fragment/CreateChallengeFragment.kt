@@ -66,9 +66,9 @@ class CreateChallengeFragment : Fragment() {
         val day: Int = cal.get(Calendar.DAY_OF_MONTH)
         val month: Int = cal.get(Calendar.MONTH)
         val year: Int = cal.get(Calendar.YEAR)
-        val picker = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        val picker = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, y, m, dayOfMonth ->
           val calendar = Calendar.getInstance()
-          calendar.set(year, month, dayOfMonth)
+          calendar.set(y, m, dayOfMonth)
 
           endDateTime = calendar.time
           updateEnd()
