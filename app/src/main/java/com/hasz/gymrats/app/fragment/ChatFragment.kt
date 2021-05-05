@@ -75,7 +75,7 @@ class ChatFragment: Fragment() {
               Activity.RESULT_OK -> {
                 val fileUri = data?.data
 
-                AlertDialog.Builder(requireContext()).setMessage("Share photo with group?")
+                AlertDialog.Builder(requireContext()).setMessage("Share selected photo with group?")
                   .setPositiveButton("OK") { dialog, _ ->
                     dialog.dismiss()
 
@@ -90,9 +90,6 @@ class ChatFragment: Fragment() {
                       )
                     }
                   }
-                  .setView(ImageView(requireContext()).apply {
-                    setImageURI(fileUri!!)
-                  })
                   .setCancelable(false)
                   .setNeutralButton(android.R.string.no, null)
                   .setIcon(android.R.drawable.ic_dialog_alert)
