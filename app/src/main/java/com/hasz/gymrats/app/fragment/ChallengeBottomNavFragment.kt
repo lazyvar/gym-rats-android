@@ -172,10 +172,15 @@ class ChallengeBottomNavFragment: Fragment() {
       }
       R.id.nav_invite -> {
         var link = BuildConfig.INVITE_URL + challenge.code
-        val sendIntent = Intent(Intent.ACTION_VIEW)
-        sendIntent.data = Uri.parse("sms:")
-        sendIntent.putExtra("sms_body", "Let's workout together! Download GymRats and join \"${challenge.name}\" using code ${challenge.code}. ${link}")
-        startActivity(sendIntent)
+        val message = "Ready for a challenge? Join me in \"${challenge.name}\" $link"
+        val sendIntent: Intent = Intent().apply {
+          action = Intent.ACTION_SEND
+          putExtra(Intent.EXTRA_TEXT, message)
+          type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
 
         true
       }
