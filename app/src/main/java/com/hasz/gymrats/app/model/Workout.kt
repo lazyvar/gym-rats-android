@@ -12,7 +12,7 @@ data class Workout(
   val title: String,
   val description: String?,
   val photo_url: String?,
-  val created_at: Instant,
+  val occurred_at: Instant,
   val google_place_id: String?,
   val duration: Int?,
   val distance: String?,
@@ -25,5 +25,5 @@ data class Workout(
   val activity_type: String?
 ): Parcelable
 
-fun Workout.createdAt(): LocalDateTime =
-  ZonedDateTime.ofInstant(this.created_at, ZoneId.systemDefault()).toLocalDateTime()
+fun Workout.occurredAt(): LocalDateTime =
+  ZonedDateTime.ofInstant(this.occurred_at, ZoneId.systemDefault()).toLocalDateTime()

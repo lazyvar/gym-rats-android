@@ -135,7 +135,7 @@ class ProfileAdapter(private val challenge: Challenge, private val workouts: Lis
       holder.loader.loadImage(holder.avatar!!, workout.account.profile_picture_url ?: "", workout.account.full_name)
       holder.accountName?.text = workout.account.full_name
       holder.title?.text = workout.title
-      holder.time?.text = workout.createdAt().format(DateTimeFormatter.ofPattern("h:mm a"))
+      holder.time?.text = workout.occurredAt().format(DateTimeFormatter.ofPattern("h:mm a"))
       holder.itemView.setOnClickListener {
         it.findNavController().navigate(ProfileFragmentDirections.workout(workout, challenge))
       }
