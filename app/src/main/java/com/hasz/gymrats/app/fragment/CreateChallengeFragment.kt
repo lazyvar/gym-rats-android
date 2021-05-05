@@ -7,21 +7,34 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.databinding.FragmentCreateChallengeBinding
+import com.hasz.gymrats.app.model.ChallengeScoreBy
 import com.hasz.gymrats.app.service.GymRatsApi
 import com.hasz.gymrats.app.state.ChallengeState
+import kotlinx.android.synthetic.main.activity_log_workout.*
 import kotlinx.android.synthetic.main.fragment_create_challenge.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CreateChallengeFragment : Fragment() {
+class CreateChallengeFragment: Fragment(), AdapterView.OnItemSelectedListener {
   private var startDateTime: Date = Date()
   private lateinit var endDateTime: Date
   private val simpleDateFormat = SimpleDateFormat.getDateInstance()
+  private var challengeScoreBy: ChallengeScoreBy = ChallengeScoreBy.WORKOUTS
+
+  override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+    challengeScoreBy = ChallengeScoreBy.values()[pos]
+  }
+
+  override fun onNothingSelected(parent: AdapterView<*>) {
+    // do nothing
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +51,13 @@ class CreateChallengeFragment : Fragment() {
       toolbar.setNavigationOnClickListener {
         (context as Activity).finish()
       }
+
+      var list = ChallengeScoreBy.values().map { it.name.toLowerCase().capitalize() }
+      val spinnerAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, list)
+      spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+      spinner.adapter = spinnerAdapter
+      spinner.onItemSelectedListener = this@CreateChallengeFragment
 
       startDate.editText?.inputType = InputType.TYPE_NULL
       startDate.editText?.setOnClickListener {
@@ -90,7 +110,7 @@ class CreateChallengeFragment : Fragment() {
         createChallengeButton.isEnabled = false
         progressBar.visibility = View.VISIBLE
 
-        GymRatsApi.createChallenge(startDateTime, endDateTime, name, description.editText?.text.toString(), "workouts") { result ->
+        GymRatsApi.createChallenge(startDateTime, endDateTime, name, description.editText?.text.toString(), challengeScoreBy.name.toLowerCase()) { result ->
           createChallengeButton.isEnabled = true
 
           result.fold(
