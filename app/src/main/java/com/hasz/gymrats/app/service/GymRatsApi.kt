@@ -53,6 +53,18 @@ object GymRatsApi {
       .responseObject(gsonGuy, handleObject(handler))
   }
 
+  fun postComment(content: String, workout: Workout, handler: (Result<Comment>) -> Unit) {
+    Fuel.post("/workouts/${workout.id}/comments", listOf("content" to content))
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
+  fun getComments(workout: Workout, handler: (Result<List<Comment>>) -> Unit) {
+    Fuel.get("/workouts/${workout.id}/comments")
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
   fun joinChallenge(code: String, handler: (Result<Challenge>) -> Unit) {
     Fuel.post("/memberships", listOf("code" to code))
       .validate { true }

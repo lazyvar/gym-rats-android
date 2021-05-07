@@ -45,7 +45,7 @@ fun List<Challenge>.completed(): List<Challenge> {
   return filter { it.completed() }
 }
 
-fun List<Workout>.onDay(date: LocalDate): List<Workout> = filter { it.created_at.atZone(ZoneId.systemDefault()).toLocalDate() == date }
+fun List<Workout>.onDay(date: LocalDate): List<Workout> = filter { it.occurred_at.atZone(ZoneId.systemDefault()).toLocalDate() == date }
 
 fun Challenge.daysLeft(): String {
   val today = LocalDate.now()
@@ -82,7 +82,7 @@ fun Challenge.buckets(workouts: List<Workout>): List<Pair<LocalDate, List<Workou
   val hash = TreeMap<LocalDate, ArrayList<Workout>>(dateComparator)
 
   for (workout in workouts) {
-    val day = ZonedDateTime.ofInstant(workout.created_at, ZoneId.systemDefault()).toLocalDate()
+    val day = ZonedDateTime.ofInstant(workout.occurred_at, ZoneId.systemDefault()).toLocalDate()
     val workoutList = hash[day] ?: arrayListOf()
     workoutList.add(workout)
 
@@ -92,7 +92,7 @@ fun Challenge.buckets(workouts: List<Workout>): List<Pair<LocalDate, List<Workou
   return hash.map { it.key to it.value }
 }
 
-fun List<Workout>.on(date: LocalDateTime): List<Workout> = filter { local2YouTeeSee(it.created_at.atZone(ZoneId.systemDefault()), date) }
+fun List<Workout>.on(date: LocalDateTime): List<Workout> = filter { local2YouTeeSee(it.occurred_at.atZone(ZoneId.systemDefault()), date) }
 
 fun local2YouTeeSee(local: ZonedDateTime, youToo: LocalDateTime): Boolean {
   return local.dayOfYear == youToo.dayOfYear && local.year == youToo.year

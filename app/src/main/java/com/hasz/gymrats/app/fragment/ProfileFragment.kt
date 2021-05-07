@@ -117,7 +117,7 @@ class ProfileFragment: Fragment(), Refreshable {
                   Color.parseColor("#D33A2C"),
                   it.map { w ->
                     CalendarDay.from(
-                      w.created_at.atZone(ZoneId.systemDefault()).toLocalDate()
+                      w.occurred_at.atZone(ZoneId.systemDefault()).toLocalDate()
                     )
                   })
               )
