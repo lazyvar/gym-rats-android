@@ -13,8 +13,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.messaging.FirebaseMessaging
 import com.hasz.gymrats.app.MainNavigationDirections
 import com.hasz.gymrats.app.R
 import com.hasz.gymrats.app.extension.activeOrUpcoming
@@ -38,6 +40,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+      if (!task.isSuccessful) {
+        return@OnCompleteListener
+      }
+
+      val token = task.result
+
+      if (token != null) {
+        GymRatsApi.postDevice(token = token) { _ -> }
+      }
+    })
 
     shared = this
 

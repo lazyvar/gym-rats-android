@@ -71,6 +71,26 @@ object GymRatsApi {
       .responseObject(gsonGuy, handleObject(handler))
   }
 
+  fun postDevice(token: String, handler: (Result<Any>) -> Unit) {
+    Fuel.post("/android_devices", listOf("token" to token))
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
+  fun updateNotificationSettings(workouts: Boolean, comments: Boolean, chatMessages: Boolean, handler: (Result<Account>) -> Unit) {
+    val params = listOf("workout_notifications_enabled" to workouts, "comment_notifications_enabled" to comments, "chat_message_notifications_enabled" to chatMessages)
+
+    Fuel.put("/account", params)
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
+  fun deleteDevices(handler: (Result<Any>) -> Unit) {
+    Fuel.delete("/android_devices")
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
   fun allChallenges(handler: (Result<List<Challenge>>) -> Unit) {
     Fuel.get("/challenges")
       .validate { true }
@@ -184,6 +204,12 @@ object GymRatsApi {
 
   fun rankings(challenge: Challenge, handler: (Result<List<Ranking>>) -> Unit) {
     Fuel.get("challenges/${challenge.id}/rankings")
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
+  fun getAccount(handler: (Result<Account>) -> Unit) {
+    Fuel.get("account")
       .validate { true }
       .responseObject(gsonGuy, handleObject(handler))
   }

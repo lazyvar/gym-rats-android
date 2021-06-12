@@ -45,6 +45,12 @@ class SettingsFragment: Fragment() {
     ).apply {
       binding = this
       refresh()
+      GymRatsApi.getAccount { result ->
+        if (result.isSuccess) {
+          AuthService.storeAccount(result.getOrThrow())
+          refresh()
+        }
+      }
     }.root
   }
 
@@ -172,7 +178,13 @@ class SettingsFragment: Fragment() {
             startActivity(Intent.createChooser(emailIntent, "Send email..."))
           }),
           SettingsRow(headerText = "ACCOUNT", leftText = null, rightText = null, action = { }),
+          SettingsRow(headerText = null, leftText = "Notifications", rightText = null, action = {
+            findNavController().navigate(
+              SettingsFragmentDirections.changeNotificationSettings()
+            )
+          }),
           SettingsRow(headerText = null, leftText = "Sign out", rightText = null, action = {
+            GymRatsApi.deleteDevices { _ -> }
             AuthService.logout()
 
             val intent = Intent().apply {

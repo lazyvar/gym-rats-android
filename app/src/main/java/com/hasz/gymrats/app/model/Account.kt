@@ -10,7 +10,10 @@ data class Account(
   val email: String,
   val full_name: String,
   val profile_picture_url: String?,
-  val token: String?
+  val token: String?,
+  val workout_notifications_enabled: Boolean,
+  val comment_notifications_enabled: Boolean,
+  val chat_message_notifications_enabled: Boolean
 ): Parcelable, IUser {
   override fun getAvatar(): String = profile_picture_url ?: ""
   override fun getName(): String = full_name
