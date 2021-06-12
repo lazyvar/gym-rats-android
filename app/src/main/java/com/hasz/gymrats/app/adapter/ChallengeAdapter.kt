@@ -128,7 +128,7 @@ class ChallengeAdapter(private val challenge: Challenge, private val workouts: L
       }
       holder.loader.loadImage(holder.leaderAvatarView!!, info.leader.profile_picture_url ?: "", info.leader.full_name ?: "")
       holder.loader.loadImage(holder.currentAccountAvatarView!!, AuthService.currentAccount?.profile_picture_url ?: "", AuthService.currentAccount?.full_name ?: "")
-      holder.currentAccountScore?.text = "${info.current_account_score}\nMe"
+      holder.currentAccountScore?.text = "${info.current_account_score}\nYou"
       holder.leaderScore?.text = "${info.leader_score}\nLeader"
       holder.daysLeftTextView?.text = "${challenge.daysLeft()}"
 
