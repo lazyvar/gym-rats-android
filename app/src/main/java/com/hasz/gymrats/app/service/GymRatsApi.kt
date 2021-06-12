@@ -71,6 +71,18 @@ object GymRatsApi {
       .responseObject(gsonGuy, handleObject(handler))
   }
 
+  fun postDevice(token: String, handler: (Result<Any>) -> Unit) {
+    Fuel.post("/android_devices", listOf("token" to token))
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
+  fun deleteDevices(handler: (Result<Any>) -> Unit) {
+    Fuel.delete("/android_devices")
+      .validate { true }
+      .responseObject(gsonGuy, handleObject(handler))
+  }
+
   fun allChallenges(handler: (Result<List<Challenge>>) -> Unit) {
     Fuel.get("/challenges")
       .validate { true }

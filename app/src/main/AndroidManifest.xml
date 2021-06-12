@@ -60,6 +60,14 @@
             android:name=".activity.MainActivity"
             android:theme="@style/Theme.GymRats.NoActionBar" />
 
+        <service
+            android:name=".service.PushNotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_efQvTUX1NzDoCAu0iTP0UdmnDAhRsoMe" />
         <meta-data android:name="io.branch.sdk.BranchKey.test" android:value="key_test_adPCNMX2RrsiFCq7eZSdWclfyCoTqcSt" />
         <meta-data android:name="io.branch.sdk.TestMode" android:value="false" />

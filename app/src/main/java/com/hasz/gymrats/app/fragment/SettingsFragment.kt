@@ -173,6 +173,7 @@ class SettingsFragment: Fragment() {
           }),
           SettingsRow(headerText = "ACCOUNT", leftText = null, rightText = null, action = { }),
           SettingsRow(headerText = null, leftText = "Sign out", rightText = null, action = {
+            GymRatsApi.deleteDevices { _ -> }
             AuthService.logout()
 
             val intent = Intent().apply {
